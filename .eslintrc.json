@@ -20,6 +20,18 @@
         "@typescript-eslint/no-explicit-any": "error",
         "linebreak-style": 0,
         "import/extensions": [0, { "js": "always" }]
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        }
     }
     
 }
