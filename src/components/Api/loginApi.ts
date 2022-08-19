@@ -1,22 +1,8 @@
 import BASE_URL from './urlApi';
-import { IUserLogin } from './userApi';
+import { IUserLogin, ILoginResp, ITokenResp } from './userApi';
 
 const LOGIN_URL = `${BASE_URL}/signin`;
 const OK = 200;
-
-export interface ITokenResp {
-  message: string;
-  token: string;
-  refreshToken: string;
-  userId: string;
-  name?: string;
-}
-
-export interface ILoginResp {
-  isSuccess: boolean;
-  tokenResp: ITokenResp;
-  errMsg: string;
-}
 
 export const loginUser = async (user: IUserLogin): Promise<ILoginResp> => {
   const resp = await fetch(LOGIN_URL, {
@@ -39,7 +25,7 @@ export const loginUser = async (user: IUserLogin): Promise<ILoginResp> => {
   };
 
   if (resp.status === OK) {
-    const data = await resp.json() as ITokenResp;
+    const data = (await resp.json()) as ITokenResp;
 
     loginResp.isSuccess = true;
     Object.assign(loginResp.tokenResp, data);
@@ -49,3 +35,5 @@ export const loginUser = async (user: IUserLogin): Promise<ILoginResp> => {
 
   return loginResp;
 };
+
+export default loginUser;
