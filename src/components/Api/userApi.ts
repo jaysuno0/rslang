@@ -96,3 +96,33 @@ export const getNewToken = async (userId: string, refreshToken: string): Promise
 
   return loginResp;
 };
+
+export const getUser = async (userId: string, token: string): Promise<IUserResp> => {
+  const resp = await fetch(`${USERS_URL}/${userId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+  const userResp : IUserResp = {
+    isSuccess: false,
+    user: {
+      email: '',
+      id: '',
+    },
+    errMsg: '',
+  };
+
+  if (resp.status === OK) {
+    const data = (await resp.json()) as IUser;
+
+    userResp.isSuccess = true;
+    Object.assign(userResp.user, data);
+  } else {
+    userResp.errMsg = await resp.text();
+  }
+
+  return userResp;
+};
