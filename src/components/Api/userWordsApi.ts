@@ -26,6 +26,12 @@ export interface IUserWordsResp {
   errMsg: string;
 }
 
+export interface IUserWordResp {
+  isSuccess: boolean;
+  userWord: IUserWord;
+  errMsg: string;
+}
+
 export const createUserWord = async (
   userId: string,
   token: string,
@@ -134,4 +140,40 @@ export const getUserWords = async (userId: string, token: string): Promise<IUser
   }
 
   return userWordsResp;
+};
+
+export const getUserWord = async (
+  userId: string,
+  token: string,
+  wordId: string,
+): Promise<IUserWordResp> => {
+  const resp = await fetch(`${USERS_URL}/${userId}/words/${wordId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const userWordResp : IUserWordResp = {
+    isSuccess: false,
+    userWord: {
+      id: '',
+      wordId: '',
+      difficulty: '',
+      optional: {},
+    },
+    errMsg: '',
+  };
+
+  if (resp.status === OK) {
+    const data = (await resp.json()) as IUserWord;
+
+    userWordResp.isSuccess = true;
+    Object.assign(userWordResp.userWord, data);
+  } else {
+    userWordResp.errMsg = await resp.text();
+  }
+
+  return userWordResp;
 };
