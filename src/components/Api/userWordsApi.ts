@@ -15,6 +15,17 @@ export interface IWordProps {
   };
 }
 
+export interface IUserWord extends IWordProps {
+  id: string;
+  wordId: string;
+}
+
+export interface IUserWordsResp {
+  isSuccess: boolean;
+  userWords: Array<IUserWord>;
+  errMsg: string;
+}
+
 export const createUserWord = async (
   userId: string,
   token: string,
@@ -96,4 +107,31 @@ export const deleteUserWord = async (
   }
 
   return result;
+};
+
+export const getUserWords = async (userId: string, token: string): Promise<IUserWordsResp> => {
+  const resp = await fetch(`${USERS_URL}/${userId}/words`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const userWordsResp : IUserWordsResp = {
+    isSuccess: false,
+    userWords: [],
+    errMsg: '',
+  };
+
+  if (resp.status === OK) {
+    const data = (await resp.json()) as Array<IUserWord>;
+
+    userWordsResp.isSuccess = true;
+    Object.assign(userWordsResp.userWords, data);
+  } else {
+    userWordsResp.errMsg = await resp.text();
+  }
+
+  return userWordsResp;
 };
