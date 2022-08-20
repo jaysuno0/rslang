@@ -42,3 +42,32 @@ export const createUserWord = async (
 
   return result;
 };
+
+export const updateUserWord = async (
+  userId: string,
+  token: string,
+  wordId: string,
+  wordProps: IWordProps,
+): Promise<IResp> => {
+  const resp = await fetch(`${USERS_URL}/${userId}/words/${wordId}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(wordProps),
+  });
+  const result : IResp = {
+    isSuccess: false,
+    errMsg: '',
+  };
+
+  if (resp.status === OK) {
+    result.isSuccess = true;
+  } else {
+    result.errMsg = await resp.text();
+  }
+
+  return result;
+};
