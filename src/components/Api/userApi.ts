@@ -1,6 +1,6 @@
 import BASE_URL from './urlApi';
 
-const USERS_URL = `${BASE_URL}/users`;
+export const USERS_URL = `${BASE_URL}/users`;
 const OK = 200;
 
 export interface IUserLogin {
