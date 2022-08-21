@@ -1,3 +1,4 @@
+import './word.css';
 import './img/sound.svg';
 
 interface WordData {
@@ -28,28 +29,30 @@ class Word {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
-      <button class="textbook__word-sound-btn">
-        <img class="textbook__word-sound-btn-image" src="./img/sound.svg" alt="sound icon">
+      <button class="card__sound-btn">
+        <img class="card__sound-btn-image" src="./img/sound.svg" alt="sound icon">
       </button>
-      <img class="textbook__word-img" alt="word picture">
-      <div class="textbook__word-wrapper">
-        <p class="textbook__word"></p>
-        <p class="textbook__transcription"></p>
-        <p class="textbook__word-translation"></p>
-      </div>
-      <div class="textbook__definition-wrapper">
-        <p class="textbook__definition"></p>
-        <p class="textbook__definition-translation"></p></p>
-      </div>
-      <div class="textbook__example-wrapper">
-        <p class="textbook__example"></p>
-        <p class="textbook__example-translation"></p></p>
+      <img class="card__img" alt="word picture">
+      <div class="card__info-wrapper">
+        <div class="card__wrapper card__wrapper_word">
+          <p class="card__word"></p>
+          <p class="card__transcription"></p>
+          <p class="card__translation"></p>
+        </div>
+        <div class="card__wrapper card__wrapper_definition">
+          <p class="card__definition"></p>
+          <p class="card__definition-translation"></p></p>
+        </div>
+        <div class="card__wrapper card__wrapper_example">
+          <p class="card__example"></p>
+          <p class="card__example-translation"></p></p>
+        </div>
       </div>`;
   }
 
   createCard() {
     const card = document.createElement('div');
-    card.classList.add('textbook__word');
+    card.classList.add('textbook__card', 'card');
     card.innerHTML = this.template;
 
     return card;
@@ -57,15 +60,15 @@ class Word {
 
   render() {
     const card = this.createCard();
-    const img = card.querySelector('.textbook__word-img') as HTMLImageElement;
-    const word = card.querySelector('.textbook__word') as HTMLParagraphElement;
-    const transcription = card.querySelector('.textbook__transcription') as HTMLParagraphElement;
-    const wordTranslation = card.querySelector('.textbook__word-translation') as HTMLParagraphElement;
-    const definition = card.querySelector('.textbook__definition') as HTMLParagraphElement;
-    const definitionTranslation = card.querySelector('.textbook__definition-translation') as HTMLParagraphElement;
-    const example = card.querySelector('.textbook__example') as HTMLParagraphElement;
-    const exampleTranslation = card.querySelector('.textbook__example-translation') as HTMLParagraphElement;
-    const soundBtn = card.querySelector('.textbook__word-sound-btn') as HTMLButtonElement;
+    const img = card.querySelector('.card__img') as HTMLImageElement;
+    const word = card.querySelector('.card__word') as HTMLParagraphElement;
+    const transcription = card.querySelector('.card__transcription') as HTMLParagraphElement;
+    const wordTranslation = card.querySelector('.card__translation') as HTMLParagraphElement;
+    const definition = card.querySelector('.card__definition') as HTMLParagraphElement;
+    const definitionTranslation = card.querySelector('.card__definition-translation') as HTMLParagraphElement;
+    const example = card.querySelector('.card__example') as HTMLParagraphElement;
+    const exampleTranslation = card.querySelector('.card__example-translation') as HTMLParagraphElement;
+    const soundBtn = card.querySelector('.card__sound-btn') as HTMLButtonElement;
 
     img.setAttribute('src', this.base + this.word.image);
     word.textContent = this.word.word;
