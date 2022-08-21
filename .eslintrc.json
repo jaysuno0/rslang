@@ -19,7 +19,9 @@
     "rules": {
         "@typescript-eslint/no-explicit-any": "error",
         "linebreak-style": 0,
-        "import/extensions": [0, { "js": "always" }]
+        "import/extensions": [0, { "js": "always" }],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"]
     },
     "settings": {
         "import/resolver": {

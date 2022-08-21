@@ -1,0 +1,7 @@
+.screen{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: #f4a04a;
+   padding: 1rem;
+}
