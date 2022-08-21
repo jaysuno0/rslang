@@ -1,31 +1,15 @@
 import './word.css';
-import './img/sound.svg';
-
-interface WordData {
-  audio: string,
-  audioExample: string,
-  audioMeaning: string,
-  group: number,
-  id: string,
-  image: string,
-  page: number,
-  textExample: string,
-  textExampleTranslate: string,
-  textMeaning: string,
-  textMeaningTranslate: string,
-  transcription: string,
-  word: string,
-  wordTranslate: string,
-}
+import '../img/sound.svg';
+import { IWord } from '../../Api/wordsApi';
 
 class Word {
-  word: WordData;
+  word: IWord;
 
   base: string;
 
   template: string;
 
-  constructor(word: WordData) {
+  constructor(word: IWord) {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
@@ -93,4 +77,4 @@ class Word {
   }
 }
 
-export { Word, WordData };
+export default Word;

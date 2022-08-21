@@ -1,35 +1,29 @@
 import './textbook.css';
-import { Word, WordData } from './Word/Word';
+import Word from './Word/Word';
+import { getWords } from '../Api/wordsApi';
 
 interface ITextBook {
-  render: () => HTMLDivElement;
-  getWords: (group: number, page: number) => void;
+  create: () => HTMLDivElement;
 }
 
-const TextBook: ITextBook = {
-  render() {
+const Textbook: ITextBook = {
+  create() {
     const wrapper = document.createElement('div');
     wrapper.classList.add('textbook');
 
-    // change when screen main page is ready
-    document.body.append(wrapper);
+    async function getWordsArray() {
+      const response = await getWords(0, 0);
+      response.words.forEach((wordData) => {
+        const word = new Word(wordData).render();
+        wrapper.append(word);
+      });
+    }
+
+    getWordsArray();
+    // append textbook to screen (when screen if ready)
+
     return wrapper;
-  },
-
-  getWords(group = 0, page = 0) {
-    const textbook = this.render();
-
-    const wordsPromise = fetch(`https://rslang142-learnwords.herokuapp.com/words?group=${group}&page=${page}`);
-    wordsPromise
-      .then((response) => response.json())
-      .then((data: WordData[]) => {
-        data.forEach((wordData) => {
-          const word = new Word(wordData).render();
-          textbook.append(word);
-        });
-      })
-      .catch((err) => console.error(err));
   },
 };
 
-export default TextBook;
+export default Textbook;
