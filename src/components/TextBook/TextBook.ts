@@ -1,3 +1,4 @@
+import './textbook.css';
 import { Word, WordData } from './Word/Word';
 
 interface ITextBook {

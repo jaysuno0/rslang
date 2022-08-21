@@ -5,34 +5,10 @@
    viewBox="0 0 1024 1024"
    version="1.1"
    id="svg3242"
-   sodipodi:docname="sound.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs3246" />
-  <sodipodi:namedview
-     id="namedview3244"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="0.75390625"
-     inkscape:cx="512.66321"
-     inkscape:cy="511.33679"
-     inkscape:window-width="1920"
-     inkscape:window-height="991"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg3242"
-     inkscape:pageshadow="2" />
   <path
      fill="#D9D9D9"
      d="M275.4 424H146v176h129.4l18 11.7L586 803V221L293.3 412.3z"
