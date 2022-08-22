@@ -1,7 +1,5 @@
-import { USERS_URL } from './userApi';
-
-const OK = 200;
-const OK_DEL = 204;
+import { USERS_URL } from './urlApi';
+import StatusCode from './statusCode';
 
 export interface IResp {
   isSuccess: boolean;
@@ -52,7 +50,7 @@ export const createUserWord = async (
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     result.isSuccess = true;
   } else {
     result.errMsg = await resp.text();
@@ -81,7 +79,7 @@ export const updateUserWord = async (
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     result.isSuccess = true;
   } else {
     result.errMsg = await resp.text();
@@ -106,7 +104,7 @@ export const deleteUserWord = async (
     errMsg: '',
   };
 
-  if (resp.status === OK_DEL) {
+  if (resp.status === StatusCode.NO_CONTENT) {
     result.isSuccess = true;
   } else {
     result.errMsg = await resp.text();
@@ -130,7 +128,7 @@ export const getUserWords = async (userId: string, token: string): Promise<IUser
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as Array<IUserWord>;
 
     userWordsResp.isSuccess = true;
@@ -166,7 +164,7 @@ export const getUserWord = async (
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as IUserWord;
 
     userWordResp.isSuccess = true;
