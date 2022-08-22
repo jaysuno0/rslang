@@ -1,0 +1,45 @@
+.main{
+   display: grid;
+   grid-template-columns: 10rem 1fr;
+   min-height: calc(100vh - 7rem);
+}
+
+.nav{
+   position: relative;
+   z-index: 1;
+   width: 10rem;
+   min-height: 100%;
+   background-color: #f9e084;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+
+.nav__list{
+   display: flex;
+   flex-direction: column;
+   row-gap: 50px;
+}
+
+.nav__item{
+   display: flex;
+   gap: 1rem;
+   align-items: center;
+   padding: 5px;
+   transition: 0.4s;
+}
+
+.item__logo img{
+   width: 2rem;
+   height: 2rem;
+   transition: 0.5s;
+}
+
+.login__text{
+   display: none;
+}
+
+.header__login {
+   transition: 0.5s;
+}
