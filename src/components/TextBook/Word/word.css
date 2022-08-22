@@ -1,0 +1,47 @@
+/**** word-card ****/
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  padding-bottom: 10px;
+  
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: #60c7b6;
+}
+
+.card__wrapper {
+  padding: 5px 20px;
+}
+
+/**** sound button ****/
+.card__sound-btn{
+  position: absolute;
+  padding: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #000;
+  border-bottom-right-radius: 10px;
+}
+.card__sound-btn img{
+  width: 30px;
+}
+
+/**** image ****/
+.card__img {
+  width: 100%;
+}
+
+/**** word ****/
+.card__wrapper_word {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card__word {
+  font-size: 1.2em;
+}
