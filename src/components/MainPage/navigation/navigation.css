@@ -26,9 +26,20 @@
    display: flex;
    gap: 1rem;
    align-items: center;
+   padding: 5px;
+   transition: 0.4s;
 }
 
 .item__logo img{
    width: 2rem;
    height: 2rem;
+   transition: 0.5s;
+}
+
+.login__text{
+   display: none;
+}
+
+.header__login {
+   transition: 0.5s;
 }

@@ -31,7 +31,7 @@ export default class HomeScreenRender {
     <div class="registration__title">
       <p class="title">Еще сомневаешься? Ригистрируйся и давай начинать!</p>
     </div>
-      <a href="##">
+      <a href="##" id="login" class="homePage__button">
       <div class="registration__button">
       <span>Регистрация</span>
       </div>
@@ -44,6 +44,7 @@ export default class HomeScreenRender {
     const screen = document.querySelector('.screen');
     const homePage = document.createElement('div');
     homePage.classList.add('homePage');
+    homePage.id = ('homePage');
     homePage.innerHTML = this.template;
     screen?.append(homePage);
   }
