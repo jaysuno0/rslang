@@ -4,7 +4,7 @@ export enum ButtonActionTypes {
   Game = 'game',
   Stats = 'stats',
   Team = 'team',
-  Login = 'login'
+  Login = 'login',
 }
 export type ButtonActions = { [key in ButtonActionTypes]: () => void }
 

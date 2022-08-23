@@ -9,3 +9,14 @@
    box-shadow: 0px 0px 15px #885024;
 }
 
+
+.game__wrapper:hover {
+   cursor: pointer;
+}
+.game__wrapper:hover .gameBefore {
+   display: none;
+}
+.game__wrapper:hover .gameAfter {
+   display: flex;
+   box-shadow: 0px 0px 15px #885024;
+}

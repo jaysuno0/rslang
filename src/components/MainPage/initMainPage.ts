@@ -5,14 +5,14 @@ import './homePage/homePage.css';
 import './footer/footer.css';
 import './reset.css';
 import './hoverStyle.css';
-import './gameSelect/gameSelect.css';
+import '../Game/gameSelect/gameSelect.css';
 import HeaderRender from './header/header';
 import NavRender from './navigation/navigation';
 import screenRender from './screen/screen';
 import HomePageRender from './homePage/homePage';
 import FooterRender from './footer/footer';
 import setupButtonListeners, { ButtonActionTypes } from './setupButtonListeners';
-import GameSelect from './gameSelect/gameSelect';
+import GameSelect from '../Game/gameSelect/gameSelect';
 
 const header = new HeaderRender();
 const nav = new NavRender();
