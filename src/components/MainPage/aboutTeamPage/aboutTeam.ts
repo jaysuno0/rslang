@@ -11,7 +11,7 @@ export default class aboutTeamRender {
       <span>- Our team -</span>
       </div>
       <div class="cards">
-        <div class="card">
+        <div class="team__card">
           <div class="card__header">
             <div class="card__image">
               <img src="../img/team2.png" alt="team1" />
@@ -40,7 +40,7 @@ export default class aboutTeamRender {
             </a>
           </div>
         </div>
-        <div class="card">
+        <div class="team__card">
           <div class="card__header">
             <div class="card__image">
               <img src="../img/team3.jpg" alt="team1" />
@@ -69,7 +69,7 @@ export default class aboutTeamRender {
             </a>
           </div>
         </div>
-        <div class="card">
+        <div class="team__card">
           <div class="card__header">
             <div class="card__image">
               <img src="../img/team1.png" alt="team1" />
