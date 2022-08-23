@@ -74,9 +74,20 @@ const Textbook: ITextbook = {
     nextPageBtn.addEventListener('click', () => this.nextPage());
     previousPageBtn.addEventListener('click', () => this.previousPage());
 
-    const levelBtn = controls.querySelector('.textbook__btn_level') as HTMLButtonElement;
-    const levels = controls.querySelector('.textbook__levels-list') as HTMLDivElement;
-    levelBtn.addEventListener('click', () => levels.classList.toggle('hidden'));
+    const levelsListBtn = controls.querySelector('.textbook__btn_level') as HTMLButtonElement;
+    const levelsList = controls.querySelector('.textbook__levels-list') as HTMLDivElement;
+    const levelBtns = controls.querySelectorAll('.textbook__levels-list-item');
+
+    levelsListBtn.addEventListener('click', () => levelsList.classList.toggle('hidden'));
+    levelBtns.forEach((btn) => {
+      const levelElement = btn.textContent as string;
+      const level = parseInt(levelElement, 10) - 1;
+
+      btn.addEventListener('click', () => {
+        levelsList.classList.toggle('hidden');
+        this.setLevel(level);
+      });
+    });
 
     return controls;
   },
@@ -129,7 +140,7 @@ const Textbook: ITextbook = {
     this.getPage(level, 0);
 
     levelCounter.textContent = `${level}`;
-  }
+  },
 };
 
 export default Textbook;
