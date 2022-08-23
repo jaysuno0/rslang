@@ -48,3 +48,7 @@ table{
 input{
    border-radius: 0;
 }
+
+button {
+   cursor: pointer;
+}
