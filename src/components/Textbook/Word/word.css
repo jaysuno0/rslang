@@ -11,7 +11,17 @@
 }
 
 .card__wrapper {
-  padding: 5px 20px;
+  padding: 7px 20px 7px 10px;
+}
+
+.card__wrapper::before {
+  content: '●';
+  position: absolute;
+}
+
+.card__wrapper p {
+  padding: 5px 0px;
+  padding-left: 20px;
 }
 
 /**** sound button ****/
@@ -39,9 +49,22 @@
 .card__wrapper_word {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .card__word {
-  font-size: 1.2em;
+  font-size: 24px;
+}
+
+.card__wrapper_word p {
+  padding-left: 0px;
+}
+
+.card__wrapper_word::before {
+  display: none;
+}
+
+.card__transcription {
+  margin: 0px 10px;
 }
