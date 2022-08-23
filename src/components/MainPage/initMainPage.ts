@@ -11,7 +11,7 @@ import screenRender from './screen/screen';
 import HomePageRender from './homePage/homePage';
 import FooterRender from './footer/footer';
 import setupButtonListeners, { ButtonActionTypes } from './setupButtonListeners';
-import Textbook from '../Textbook/TextBook';
+import Textbook from '../Textbook/Textbook';
 
 const header = new HeaderRender();
 const nav = new NavRender();
