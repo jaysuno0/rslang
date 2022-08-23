@@ -1,0 +1,39 @@
+.gameSelect {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-self: center;
+   gap: 4rem;
+}
+
+.gameSelect__title {
+   text-align: center;
+}
+
+.gameSelect__title span {
+   font-size: 2rem;
+   color: #885024;
+}
+
+.games {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-around;
+}
+
+.game {
+   width: 35rem;
+   height: 10rem;
+   padding: 1rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: #f9e084;
+   border-radius: 10px;
+   font-size: 1.5rem;
+}
+
+.game__name {
+   font-size: 2rem;
+   font-weight: 800;
+}
