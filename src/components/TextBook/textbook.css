@@ -1,7 +1,49 @@
-.textbook {
+.textbook__cards-wrapper {
   padding: 10px;
+  
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
+}
+
+/*** textbook controls ***/
+.textbook__controls {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  width: 100%;
+  padding: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  
+  font-size: 35px;
+  background: #f9e084;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.textbook__btn {
+  background: transparent;
+  border: none;
+}
+
+.textbook__btn-img {
+  width: 35px;
+}
+
+
+/* page controls */
+.textbook__controls_page {
+  display: flex;
+}
+
+.textbook__page {
+  padding: 0px 10px;
 }
