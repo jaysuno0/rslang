@@ -22,15 +22,25 @@ const Textbook: ITextbook = {
   currentPage: 0,
 
   templateControls: `
-    <div class="textbook__controls_page">
-      <button class="textbook__btn textbook__btn_previous">
-        <img class="textbook__btn-img" src="./img/previous-page.svg" alt="previous icon">
-      </button>
-      <p class="textbook__page">1</p>
-      <button class="textbook__btn textbook__btn_next">
-        <img class="textbook__btn-img" src="./img/next-page.svg" alt="next icon">
-      </button>
-    </div>`,
+      <div class="textbook__controls_page">
+        <button class="textbook__btn textbook__btn_previous">
+          <img class="textbook__btn-img" src="./img/previous-page.svg" alt="previous icon">
+        </button>
+        <p class="textbook__page">1</p>
+        <button class="textbook__btn textbook__btn_next">
+          <img class="textbook__btn-img" src="./img/next-page.svg" alt="next icon">
+        </button>
+      </div>
+      <div class="textbook__controls_level">
+        <button class="textbook__btn textbook__btn-level">
+          <p> уровень <span class="textbook__level">1</span></p>
+        </button>
+      </div>
+      <div class="textbook__controls_level">
+        <ul class="textbook__levels-list">
+          <li class="textbook__levels-list-item"></li>
+        </ul>
+      </div>`,
 
   create() {
     const textbookWrapper = document.createElement('div');
