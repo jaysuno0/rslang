@@ -35,15 +35,15 @@ const Textbook: ITextbook = {
   create() {
     const textbookWrapper = document.createElement('div');
     const cardsWrapper = document.createElement('div');
+    const screen = document.querySelector('.screen') as HTMLDivElement;
 
     textbookWrapper.classList.add('textbook');
     cardsWrapper.classList.add('textbook__cards-wrapper');
     textbookWrapper.append(this.createControls());
     textbookWrapper.append(cardsWrapper);
     this.getPage(this.currentGroup, this.currentPage);
-
-    // append textbook to screen (when screen if ready)
-    document.body.append(textbookWrapper);
+    screen.innerHTML = '';
+    screen.append(textbookWrapper);
 
     return textbookWrapper;
   },
