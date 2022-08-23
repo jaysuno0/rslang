@@ -13,6 +13,7 @@ import HomePageRender from './homePage/homePage';
 import aboutTeamRender from './aboutTeamPage/aboutTeam';
 import FooterRender from './footer/footer';
 import setupButtonListeners, { ButtonActionTypes } from './setupButtonListeners';
+import Textbook from '../Textbook/Textbook';
 
 const header = new HeaderRender();
 const nav = new NavRender();
@@ -28,7 +29,7 @@ footer.render();
 
 setupButtonListeners({
   [ButtonActionTypes.Home]: () => homePage.create(),
-  [ButtonActionTypes.Book]: () => { console.log('Book Callback'); },
+  [ButtonActionTypes.Book]: () => Textbook.create(),
   [ButtonActionTypes.Game]: () => { console.log('Game Callback'); },
   [ButtonActionTypes.Stats]: () => { console.log('Stats Callback'); },
   [ButtonActionTypes.Team]: () => aboutTeam.create(),
