@@ -10,6 +10,28 @@
 }
 
 
+.team__card:hover {
+   box-shadow: 0px 0px 20px #60c7b6;
+}
+
+.team__card:hover .card__image {
+   border-color: #60c7b6;
+}
+
+.team__card:hover .card__image img {
+   height: 120%;
+}
+
+.card__button:hover {
+   background-color: #60c7b6;
+   width: 4.5rem;
+}
+
+.card__button:hover .card__image{
+   border-color: #60c7b6;
+   width: 4rem;
+}
+
 .game__wrapper:hover {
    cursor: pointer;
 }

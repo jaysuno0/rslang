@@ -48,4 +48,12 @@ export default class HomeScreenRender {
     homePage.innerHTML = this.template;
     screen?.append(homePage);
   }
+
+  create() {
+    const screen = document.querySelector('.screen');
+    if (screen) {
+      screen.innerHTML = ' ';
+    }
+    this.render();
+  }
 }
