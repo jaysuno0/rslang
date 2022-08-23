@@ -16,11 +16,13 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  userWord?: IWordProps;
 }
 
 export interface IWordsResp {
   isSuccess: boolean;
   words: Array<IWord>;
+  totalCount?: number;
   errMsg: string;
 }
 
