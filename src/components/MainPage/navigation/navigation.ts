@@ -72,6 +72,7 @@ export default class NavRender {
     main.classList.add('main');
     body.append(main);
     const nav = document.createElement('nav');
+    nav.classList.add('nav-wrapper');
     nav.innerHTML = this.template;
     main.prepend(nav);
   }
