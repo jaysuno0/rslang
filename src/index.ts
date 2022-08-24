@@ -1,3 +1,4 @@
 import './components/MainPage/initMainPage';
-import './components/Game/gameSelect/gameSelectInit.ts';
+import './components/Game/gameSelect/gameSelectInit';
+import './components/Game/GameSprint/initGameSprint';
 
