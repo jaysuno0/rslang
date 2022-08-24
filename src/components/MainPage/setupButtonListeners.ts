@@ -6,7 +6,7 @@ export enum ButtonActionTypes {
   Team = 'team',
   Login = 'login',
 }
-export type ButtonActions = { [key in ButtonActionTypes]: () => void }
+export type ButtonActions = { [key in ButtonActionTypes]: () => void };
 
 function setupButtonListeners(actions: ButtonActions) {
   const NAV_ITEM_CLASS = 'nav__item';
