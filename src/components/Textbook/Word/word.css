@@ -8,6 +8,7 @@
   overflow: hidden;
   border-radius: 20px;
   background-color: #60c7b6;
+  box-shadow: 7px 7px 15px #333;
 }
 
 .card__wrapper {
