@@ -14,6 +14,11 @@ interface IAggregatedWordsResp {
   totalCount: Array<{ count: number }>;
 }
 
+export const GET_EASY = '{"$or":[{"userWord.difficulty":"easy"},{"userWord":null}]}';
+export const GET_EASY_LEARNED = '{"$and":[{"userWord.difficulty":"easy"},{"userWord.optional.isLearned":true}]}';
+export const GET_HARD = '{"userWord.difficulty":"hard"}';
+export const GET_UNLEARNED_HARD = '{"$and":[{"userWord.difficulty":"hard"},{"$or":[{"userWord.optional.isLearned":null},{"userWord.optional.isLearned":false}]}]}';
+
 export const getUserAggregatedWords = async (
   userId: string,
   token: string,
