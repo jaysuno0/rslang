@@ -19,10 +19,17 @@
 }
 
 .authorization__title {
-  font-weight: bold;
+  padding: 10px 0px;
   font-size: 25px;
+  font-weight: bold;
   text-align: center;
-  padding-bottom: 1em;
+}
+
+.authorization__message {
+  font-size: 13px;
+  margin: 1em 0px;
+  border-bottom: 1px solid #FF0000;
+  min-height: 1em;
 }
 
 /*** inputs ***/
