@@ -37,5 +37,5 @@ setupButtonListeners({
   [ButtonActionTypes.Game]: () => gameSelect.create(),
   [ButtonActionTypes.Stats]: () => { console.log('Stats Callback'); },
   [ButtonActionTypes.Team]: () => aboutTeam.create(),
-  [ButtonActionTypes.Login]: () => Authorization.render(),
+  [ButtonActionTypes.Login]: () => Authorization.create(),
 });

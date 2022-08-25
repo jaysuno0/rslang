@@ -1,4 +1,18 @@
 .authorization {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background-color: #333c;
+}
+
+.authorization__wrapper {
   padding: 50px;
 
   display: flex;
