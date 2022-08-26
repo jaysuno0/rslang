@@ -6,7 +6,6 @@ import Word from './Word/Word';
 import { getWords } from '../Api/wordsApi';
 
 interface ITextbook {
-  isRunning: boolean;
   currentGroup: number;
   currentPage: number;
   templateControls: string;
@@ -20,7 +19,6 @@ interface ITextbook {
 }
 
 const Textbook: ITextbook = {
-  isRunning: false,
   currentGroup: 0,
   currentPage: 0,
 
@@ -55,7 +53,6 @@ const Textbook: ITextbook = {
     const cardsWrapper = document.createElement('div');
     const screen = document.querySelector('.screen') as HTMLDivElement;
 
-    this.isRunning = true;
     textbookWrapper.classList.add('textbook');
     cardsWrapper.classList.add('textbook__cards-wrapper');
     textbookWrapper.append(this.createControls());

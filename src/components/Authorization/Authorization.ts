@@ -33,8 +33,8 @@ interface IAuthorization {
   validateName: () => boolean;
   validateEmail: () => boolean;
   validatePassword: () => boolean;
-  setMessage: (text: string) => void;
-  removeAuthorization: () => void;
+  setFormMessage: (text: string) => void;
+  setEnterMessage: () => void;
 }
 
 const Authorization: IAuthorization = {
@@ -51,7 +51,7 @@ const Authorization: IAuthorization = {
     `<div class="authorization__wrapper">
       <form class="authorization__form">
         <p class="authorization__title"></p>
-        <p class="authorization__message"></p> 
+        <p class="authorization__msg"></p> 
         <div class="authorization__input-wrapper authorization__input-wrapper_nick">
           <label for="name" class="authorization__label">Никнейм</label>
           <input id="name" class="authorization__input" autocomplete="on" type="text">
@@ -74,6 +74,7 @@ const Authorization: IAuthorization = {
 
     authorization.classList.add('authorization');
     authorization.innerHTML = this.template;
+    screen.innerHTML = '';
     screen.append(authorization);
 
     const loginBtn = authorization.querySelector('.authorization__btn_login') as HTMLButtonElement;
@@ -102,7 +103,7 @@ const Authorization: IAuthorization = {
     const enterBtn = authWrapper.querySelector('.authorization__btn_enter') as HTMLButtonElement;
     enterBtn.textContent = btnText;
     enterBtn.addEventListener('click', () => {
-      this.setMessage('');
+      this.setFormMessage('');
       if (this.currentType === AuthorizationTypes.signupType && this.validate()) this.enter();
       else if (this.validateEmail()) this.enter();
     });
@@ -129,13 +130,13 @@ const Authorization: IAuthorization = {
 
       if (value.includes(' ')) {
         result = false;
-        this.setMessage('данные не должны содержать пробелов');
+        this.setFormMessage('данные не должны содержать пробелов');
       } else if (value.length < ValidationLengths.nameMin) {
         result = false;
-        this.setMessage('слишком короткое имя');
+        this.setFormMessage('слишком короткое имя');
       } else if (value.length > ValidationLengths.nameMax) {
         result = false;
-        this.setMessage('слишком длинное имя');
+        this.setFormMessage('слишком длинное имя');
       }
     }
 
@@ -149,9 +150,9 @@ const Authorization: IAuthorization = {
 
     if (email.value.includes(' ')) {
       result = false;
-      this.setMessage('данные не должны содержать пробелов');
+      this.setFormMessage('данные не должны содержать пробелов');
     } if (!email.value.match(emailRegExp)) {
-      this.setMessage('невалидный email');
+      this.setFormMessage('невалидный email');
       result = false;
     }
 
@@ -164,13 +165,13 @@ const Authorization: IAuthorization = {
 
     if (password.value.includes(' ')) {
       result = false;
-      this.setMessage('данные не должны содержать пробелов');
+      this.setFormMessage('данные не должны содержать пробелов');
     } else if (password.value.length < ValidationLengths.passwordMin) {
       result = false;
-      this.setMessage('слишком лёгкий пароль');
+      this.setFormMessage('слишком лёгкий пароль');
     } else if (password.value.length > ValidationLengths.passwordMax) {
       result = false;
-      this.setMessage('слишком длинный пароль');
+      this.setFormMessage('слишком длинный пароль');
     }
 
     return result;
@@ -186,7 +187,7 @@ const Authorization: IAuthorization = {
 
     const newToken = async (tokenResp: ITokenResp, name: string) => {
       const token = await getNewToken(tokenResp.userId, tokenResp.refreshToken);
-      if (!token.isSuccess) this.setMessage(token.errMsg);
+      if (!token.isSuccess) this.setFormMessage(token.errMsg);
       else {
         localStorage.setItem('id', tokenResp.userId);
         localStorage.setItem('name', tokenResp.name as string);
@@ -199,14 +200,14 @@ const Authorization: IAuthorization = {
       const loginResponse = await loginUser(user);
       if (loginResponse.isSuccess) {
         newToken(loginResponse.tokenResp, user.name as string);
-        this.removeAuthorization();
-      } else this.setMessage(loginResponse.errMsg);
+        this.setEnterMessage();
+      } else this.setFormMessage(loginResponse.errMsg);
     };
 
     const newUser = async () => {
       const userResponse = await createUser(user);
       if (userResponse.isSuccess) login();
-      else this.setMessage(userResponse.errMsg);
+      else this.setFormMessage(userResponse.errMsg);
     };
 
     if (this.currentType === AuthorizationTypes.signupType) {
@@ -216,14 +217,19 @@ const Authorization: IAuthorization = {
     } else login();
   },
 
-  setMessage(text) {
-    const messageElement = document.querySelector('.authorization__message') as HTMLParagraphElement;
+  setFormMessage(text) {
+    const messageElement = document.querySelector('.authorization__msg') as HTMLParagraphElement;
     messageElement.textContent = text;
   },
 
-  removeAuthorization() {
-    const authorization = document.querySelector('.authorization') as HTMLDivElement;
-    authorization.remove();
+  setEnterMessage() {
+    const message = document.createElement('p');
+    const screen = document.querySelector('.screen') as HTMLDivElement;
+
+    message.classList.add('authorization__enter-msg');
+    message.innerHTML = 'Вы успешно вошли! <br> Приятного обучения :)';
+    screen.innerHTML = '';
+    screen.append(message);
   },
 };
 
