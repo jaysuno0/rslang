@@ -39,7 +39,6 @@ interface IAuthorization {
 
 const Authorization: IAuthorization = {
   currentType: AuthorizationTypes.loginType,
-
   template: `
     <div class="authorization__wrapper">
       <p class="authorization__title">Добро пожаловать :)</p>
@@ -48,26 +47,25 @@ const Authorization: IAuthorization = {
         <button class="authorization__btn authorization__btn_signup">Регистрация</button>
       </div>
     </div>`,
-
   templateForm:
     `<div class="authorization__wrapper">
-      <div class="authorization__form">
+      <form class="authorization__form">
         <p class="authorization__title"></p>
         <p class="authorization__message"></p> 
         <div class="authorization__input-wrapper authorization__input-wrapper_nick">
           <label for="name" class="authorization__label">Никнейм</label>
-          <input id="name" class="authorization__input" type="text">
+          <input id="name" class="authorization__input" autocomplete="on" type="text">
         </div>
         <div class="authorization__input-wrapper">
           <label for="email" class="authorization__label">Почта</label>
-          <input id="email" class="authorization__input" type="email">
+          <input id="email" class="authorization__input" type="email" autocomplete="on">
         </div>
         <div class="authorization__input-wrapper">
           <label for="password" class="authorization__label">Пароль</label>
-          <input id="password" class="authorization__input" type="password">
+          <input id="password" class="authorization__input" type="password" autocomplete="on">
         </div>
         <button class="authorization__btn authorization__btn_enter btn"></button>
-      </div>
+      </form>
     </div>`,
 
   create() {
@@ -181,7 +179,6 @@ const Authorization: IAuthorization = {
   enter() {
     const email = (document.querySelector('#email') as HTMLInputElement).value;
     const password = (document.querySelector('#password') as HTMLInputElement).value;
-
     const user: IUserLogin = {
       email,
       password,
@@ -191,26 +188,25 @@ const Authorization: IAuthorization = {
       const token = await getNewToken(tokenResp.userId, tokenResp.refreshToken);
       if (!token.isSuccess) this.setMessage(token.errMsg);
       else {
+        localStorage.setItem('id', tokenResp.userId);
+        localStorage.setItem('name', tokenResp.name as string);
         localStorage.setItem('token', token.tokenResp.token);
-        localStorage.setItem('name', name);
-        this.removeAuthorization();
+        if (name) localStorage.setItem('name', name);
       }
-    };
-
-    const newUser = async () => {
-      const userResponse = await createUser(user);
-
-      if (userResponse.isSuccess) {
-        const loginResponse = await loginUser(user);
-        newToken(loginResponse.tokenResp, user.name as string);
-      } else this.setMessage(userResponse.errMsg);
     };
 
     const login = async () => {
       const loginResponse = await loginUser(user);
+      if (loginResponse.isSuccess) {
+        newToken(loginResponse.tokenResp, user.name as string);
+        this.removeAuthorization();
+      } else this.setMessage(loginResponse.errMsg);
+    };
 
-      if (!loginResponse.isSuccess) this.setMessage(loginResponse.errMsg);
-      else this.removeAuthorization();
+    const newUser = async () => {
+      const userResponse = await createUser(user);
+      if (userResponse.isSuccess) login();
+      else this.setMessage(userResponse.errMsg);
     };
 
     if (this.currentType === AuthorizationTypes.signupType) {
