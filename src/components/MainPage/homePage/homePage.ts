@@ -2,6 +2,8 @@ import '../img/homePageBack.png';
 import '../img/homePageBack2.png';
 import '../img/homePageBack3.svg';
 import '../img/homePageStats.png';
+import setupButtonListeners, { ButtonActionTypes } from '../setupButtonListeners';
+
 
 export default class HomeScreenRender {
   template: string;
@@ -55,5 +57,13 @@ export default class HomeScreenRender {
       screen.innerHTML = ' ';
     }
     this.render();
+    setupButtonListeners({
+      [ButtonActionTypes.Home]: () => {},
+      [ButtonActionTypes.Book]: () => {},
+      [ButtonActionTypes.Game]: () => {},
+      [ButtonActionTypes.Stats]: () => {},
+      [ButtonActionTypes.Team]: () => {},
+      [ButtonActionTypes.Login]: () => { console.log('Login Callback'); },
+    });
   }
 }
