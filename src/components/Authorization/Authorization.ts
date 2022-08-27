@@ -50,6 +50,7 @@ async function newToken(id: string, refreshToken: string) {
     localStorage.setItem('refreshToken', token.tokenResp.refreshToken);
 
     state.accessToken = token.tokenResp.token;
+    state.userId = id;
     state.isUserLogged = true;
   } else state.isUserLogged = false;
 

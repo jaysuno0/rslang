@@ -5,7 +5,7 @@ import state from './state';
 
 (async function setState() {
   state.isUserLogged = await isUserLogged();
-  setTimeout(() => {
+  setInterval(() => {
     isUserLogged(); // will refresh token
   }, state.refreshTime);
 }());
