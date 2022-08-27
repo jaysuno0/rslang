@@ -1,3 +1,5 @@
+import check from "./sprintSelectInit";
+
 export default class LevelSelect {
    template: string;
  
@@ -17,7 +19,7 @@ export default class LevelSelect {
      <form action="#" name="sprintSelectLevel" class="game__form">
        <div class="selectLevel__item">
          <label for="select_1" class="selectLevel__label">Сложность</label>
-         <select name="sprintLevel" id="select_1">
+         <select name="sprintLevel" id="select_1" class="select__item form__button">
            <option value="1">1</option>
            <option value="2" selected>2</option>
            <option value="3">3</option>
@@ -26,7 +28,7 @@ export default class LevelSelect {
            <option value="6">6</option>
          </select>
        </div>
-       <button type="submit" class="start-button">Let's go</button>
+       <button type="submit" class="start-button form__button">Let's go</button>
      </form>
    </div>
           `;
@@ -47,6 +49,7 @@ export default class LevelSelect {
        screen.innerHTML = ' ';
     }
     this.render();
+    check();
    }
  }
  

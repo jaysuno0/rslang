@@ -3,6 +3,9 @@ import '../img/gameSelectSprint2.png';
 import '../img/gameSelectAudio1.svg';
 import '../img/gameSelectAudio2.svg';
 import setupGameSelectButtonListeners, {ButtonGameSelectActionsTypes} from './gameSelectInit';
+import LevelSelect from '../GameSprint/LevelSelect/SprintLevelSelect';
+
+const levelSelect = new LevelSelect();
 
 export default class gameSelect {
   template: string;
@@ -69,7 +72,7 @@ export default class gameSelect {
    }
    this.render();
    setupGameSelectButtonListeners({
-    [ButtonGameSelectActionsTypes.GameSprint]: () => { console.log('GameSprint Callback'); },
+    [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
     [ButtonGameSelectActionsTypes.GameAudio]: () => { console.log('GameAudio Callback'); },
    });
   }
