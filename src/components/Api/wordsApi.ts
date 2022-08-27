@@ -1,5 +1,6 @@
 import { WORDS_URL } from './urlApi';
 import StatusCode from './statusCode';
+import { IWordProps } from './userWordsApi';
 
 export interface IWord {
   id: string;
