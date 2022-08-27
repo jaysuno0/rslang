@@ -11,7 +11,7 @@ export default class gameScreen {
      <div class="score__point">0</div>
    </div>
    <div class="screen__card">
-     <div class="card__header">
+     <div class="card__top">
        <div class="header__point">
          <img src="../img/gameSprintPointRight.png" alt="">
          <img src="../img/gameSprintPointRight.png" alt="">
@@ -26,7 +26,7 @@ export default class gameScreen {
        <div class="main__word">butterfly</div>
        <div class="main__translate">бабочка</div>
      </div>
-     <div class="card__footer">
+     <div class="card__bottom">
        <button class="false sprint__button">Неверно</button>
        <button class="true sprint__button">Верно</button>
      </div>
