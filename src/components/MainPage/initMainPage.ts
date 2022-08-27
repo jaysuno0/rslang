@@ -15,7 +15,7 @@ import AboutTeamRender from './aboutTeamPage/aboutTeam';
 import FooterRender from './footer/footer';
 import setupButtonListeners, { ButtonActionTypes } from './setupButtonListeners';
 import Textbook from '../Textbook/Textbook';
-import Authorization from '../Authorization/Authorization';
+import { Authorization } from '../Authorization/Authorization';
 import GameSelect from '../Game/gameSelect/gameSelect';
 
 const header = new HeaderRender();

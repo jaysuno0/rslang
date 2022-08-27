@@ -11,6 +11,7 @@
 
 .authorization__wrapper {
   max-width: 50%;
+  min-width: 280px;
   padding: 50px;
 
   display: flex;
@@ -53,16 +54,16 @@
 /*** inputs ***/
 .authorization__input-wrapper {
   width: 100%;
-  padding: 10px 0px;
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
 }
 
 .authorization__input {
   padding: 5px 15px;
-  margin-left: 10px;
-
+  margin-bottom: 15px;
   border-radius: 10px;
   border: none;
   box-shadow: inset 0px 0px 4px #333;

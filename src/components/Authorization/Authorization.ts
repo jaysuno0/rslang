@@ -2,9 +2,10 @@ import './authorization.css';
 import { loginUser } from '../Api/loginApi';
 import {
   IUserLogin,
-  ITokenResp,
+  ILoginResp,
   createUser,
   getNewToken,
+  IUserResp,
 } from '../Api/userApi';
 
 enum AuthorizationTypes {
@@ -29,12 +30,23 @@ interface IAuthorization {
   create: () => void;
   createForm: (type: AuthorizationTypes, btnText: AuthorizationTypes) => void;
   enter: () => void;
-  validate: () => boolean;
   validateName: () => boolean;
   validateEmail: () => boolean;
   validatePassword: () => boolean;
+  validateAll: () => boolean;
   setFormMessage: (text: string) => void;
   setEnterMessage: () => void;
+}
+
+async function newToken(id: string, refreshToken: string) {
+  const token: ILoginResp = await getNewToken(id, refreshToken);
+
+  if (token.isSuccess) {
+    localStorage.setItem('accessToken', token.tokenResp.token);
+    localStorage.setItem('refreshToken', token.tokenResp.refreshToken);
+  }
+
+  return token.isSuccess;
 }
 
 const Authorization: IAuthorization = {
@@ -43,8 +55,8 @@ const Authorization: IAuthorization = {
     <div class="authorization__wrapper">
       <p class="authorization__title">Добро пожаловать :)</p>
       <div class="authorization__btn-wrapper">
-        <button class="authorization__btn authorization__btn_login">Вход</button>
         <button class="authorization__btn authorization__btn_signup">Регистрация</button>
+        <button class="authorization__btn authorization__btn_login">Вход</button>
       </div>
     </div>`,
   templateForm:
@@ -54,15 +66,15 @@ const Authorization: IAuthorization = {
         <p class="authorization__msg"></p> 
         <div class="authorization__input-wrapper authorization__input-wrapper_nick">
           <label for="name" class="authorization__label">Никнейм</label>
-          <input id="name" class="authorization__input" autocomplete="on" type="text">
+          <input id="name" class="authorization__input" autocomplete="on" type="text" required>
         </div>
         <div class="authorization__input-wrapper">
           <label for="email" class="authorization__label">Почта</label>
-          <input id="email" class="authorization__input" type="email" autocomplete="on">
+          <input id="email" class="authorization__input" type="email" autocomplete="on" required>
         </div>
         <div class="authorization__input-wrapper">
           <label for="password" class="authorization__label">Пароль</label>
-          <input id="password" class="authorization__input" type="password" autocomplete="on">
+          <input id="password" class="authorization__input" type="password" autocomplete="on" required>
         </div>
         <button class="authorization__btn authorization__btn_enter btn"></button>
       </form>
@@ -96,20 +108,18 @@ const Authorization: IAuthorization = {
       const nickname = authWrapper.querySelector('.authorization__input-wrapper_nick') as HTMLDivElement;
       nickname.remove();
       (authWrapper.querySelector('#email') as HTMLInputElement).focus();
-    } else {
-      (authWrapper.querySelector('#name') as HTMLInputElement).focus();
-    }
+    } else (authWrapper.querySelector('#name') as HTMLInputElement).focus();
 
     const enterBtn = authWrapper.querySelector('.authorization__btn_enter') as HTMLButtonElement;
     enterBtn.textContent = btnText;
     enterBtn.addEventListener('click', () => {
       this.setFormMessage('');
-      if (this.currentType === AuthorizationTypes.signupType && this.validate()) this.enter();
-      else if (this.validateEmail()) this.enter();
+      if (this.currentType === AuthorizationTypes.signupType && this.validateAll()) this.enter();
+      else if (this.validateEmail() && this.validatePassword()) this.enter();
     });
   },
 
-  validate() {
+  validateAll() {
     let result = false;
 
     if (this.validateName()) {
@@ -163,16 +173,25 @@ const Authorization: IAuthorization = {
     const password = document.querySelector('#password') as HTMLInputElement;
     let result = true;
 
-    if (password.value.includes(' ')) {
-      result = false;
-      this.setFormMessage('данные не должны содержать пробелов');
-    } else if (password.value.length < ValidationLengths.passwordMin) {
-      result = false;
-      this.setFormMessage('слишком лёгкий пароль');
-    } else if (password.value.length > ValidationLengths.passwordMax) {
-      result = false;
-      this.setFormMessage('слишком длинный пароль');
-    }
+    const signUpValidation = () => {
+      if (password.value.includes(' ')) {
+        result = false;
+        this.setFormMessage('данные не должны содержать пробелов');
+      } else if (password.value.length < ValidationLengths.passwordMin) {
+        result = false;
+        this.setFormMessage('слишком лёгкий пароль');
+      } else if (password.value.length > ValidationLengths.passwordMax) {
+        result = false;
+        this.setFormMessage('слишком длинный пароль');
+      }
+    };
+
+    const loginValidation = () => {
+      if (!password.value) result = false;
+    };
+
+    if (this.currentType === AuthorizationTypes.signupType) signUpValidation();
+    else loginValidation();
 
     return result;
   },
@@ -185,29 +204,22 @@ const Authorization: IAuthorization = {
       password,
     };
 
-    const newToken = async (tokenResp: ITokenResp, name: string) => {
-      const token = await getNewToken(tokenResp.userId, tokenResp.refreshToken);
-      if (!token.isSuccess) this.setFormMessage(token.errMsg);
+    const login = async () => {
+      const loginResponse = await loginUser(user);
+      if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
       else {
-        localStorage.setItem('id', tokenResp.userId);
-        localStorage.setItem('name', tokenResp.name as string);
-        localStorage.setItem('token', token.tokenResp.token);
-        if (name) localStorage.setItem('name', name);
+        newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
+        this.setEnterMessage();
       }
     };
 
-    const login = async () => {
-      const loginResponse = await loginUser(user);
-      if (loginResponse.isSuccess) {
-        newToken(loginResponse.tokenResp, user.name as string);
-        this.setEnterMessage();
-      } else this.setFormMessage(loginResponse.errMsg);
-    };
-
     const newUser = async () => {
-      const userResponse = await createUser(user);
-      if (userResponse.isSuccess) login();
-      else this.setFormMessage(userResponse.errMsg);
+      const userResponse: IUserResp = await createUser(user);
+      if (userResponse.isSuccess) {
+        localStorage.setItem('id', userResponse.user.id);
+        if (userResponse.user.name) localStorage.setItem('name', userResponse.user.name);
+        login();
+      } else this.setFormMessage(userResponse.errMsg);
     };
 
     if (this.currentType === AuthorizationTypes.signupType) {
@@ -233,4 +245,16 @@ const Authorization: IAuthorization = {
   },
 };
 
-export default Authorization;
+async function isUserLogged() {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const id = localStorage.getItem('id');
+
+  if (refreshToken && id) {
+    const tokenResponse = await newToken(id, refreshToken);
+    return tokenResponse;
+  }
+
+  return false;
+}
+
+export { Authorization, isUserLogged };
