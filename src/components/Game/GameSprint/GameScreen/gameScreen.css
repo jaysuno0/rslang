@@ -50,11 +50,6 @@
    border-bottom: 5px solid #885024;
 }
 
-.main__timer {
-   font-size: 1.5rem;
-   font-weight: 800;
-}
-
 .main__word {
    font-size: 2rem;
    font-weight: 800;
@@ -96,4 +91,37 @@
 .sprint__button:hover {
    border: 0;
    color: #fff;
+}
+
+.sprint__timer {
+   padding: 0.3rem;
+   text-align: center;
+   z-index: 4;
+   font-size: 1.5rem;
+   font-weight: 800;
+   color: rgba(204,0,0,1);
+   margin-bottom: -2.2rem;
+}
+
+.timer__animation {
+   height: 0.5rem;
+   border-radius: 10px;
+   background-color: rgba(204,0,0,1);
+   
+   animation-name: timer;
+   animation-duration: 60s;
+   animation-timing-function: linear;
+   animation-iteration-count: 1;
+   animation-direction: alternate;
+}
+
+@keyframes timer {
+   0% {
+      width: 100%;
+   }
+
+   100% {
+      width: 0%;
+   }
+
 }

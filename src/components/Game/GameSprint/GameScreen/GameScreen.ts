@@ -5,7 +5,8 @@ export default class gameScreen {
  
    constructor() {
      this.template = `
-     <div class="main__timer">00:59</div>
+     <div class="sprint__timer" id="timer">60</div>
+     <div class="timer__animation"></div>
      <div class="sprint__score">
      <div class="score__tittle">Баллов за раунд:</div>
      <div class="score__point">0</div>
