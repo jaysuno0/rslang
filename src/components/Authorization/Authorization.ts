@@ -24,8 +24,9 @@ enum ValidationLengths {
 
 interface IAuthorization {
   currentType: AuthorizationTypes;
-  template: string;
+  templateIn: string;
   templateForm: string;
+  templateOut: string;
 
   create: () => void;
   createForm: (type: AuthorizationTypes, btnText: AuthorizationTypes) => void;
@@ -35,13 +36,15 @@ interface IAuthorization {
   validatePassword: () => boolean;
   validateAll: () => boolean;
   setFormMessage: (text: string) => void;
-  setEnterMessage: () => void;
+  setScreenMessage: (text: string) => void;
+  logOut: () => void;
 }
 
 async function newToken(id: string, refreshToken: string) {
   const token: ILoginResp = await getNewToken(id, refreshToken);
 
   if (token.isSuccess) {
+    localStorage.setItem('id', id);
     localStorage.setItem('accessToken', token.tokenResp.token);
     localStorage.setItem('refreshToken', token.tokenResp.refreshToken);
   }
@@ -49,9 +52,20 @@ async function newToken(id: string, refreshToken: string) {
   return token.isSuccess;
 }
 
+async function isUserLogged() {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const id = localStorage.getItem('id');
+
+  if (refreshToken && id) {
+    const tokenResponse = await newToken(id, refreshToken);
+    return tokenResponse;
+  }
+  return false;
+}
+
 const Authorization: IAuthorization = {
   currentType: AuthorizationTypes.loginType,
-  template: `
+  templateIn: `
     <div class="authorization__wrapper">
       <p class="authorization__title">Добро пожаловать :)</p>
       <div class="authorization__btn-wrapper">
@@ -59,6 +73,7 @@ const Authorization: IAuthorization = {
         <button class="authorization__btn authorization__btn_login">Вход</button>
       </div>
     </div>`,
+
   templateForm:
     `<div class="authorization__wrapper">
       <form class="authorization__form">
@@ -80,19 +95,35 @@ const Authorization: IAuthorization = {
       </form>
     </div>`,
 
-  create() {
+  templateOut: `
+    <div class="authorization__wrapper">
+      <p class="authorization__title">Вы уже в системе :)</p>
+      <div class="authorization__btn-wrapper">
+        <button class="authorization__btn authorization__btn_logout">Выйти</button>
+      </div>
+    </div>`,
+
+  async create() {
     const authorization = document.createElement('div');
     const screen = document.querySelector('.screen') as HTMLDivElement;
+    const isAuthorized = await isUserLogged();
 
     authorization.classList.add('authorization');
-    authorization.innerHTML = this.template;
     screen.innerHTML = '';
-    screen.append(authorization);
 
-    const loginBtn = authorization.querySelector('.authorization__btn_login') as HTMLButtonElement;
-    const signUp = authorization.querySelector('.authorization__btn_signup') as HTMLButtonElement;
-    loginBtn.addEventListener('click', () => this.createForm(AuthorizationTypes.loginType, AuthorizationTypes.loginBtnText));
-    signUp.addEventListener('click', () => this.createForm(AuthorizationTypes.signupType, AuthorizationTypes.signupBtnText));
+    if (isAuthorized) {
+      authorization.innerHTML = this.templateOut;
+      const logoutBtn = authorization.querySelector('.authorization__btn_logout') as HTMLButtonElement;
+      logoutBtn.addEventListener('click', () => this.logOut());
+    } else {
+      authorization.innerHTML = this.templateIn;
+      const loginBtn = authorization.querySelector('.authorization__btn_login') as HTMLButtonElement;
+      const signUp = authorization.querySelector('.authorization__btn_signup') as HTMLButtonElement;
+      loginBtn.addEventListener('click', () => this.createForm(AuthorizationTypes.loginType, AuthorizationTypes.loginBtnText));
+      signUp.addEventListener('click', () => this.createForm(AuthorizationTypes.signupType, AuthorizationTypes.signupBtnText));
+    }
+
+    screen.append(authorization);
   },
 
   createForm(type, btnText) {
@@ -209,14 +240,13 @@ const Authorization: IAuthorization = {
       if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
       else {
         newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
-        this.setEnterMessage();
+        this.setScreenMessage('Вы успешно вошли, приятного обучения :)');
       }
     };
 
     const newUser = async () => {
       const userResponse: IUserResp = await createUser(user);
       if (userResponse.isSuccess) {
-        localStorage.setItem('id', userResponse.user.id);
         if (userResponse.user.name) localStorage.setItem('name', userResponse.user.name);
         login();
       } else this.setFormMessage(userResponse.errMsg);
@@ -234,27 +264,20 @@ const Authorization: IAuthorization = {
     messageElement.textContent = text;
   },
 
-  setEnterMessage() {
+  setScreenMessage(text) {
     const message = document.createElement('p');
     const screen = document.querySelector('.screen') as HTMLDivElement;
 
     message.classList.add('authorization__enter-msg');
-    message.innerHTML = 'Вы успешно вошли! <br> Приятного обучения :)';
+    message.innerHTML = text;
     screen.innerHTML = '';
     screen.append(message);
   },
+
+  logOut() {
+    localStorage.clear();
+    this.setScreenMessage('Вы вышли из своего аккаунта :)');
+  },
 };
-
-async function isUserLogged() {
-  const refreshToken = localStorage.getItem('refreshToken');
-  const id = localStorage.getItem('id');
-
-  if (refreshToken && id) {
-    const tokenResponse = await newToken(id, refreshToken);
-    return tokenResponse;
-  }
-
-  return false;
-}
 
 export { Authorization, isUserLogged };
