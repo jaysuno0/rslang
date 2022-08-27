@@ -1,4 +1,5 @@
 import './authorization.css';
+import state from '../../state';
 import { loginUser } from '../Api/loginApi';
 import {
   IUserLogin,
@@ -47,7 +48,10 @@ async function newToken(id: string, refreshToken: string) {
     localStorage.setItem('id', id);
     localStorage.setItem('accessToken', token.tokenResp.token);
     localStorage.setItem('refreshToken', token.tokenResp.refreshToken);
-  }
+
+    state.accessToken = token.tokenResp.token;
+    state.isUserLogged = true;
+  } else state.isUserLogged = false;
 
   return token.isSuccess;
 }
@@ -60,6 +64,7 @@ async function isUserLogged() {
     const tokenResponse = await newToken(id, refreshToken);
     return tokenResponse;
   }
+
   return false;
 }
 
@@ -103,10 +108,10 @@ const Authorization: IAuthorization = {
       </div>
     </div>`,
 
-  async create() {
+  create() {
     const authorization = document.createElement('div');
     const screen = document.querySelector('.screen') as HTMLDivElement;
-    const isAuthorized = await isUserLogged();
+    const isAuthorized = state.isUserLogged;
 
     authorization.classList.add('authorization');
     screen.innerHTML = '';
@@ -240,16 +245,15 @@ const Authorization: IAuthorization = {
       if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
       else {
         newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
+        state.isUserLogged = true;
         this.setScreenMessage('Вы успешно вошли, приятного обучения :)');
       }
     };
 
     const newUser = async () => {
       const userResponse: IUserResp = await createUser(user);
-      if (userResponse.isSuccess) {
-        if (userResponse.user.name) localStorage.setItem('name', userResponse.user.name);
-        login();
-      } else this.setFormMessage(userResponse.errMsg);
+      if (userResponse.isSuccess) login();
+      else this.setFormMessage(userResponse.errMsg);
     };
 
     if (this.currentType === AuthorizationTypes.signupType) {
@@ -276,6 +280,7 @@ const Authorization: IAuthorization = {
 
   logOut() {
     localStorage.clear();
+    state.isUserLogged = false;
     this.setScreenMessage('Вы вышли из своего аккаунта :)');
   },
 };
