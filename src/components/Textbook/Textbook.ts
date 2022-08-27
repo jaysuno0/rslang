@@ -10,7 +10,7 @@ interface ITextbook {
   currentPage: number;
   templateControls: string;
 
-  create: () => HTMLDivElement;
+  create: () => void;
   createControls: () => HTMLDivElement;
   getPage: (group: number, pageNumber: number) => void;
   nextPage: () => void;
@@ -60,8 +60,6 @@ const Textbook: ITextbook = {
     this.getPage(this.currentGroup, this.currentPage);
     screen.innerHTML = '';
     screen.append(textbookWrapper);
-
-    return textbookWrapper;
   },
 
   createControls() {
