@@ -1,8 +1,6 @@
-import BASE_URL from './urlApi';
+import { LOGIN_URL } from './urlApi';
 import { IUserLogin, ILoginResp, ITokenResp } from './userApi';
-
-const LOGIN_URL = `${BASE_URL}/signin`;
-const OK = 200;
+import StatusCode from './statusCode';
 
 export const loginUser = async (user: IUserLogin): Promise<ILoginResp> => {
   const resp = await fetch(LOGIN_URL, {
@@ -24,7 +22,7 @@ export const loginUser = async (user: IUserLogin): Promise<ILoginResp> => {
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as ITokenResp;
 
     loginResp.isSuccess = true;

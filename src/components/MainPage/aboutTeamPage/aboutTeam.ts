@@ -2,7 +2,7 @@ import '../img/team1.png';
 import '../img/team2.png';
 import '../img/team3.jpg';
 
-export default class aboutTeamRender {
+export default class AboutTeamRender {
   template: string;
 
   constructor() {

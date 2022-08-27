@@ -1,7 +1,5 @@
-import BASE_URL from './urlApi';
-
-export const USERS_URL = `${BASE_URL}/users`;
-const OK = 200;
+import { USERS_URL } from './urlApi';
+import StatusCode from './statusCode';
 
 export interface IUserLogin {
   name?: string;
@@ -53,7 +51,7 @@ export const createUser = async (newUser: IUserLogin): Promise<IUserResp> => {
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as IUser;
 
     userResp.isSuccess = true;
@@ -85,7 +83,7 @@ export const getNewToken = async (userId: string, refreshToken: string): Promise
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as ITokenResp;
 
     loginResp.isSuccess = true;
@@ -115,7 +113,7 @@ export const getUser = async (userId: string, token: string): Promise<IUserResp>
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as IUser;
 
     userResp.isSuccess = true;

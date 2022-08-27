@@ -2,10 +2,17 @@
    display: grid;
    grid-template-columns: 10rem 1fr;
    min-height: calc(100vh - 7rem);
+   background-color: #f9e084;
+}
+
+.nav-wrapper {
+   position: sticky;
+   max-height: 100vh;
+   top: 50px;
+   left: 0px;
 }
 
 .nav{
-   position: relative;
    z-index: 1;
    width: 10rem;
    min-height: 100%;

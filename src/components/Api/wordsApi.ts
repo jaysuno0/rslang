@@ -1,7 +1,6 @@
-import BASE_URL from './urlApi';
-
-const WORDS_URL = `${BASE_URL}/words`;
-const OK = 200;
+import { WORDS_URL } from './urlApi';
+import StatusCode from './statusCode';
+import { IWordProps } from './userWordsApi';
 
 export interface IWord {
   id: string;
@@ -18,11 +17,13 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  userWord?: IWordProps;
 }
 
 export interface IWordsResp {
   isSuccess: boolean;
   words: Array<IWord>;
+  totalCount?: number;
   errMsg: string;
 }
 
@@ -46,7 +47,7 @@ export const getWords = async (group: number, page: number): Promise<IWordsResp>
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as Array<IWord>;
 
     wordsResp.isSuccess = true;
@@ -87,7 +88,7 @@ export const getWord = async (wordId: string): Promise<IWordResp> => {
     errMsg: '',
   };
 
-  if (resp.status === OK) {
+  if (resp.status === StatusCode.OK) {
     const data = (await resp.json()) as IWord;
 
     wordResp.isSuccess = true;
