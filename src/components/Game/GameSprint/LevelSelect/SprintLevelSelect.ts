@@ -28,7 +28,7 @@ export default class LevelSelect {
            <option value="6">6</option>
          </select>
        </div>
-       <button type="submit" class="start-button form__button">Let's go</button>
+       <button  class="start-button form__button">Let's go</button>
      </form>
    </div>
           `;

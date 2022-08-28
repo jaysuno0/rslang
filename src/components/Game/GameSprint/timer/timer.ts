@@ -7,6 +7,7 @@ function timer() {
          timer.innerHTML = (SECONDS).toString();
          if (SECONDS === 0) {
             clearInterval(timerId)
+            console.log('end callback');
          }
       }, 1000)
    }

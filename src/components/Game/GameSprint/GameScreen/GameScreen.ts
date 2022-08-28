@@ -24,12 +24,12 @@ export default class gameScreen {
        </div>
      </div>
      <div class="card__main">
-       <div class="main__word">butterfly</div>
-       <div class="main__translate">бабочка</div>
+       <div class="main__word" id="cardWord"></div>
+       <div class="main__translate" id="cardTranslate"></div>
      </div>
      <div class="card__bottom">
-       <button class="false sprint__button">Неверно</button>
-       <button class="true sprint__button">Верно</button>
+       <button class="false sprint__button" id="no">Неверно</button>
+       <button class="true sprint__button" id="yes">Верно</button>
      </div>
    </div>
           `;
@@ -50,6 +50,15 @@ export default class gameScreen {
        screen.innerHTML = ' ';
     }
     this.render();
+   }
+
+   fill(word:string, translate: string) {
+    const cardWord = document.getElementById('cardWord')
+    const cardTranslate = document.getElementById('cardTranslate')
+    if( cardWord && cardTranslate) {
+      cardWord.innerHTML = word;
+      cardTranslate.innerHTML = translate;
+    }
    }
  }
  
