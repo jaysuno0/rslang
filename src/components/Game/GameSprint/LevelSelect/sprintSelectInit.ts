@@ -4,8 +4,13 @@ import GameScreen from '../GameScreen/GameScreen';
 
 const gameScreen = new GameScreen(); 
 const MAX_ANSWER = 19;
+const RIGHT_ANSWER_SCORE = 10;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
 const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
+
+let totalScore = 0;
+let scoreBonus = 1;
+
 
 function startGame() {
    const form = document.querySelector<HTMLSelectElement>('.select__item');
@@ -26,7 +31,6 @@ function startGame() {
       })
       
       const sortGameWords = gameWordsState.sort(() => Math.random() - 0.5);
-      console.log(sortGameWords.map((x) => x.isCorrect));
       gameScreen.create();
       gameScreen.fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].translateToCompare);
       timer();
@@ -45,6 +49,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
          gameScreen.fill(words[answerCount - 1].word, words[answerCount - 1].translateToCompare);
          answerCount -= 1;
       } else {
+         checkRightAnswer(words)
          console.log('end callback');
       }
    })
@@ -55,6 +60,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
          gameScreen.fill(words[answerCount - 1].word, words[answerCount - 1].wordTranslate);
          answerCount -= 1;
       } else {
+         checkWrongAnswer(words)
          console.log('end callback');
       }
    })
@@ -66,7 +72,8 @@ function checkRightAnswer(words: IWord[],) {
    const card = document.getElementById('screen__card');
    const cardWord = document.getElementById('cardWord')?.innerHTML;
    const cardTranslate = document.getElementById('cardTranslate')?.innerHTML;
-   const cardRightTranslate = words.find(word => word.word === cardWord)?.wordTranslate
+   const cardRightTranslate = words.find(word => word.word === cardWord)?.wordTranslate;
+   
    if (!card) { return }
    if(cardTranslate === cardRightTranslate) {
       rightAnswer(card)
@@ -90,6 +97,12 @@ function checkWrongAnswer(words: IWord[],) {
 }
 
 function rightAnswer(card: HTMLElement) {
+   const score = document.getElementById('score__point'); 
+   if(!score) {return}
+   
+   totalScore +=  (RIGHT_ANSWER_SCORE * scoreBonus)
+   score.innerHTML = `${totalScore}`;
+
    card.classList.add(RIGHT_ANSWER_CLASS_NAME);
    const defaultStyle = setTimeout(() => removeAnswerClassList(card, RIGHT_ANSWER_CLASS_NAME), 200)
 }
