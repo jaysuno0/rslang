@@ -21,6 +21,14 @@
    align-items: center;
 }
 
+.rightAnswer {
+   border-color: #5eac24;
+}
+
+.wrongAnswer {
+   border-color: rgba(204,0,0,1);
+}
+
 .card__top {
    padding: 1rem;
    width: 100%;

@@ -4,6 +4,8 @@ import GameScreen from '../GameScreen/GameScreen';
 
 const gameScreen = new GameScreen(); 
 const MAX_ANSWER = 19;
+const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
+const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
 
 function startGame() {
    const form = document.querySelector<HTMLSelectElement>('.select__item');
@@ -13,11 +15,20 @@ function startGame() {
    startButton.addEventListener('click', async (e) => {  
       e.preventDefault()
 
-      const gameWords = await (await getWords(+form.value -1,randomPage )).words
-      const sortGameWords = gameWords.sort(() => Math.random() - 0.5);
-      console.log(gameWords);
+      const gameWords = await (await getWords(+form.value -1,randomPage )).words;
+
+      const gameWordsState = gameWords.map((word) => {
+         const isCorrect = Math.round(Math.random());
+         const translateToCompare = isCorrect 
+         ? word.wordTranslate 
+         : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
+         return { ...word, isCorrect, translateToCompare }
+      })
+      
+      const sortGameWords = gameWordsState.sort(() => Math.random() - 0.5);
+      console.log(sortGameWords.map((x) => x.isCorrect));
       gameScreen.create();
-      gameScreen.fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].wordTranslate);
+      gameScreen.fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].translateToCompare);
       timer();
       cardButtonListeners(sortGameWords, MAX_ANSWER)
    })
@@ -30,7 +41,8 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
    const noAnswerButton = document.getElementById('no');
    yesAnswerButton?.addEventListener('click', () => {
       if (answerCount > 0) {
-         gameScreen.fill(words[answerCount - 1].word, words[answerCount - 1].wordTranslate);
+         checkRightAnswer(words)
+         gameScreen.fill(words[answerCount - 1].word, words[answerCount - 1].translateToCompare);
          answerCount -= 1;
       } else {
          console.log('end callback');
@@ -39,10 +51,54 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
 
    noAnswerButton?.addEventListener('click', () => {
       if (answerCount > 0) {
+         checkWrongAnswer(words)
          gameScreen.fill(words[answerCount - 1].word, words[answerCount - 1].wordTranslate);
          answerCount -= 1;
       } else {
          console.log('end callback');
       }
    })
+}
+
+
+
+function checkRightAnswer(words: IWord[],) {
+   const card = document.getElementById('screen__card');
+   const cardWord = document.getElementById('cardWord')?.innerHTML;
+   const cardTranslate = document.getElementById('cardTranslate')?.innerHTML;
+   const cardRightTranslate = words.find(word => word.word === cardWord)?.wordTranslate
+   if (!card) { return }
+   if(cardTranslate === cardRightTranslate) {
+      rightAnswer(card)
+   } else {
+      wrongAnswer(card)
+   }  
+}
+
+function checkWrongAnswer(words: IWord[],) {
+   const card = document.getElementById('screen__card');
+   const cardWord = document.getElementById('cardWord')?.innerHTML;
+   const cardTranslate = document.getElementById('cardTranslate')?.innerHTML;
+   const cardRightTranslate = words.find(word => word.word === cardWord)?.wordTranslate
+
+   if (!card) { return }
+   if(cardTranslate !== cardRightTranslate) {
+      rightAnswer(card)
+   } else {
+      wrongAnswer(card)
+   }  
+}
+
+function rightAnswer(card: HTMLElement) {
+   card.classList.add(RIGHT_ANSWER_CLASS_NAME);
+   const defaultStyle = setTimeout(() => removeAnswerClassList(card, RIGHT_ANSWER_CLASS_NAME), 200)
+}
+
+function wrongAnswer(card: HTMLElement) {
+   card.classList.add(WRONG_ANSWER_CLASS_NAME);
+   const defaultStyle = setTimeout(() => removeAnswerClassList(card, WRONG_ANSWER_CLASS_NAME), 200)
+}
+
+function removeAnswerClassList(card: HTMLElement, className: string) {
+   card.classList.remove(`${className}`);
 }

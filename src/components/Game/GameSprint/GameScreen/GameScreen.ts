@@ -11,7 +11,7 @@ export default class gameScreen {
      <div class="score__tittle">Баллов за раунд:</div>
      <div class="score__point">0</div>
    </div>
-   <div class="screen__card">
+   <div class="screen__card" id="screen__card">
      <div class="card__top">
        <div class="header__point">
          <img src="../img/gameSprintPointRight.png" alt="">
