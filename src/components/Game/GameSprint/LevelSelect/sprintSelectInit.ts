@@ -1,8 +1,9 @@
 import { getWords, IWord } from '../../../Api/wordsApi';
-import timer from '../timer/timer';
 import GameScreen from '../GameScreen/GameScreen';
+import ResultScreen from '../GameScreen/ResultScreen';
 
 const gameScreen = new GameScreen();
+const resultScreen = new ResultScreen();
 const MAX_ANSWER = 19;
 const RIGHT_ANSWER_SCORE = 10;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
@@ -10,6 +11,27 @@ const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
 
 let totalScore = 0;
 const scoreBonus = 1;
+
+function endGame() {
+  resultScreen.create();
+  totalScore = 0;
+  console.log('end callback');
+}
+
+function timer() {
+  let SECONDS = 60;
+  const timerContainer = document.getElementById('timer');
+  if (timerContainer) {
+    const timerId = setInterval(() => {
+      SECONDS -= 1;
+      timerContainer.innerHTML = (SECONDS).toString();
+      if (SECONDS === 0) {
+        clearInterval(timerId);
+        endGame();
+      }
+    }, 1000);
+  }
+}
 
 function removeAnswerClassList(card: HTMLElement, className: string) {
   card.classList.remove(`${className}`);
@@ -79,7 +101,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
       countAnswer -= 1;
     } else {
       checkRightAnswer(words);
-      console.log('end callback');
+      endGame();
     }
   });
 
@@ -90,7 +112,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
       countAnswer -= 1;
     } else {
       checkWrongAnswer(words);
-      console.log('end callback');
+      endGame();
     }
   });
 }
