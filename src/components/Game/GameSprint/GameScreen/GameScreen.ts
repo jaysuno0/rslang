@@ -1,11 +1,11 @@
 import '../../img/gameSprintPointRight.png';
-import './GameScreen/gameScreen.css';
+import './gameScreen.css';
 
-export default class gameScreen {
-   template: string;
- 
-   constructor() {
-     this.template = `
+export default class GameScreen {
+  template: string;
+
+  constructor() {
+    this.template = `
      <div class="main__timer">00:59</div>
      <div class="sprint__score">
      <div class="score__tittle">Баллов за раунд:</div>
@@ -33,23 +33,22 @@ export default class gameScreen {
      </div>
    </div>
           `;
-   }
- 
-   render() {
-     const screen = document.querySelector('.screen');
-     const gameScreen = document.createElement('div');
-     gameScreen.classList.add('gameScreen');
-     gameScreen.id = ('gameScreen');
-     gameScreen.innerHTML = this.template;
-     screen?.append(gameScreen);
-   }
- 
-   create() {
+  }
+
+  render() {
+    const screen = document.querySelector('.screen');
+    const gameScreen = document.createElement('div');
+    gameScreen.classList.add('gameScreen');
+    gameScreen.id = ('gameScreen');
+    gameScreen.innerHTML = this.template;
+    screen?.append(gameScreen);
+  }
+
+  create() {
     const screen = document.querySelector('.screen');
     if (screen) {
-       screen.innerHTML = ' ';
+      screen.innerHTML = ' ';
     }
     this.render();
-   }
- }
- 
+  }
+}
