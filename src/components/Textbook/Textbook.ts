@@ -5,10 +5,13 @@ import './img/previous-page.svg';
 import Word from './Word/Word';
 import { getWords } from '../Api/wordsApi';
 
+type LevelColors = '#ffeacb' | '#f9ca9a' | '#f6b16a' | '#f4a04a' | '#ff826b' | '#ff6549' | '#ff3a16';
+
 interface ITextbook {
   currentGroup: number;
   currentPage: number;
   templateControls: string;
+  levelsColors: LevelColors[];
 
   create: () => void;
   createControls: () => HTMLDivElement;
@@ -20,6 +23,7 @@ interface ITextbook {
 const Textbook: ITextbook = {
   currentGroup: 0,
   currentPage: 0,
+  levelsColors: ['#ffeacb', '#f9ca9a', '#f6b16a', '#f4a04a', '#ff826b', '#ff6549', '#ff3a16'],
 
   templateControls: `
     <div class="textbook__controls-wrapper">
