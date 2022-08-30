@@ -28,7 +28,6 @@ const gameSelect = new GameSelect();
 header.render();
 nav.render();
 Screen.create();
-homePage.render();
 footer.render();
 
 setupButtonListeners({
@@ -62,3 +61,26 @@ setupButtonListeners({
     state.setScreen(ButtonActionTypes.Login);
   },
 });
+
+function setScreen(screen?: ButtonActionTypes) {
+  switch (screen) {
+    case ButtonActionTypes.Login:
+      Authorization.create();
+      break;
+    case ButtonActionTypes.Textbook:
+      Textbook.create();
+      break;
+    case ButtonActionTypes.Game:
+      gameSelect.create();
+      break;
+    case ButtonActionTypes.Team:
+      aboutTeam.create();
+      break;
+    case ButtonActionTypes.Stats:
+      alert('load stats page from localStorage');
+      break;
+    default: homePage.create();
+  }
+}
+
+export default setScreen;
