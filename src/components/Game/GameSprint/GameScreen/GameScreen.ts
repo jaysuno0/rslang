@@ -1,10 +1,10 @@
 import '../../img/gameSprintPointRight.png';
 
-export default class gameScreen {
-   template: string;
- 
-   constructor() {
-     this.template = `
+export default class GameScreen {
+  template: string;
+
+  constructor() {
+    this.template = `
      <div class="sprint__timer" id="timer">60</div>
      <div class="timer__animation"></div>
      <div class="sprint__score">
@@ -33,32 +33,31 @@ export default class gameScreen {
      </div>
    </div>
           `;
-   }
- 
-   render() {
-     const screen = document.querySelector('.screen');
-     const gameScreen = document.createElement('div');
-     gameScreen.classList.add('gameScreen');
-     gameScreen.id = ('gameScreen');
-     gameScreen.innerHTML = this.template;
-     screen?.append(gameScreen);
-   }
- 
-   create() {
+  }
+
+  render() {
+    const screen = document.querySelector('.screen');
+    const gameScreenContainer = document.createElement('div');
+    gameScreenContainer.classList.add('gameScreen');
+    gameScreenContainer.id = ('gameScreen');
+    gameScreenContainer.innerHTML = this.template;
+    screen?.append(gameScreenContainer);
+  }
+
+  create() {
     const screen = document.querySelector('.screen');
     if (screen) {
-       screen.innerHTML = ' ';
+      screen.innerHTML = ' ';
     }
     this.render();
-   }
+  }
 
-   fill(word:string, translate: string) {
-    const cardWord = document.getElementById('cardWord')
-    const cardTranslate = document.getElementById('cardTranslate')
-    if( cardWord && cardTranslate) {
+  fill(word:string, translate: string) {
+    const cardWord = document.getElementById('cardWord');
+    const cardTranslate = document.getElementById('cardTranslate');
+    if (cardWord && cardTranslate) {
       cardWord.innerHTML = word;
       cardTranslate.innerHTML = translate;
     }
-   }
- }
- 
+  }
+}

@@ -1,2 +1,2 @@
-import './LevelSelect/sprintLevelSelect.css'
+import './LevelSelect/sprintLevelSelect.css';
 import './GameScreen/gameScreen.css';
