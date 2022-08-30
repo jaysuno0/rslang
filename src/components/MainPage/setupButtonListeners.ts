@@ -30,16 +30,5 @@ function setupButtonListeners(actions: ButtonActions) {
       actions[headerElem.id as ButtonActionTypes]();
     }
   });
-
-  const HOME_PAGE_ITEM_CLASS = 'homePage__button';
-  const DIV_HOME_PAGE_ID = 'homePage';
-  const homePage = document.getElementById(DIV_HOME_PAGE_ID);
-  homePage?.addEventListener('click', (e) => {
-    const eTarget = e.target as Element;
-    const homePageElem = (eTarget.closest(`.${HOME_PAGE_ITEM_CLASS}`));
-    if (homePageElem?.id) {
-      actions[homePageElem.id as ButtonActionTypes]();
-    }
-  });
 }
 export default setupButtonListeners;
