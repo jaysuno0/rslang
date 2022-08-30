@@ -1,4 +1,5 @@
 import '../../img/gameSprintPointRight.png';
+import './GameScreen/gameScreen.css';
 
 export default class gameScreen {
    template: string;
