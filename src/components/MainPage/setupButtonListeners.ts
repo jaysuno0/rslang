@@ -1,6 +1,6 @@
 export enum ButtonActionTypes {
   Home = 'home',
-  Book = 'book',
+  Textbook = 'book',
   Game = 'game',
   Stats = 'stats',
   Team = 'team',

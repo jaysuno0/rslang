@@ -16,6 +16,7 @@ import setupButtonListeners, { ButtonActionTypes } from './setupButtonListeners'
 import Textbook from '../Textbook/Textbook';
 import { Authorization } from '../Authorization/Authorization';
 import GameSelect from '../Game/gameSelect/gameSelect';
+import state from '../../state';
 
 const header = new HeaderRender();
 const nav = new NavRender();
@@ -31,10 +32,33 @@ homePage.render();
 footer.render();
 
 setupButtonListeners({
-  [ButtonActionTypes.Home]: () => homePage.create(),
-  [ButtonActionTypes.Book]: () => Textbook.create(),
-  [ButtonActionTypes.Game]: () => gameSelect.create(),
-  [ButtonActionTypes.Stats]: () => { console.log('Stats Callback'); },
-  [ButtonActionTypes.Team]: () => aboutTeam.create(),
-  [ButtonActionTypes.Login]: () => Authorization.create(),
+  [ButtonActionTypes.Home]: () => {
+    homePage.create();
+    state.setScreen(ButtonActionTypes.Home);
+  },
+
+  [ButtonActionTypes.Textbook]: () => {
+    Textbook.create();
+    state.setScreen(ButtonActionTypes.Textbook);
+  },
+
+  [ButtonActionTypes.Game]: () => {
+    gameSelect.create();
+    state.setScreen(ButtonActionTypes.Game);
+  },
+
+  [ButtonActionTypes.Stats]: () => {
+    console.log('Stats Callback');
+    state.setScreen(ButtonActionTypes.Stats);
+  },
+
+  [ButtonActionTypes.Team]: () => {
+    aboutTeam.create();
+    state.setScreen(ButtonActionTypes.Team);
+  },
+
+  [ButtonActionTypes.Login]: () => {
+    Authorization.create();
+    state.setScreen(ButtonActionTypes.Login);
+  },
 });
