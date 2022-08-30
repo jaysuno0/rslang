@@ -3,6 +3,7 @@ import '../img/homePageBack2.png';
 import '../img/homePageBack3.svg';
 import '../img/homePageStats.png';
 import setupButtonListeners, { ButtonActionTypes } from '../setupButtonListeners';
+import { Authorization } from '../../Authorization/Authorization';
 
 export default class HomeScreenRender {
   template: string;
@@ -62,7 +63,7 @@ export default class HomeScreenRender {
       [ButtonActionTypes.Game]: () => {},
       [ButtonActionTypes.Stats]: () => {},
       [ButtonActionTypes.Team]: () => {},
-      [ButtonActionTypes.Login]: () => { console.log('Login Callback'); },
+      [ButtonActionTypes.Login]: () => Authorization.create(),
     });
   }
 }

@@ -59,6 +59,15 @@ function checkWrongAnswer(words: IWord[]) {
   }
 }
 
+function fill(word:string, translate: string) {
+  const cardWord = document.getElementById('cardWord');
+  const cardTranslate = document.getElementById('cardTranslate');
+  if (cardWord && cardTranslate) {
+    cardWord.innerHTML = word;
+    cardTranslate.innerHTML = translate;
+  }
+}
+
 function cardButtonListeners(words: IWord[], answerCount: number) {
   let countAnswer = answerCount;
   const yesAnswerButton = document.getElementById('yes');
@@ -66,7 +75,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
   yesAnswerButton?.addEventListener('click', () => {
     if (countAnswer > 0) {
       checkRightAnswer(words);
-      gameScreen.fill(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
+      fill(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
       countAnswer -= 1;
     } else {
       checkRightAnswer(words);
@@ -77,7 +86,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
   noAnswerButton?.addEventListener('click', () => {
     if (countAnswer > 0) {
       checkWrongAnswer(words);
-      gameScreen.fill(words[countAnswer - 1].word, words[countAnswer - 1].wordTranslate);
+      fill(words[countAnswer - 1].word, words[countAnswer - 1].wordTranslate);
       countAnswer -= 1;
     } else {
       checkWrongAnswer(words);
@@ -106,7 +115,7 @@ function startGame() {
 
     const sortGameWords = gameWordsState.sort(() => Math.random() - 0.5);
     gameScreen.create();
-    gameScreen.fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].translateToCompare);
+    fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].translateToCompare);
     timer();
     cardButtonListeners(sortGameWords, MAX_ANSWER);
   });

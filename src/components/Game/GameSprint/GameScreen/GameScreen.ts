@@ -51,13 +51,4 @@ export default class GameScreen {
     }
     this.render();
   }
-
-  fill(word:string, translate: string) {
-    const cardWord = document.getElementById('cardWord');
-    const cardTranslate = document.getElementById('cardTranslate');
-    if (cardWord && cardTranslate) {
-      cardWord.innerHTML = word;
-      cardTranslate.innerHTML = translate;
-    }
-  }
 }
