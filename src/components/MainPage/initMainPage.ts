@@ -1,6 +1,5 @@
 import './header/header.css';
 import './navigation/navigation.css';
-import './screen/screen.css';
 import './homePage/homePage.css';
 import './aboutTeamPage/aboutTeam.css';
 import './footer/footer.css';
@@ -9,7 +8,7 @@ import './hoverStyle.css';
 import '../Game/gameSelect/gameSelect.css';
 import HeaderRender from './header/header';
 import NavRender from './navigation/navigation';
-import screenRender from './screen/screen';
+import Screen from '../Screen/Screen';
 import HomePageRender from './homePage/homePage';
 import AboutTeamRender from './aboutTeamPage/aboutTeam';
 import FooterRender from './footer/footer';
@@ -27,7 +26,7 @@ const gameSelect = new GameSelect();
 
 header.render();
 nav.render();
-screenRender();
+Screen.create();
 homePage.render();
 footer.render();
 
