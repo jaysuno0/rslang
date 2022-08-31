@@ -63,6 +63,9 @@
 .card__btn_hard {
   top: 70px;
 }
+.card__btn_hard.hidden{
+  display: none;
+}
 
 /**** image ****/
 .card__img {
