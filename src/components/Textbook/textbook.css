@@ -16,11 +16,12 @@
 
 
 /*** textbook controls ***/
-.textbook__controls {
+.textbook__controls-container {
   position: sticky;
   top: 0;
   left: 0;
   z-index: 3;
+  font-size: 30px;
 }
 
 .textbook__controls-wrapper{
@@ -35,12 +36,18 @@
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 50px;
   
   background: #f9e084;
   box-shadow: 0px 0px 5px 5px #f9e084;
+}
+
+.textbook__controls {
+  background: #41414115;
+  border-radius: 10px;
+  padding: 5px;
 }
 
 .textbook__btn {
@@ -69,8 +76,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
-  font-size: 35px;
 }
 
 .textbook__page {
@@ -120,6 +125,36 @@
   transition: 200ms;
 }
 
+.textbook__levels-list-item:nth-child(1) {
+  background-color: #ffeacb;
+}
+.textbook__levels-list-item:nth-child(2) {
+  background-color: #f9ca9a;
+}
+.textbook__levels-list-item:nth-child(3) {
+  background-color: #f6b16a;
+}
+.textbook__levels-list-item:nth-child(4) {
+  background-color: #f4a04a;
+}
+.textbook__levels-list-item:nth-child(5) {
+  background-color: #ff826b;
+}
+.textbook__levels-list-item:nth-child(6) {
+  background-color: #ff6549;
+}
+.textbook__levels-list-item:nth-child(7) {
+  background-color: #ff3a16;
+}
+
 .textbook__levels-list-item:hover {
-  background: #60c7b6;
+  background-color: #60c7b6;
+}
+
+/* game controls */
+.textbook__controls_games {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
