@@ -9,15 +9,14 @@
   border-radius: 20px;
   background-color: #60c7b6;
   box-shadow: 5px 5px 15px #333;
-  transition: 200ms;
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 7px 7px 15px #333;
 }
 
-.hard {
-  border: 3px solid #ff6549;
+.card.hard {
+  border: 5px solid #ff6549;
+}
+
+.card.learned {
+  border: 5px solid #49ff7d;
 }
 
 .card__wrapper {
@@ -49,6 +48,10 @@
   border-top-right-radius: 10px;
   border: 2px solid #f9e084;
   border-left: none;
+  transition: 100ms;
+}
+.card__btn:hover {
+  padding-left: 15px;
 }
 .card__btn img{
   width: 30px;
@@ -61,10 +64,14 @@
 }
 
 .card__btn_hard {
-  top: 70px;
+  top: 65px;
 }
-.card__btn_hard.hidden{
+.card__btn.hidden{
   display: none;
+}
+
+.card__btn_learned {
+  top: 132px;
 }
 
 /**** image ****/

@@ -1,6 +1,7 @@
 import './word.css';
 import '../img/sound.svg';
 import '../img/hard.svg';
+import '../img/learned.svg';
 import { IWord } from '../../Api/wordsApi';
 import { createUserWord, IWordProps, updateUserWord } from '../../Api/userWordsApi';
 import state from '../../../state';
@@ -19,8 +20,11 @@ class Word {
       <button class="card__btn card__btn_sound btn-sound">
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
-      <button class="card__btn card__btn_hard btn-hard">
+      <button class="card__btn card__btn_hard btn-hard hidden">
         <img class="card__btn-image btn-hard" src="./img/hard.svg" alt="sound icon">
+      </button>
+      <button class="card__btn card__btn_learned btn-learned hidden">
+        <img class="card__sound-btn-image btn-learned" src="./img/learned.svg" alt="learned icon">
       </button>
       <img class="card__img" alt="word picture">
       <div class="card__info-wrapper">
