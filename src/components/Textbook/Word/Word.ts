@@ -1,5 +1,6 @@
 import './word.css';
 import '../img/sound.svg';
+import '../img/hard.svg';
 import { IWord } from '../../Api/wordsApi';
 
 class Word {
@@ -13,8 +14,11 @@ class Word {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
-      <button class="card__sound-btn">
+      <button class="card__btn card__btn_sound">
         <img class="card__sound-btn-image" src="./img/sound.svg" alt="sound icon">
+      </button>
+      <button class="card__btn card__btn_hard">
+        <img class="card__btn-image" src="./img/hard.svg" alt="sound icon">
       </button>
       <img class="card__img" alt="word picture">
       <div class="card__info-wrapper">
@@ -52,7 +56,7 @@ class Word {
     const definitionTranslation = card.querySelector('.card__definition-translation') as HTMLParagraphElement;
     const example = card.querySelector('.card__example') as HTMLParagraphElement;
     const exampleTranslation = card.querySelector('.card__example-translation') as HTMLParagraphElement;
-    const soundBtn = card.querySelector('.card__sound-btn') as HTMLButtonElement;
+    const soundBtn = card.querySelector('.card__btn_sound') as HTMLButtonElement;
 
     img.setAttribute('src', this.base + this.word.image);
     word.textContent = this.word.word;
@@ -72,6 +76,9 @@ class Word {
       audioWord.onended = () => audioMeaning.play();
       audioMeaning.onended = () => audioExample.play();
     });
+
+    // DELETE
+    card.classList.add('hard');
 
     return card;
   }

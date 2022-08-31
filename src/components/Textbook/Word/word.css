@@ -8,7 +8,16 @@
   overflow: hidden;
   border-radius: 20px;
   background-color: #60c7b6;
+  box-shadow: 5px 5px 15px #333;
+  transition: 200ms;
+}
+.card:hover {
+  transform: translateY(-3px);
   box-shadow: 7px 7px 15px #333;
+}
+
+.hard {
+  border: 3px solid #ff6549;
 }
 
 .card__wrapper {
@@ -25,8 +34,9 @@
   padding-left: 20px;
 }
 
-/**** sound button ****/
-.card__sound-btn{
+
+/**** card button ****/
+.card__btn {
   position: absolute;
   padding: 10px;
 
@@ -36,9 +46,22 @@
 
   background-color: #000;
   border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 2px solid #f9e084;
+  border-left: none;
 }
-.card__sound-btn img{
+.card__btn img{
   width: 30px;
+}
+
+.card__btn_sound {
+  border-top: none;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 0px;
+}
+
+.card__btn_hard {
+  top: 70px;
 }
 
 /**** image ****/
