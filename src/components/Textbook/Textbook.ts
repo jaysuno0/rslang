@@ -106,6 +106,12 @@ const Textbook: ITextbook = {
       });
     });
 
+    const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
+    const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
+
+    sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
+    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
+
     return controls;
   },
 
