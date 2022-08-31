@@ -1,6 +1,6 @@
 export enum ButtonActionTypes {
   Home = 'home',
-  Book = 'book',
+  Textbook = 'book',
   Game = 'game',
   Stats = 'stats',
   Team = 'team',
@@ -28,17 +28,6 @@ function setupButtonListeners(actions: ButtonActions) {
     const headerElem = (eTarget.closest(`.${HEADER_ITEM_CLASS}`));
     if (headerElem?.id) {
       actions[headerElem.id as ButtonActionTypes]();
-    }
-  });
-
-  const HOME_PAGE_ITEM_CLASS = 'homePage__button';
-  const DIV_HOME_PAGE_ID = 'homePage';
-  const homePage = document.getElementById(DIV_HOME_PAGE_ID);
-  homePage?.addEventListener('click', (e) => {
-    const eTarget = e.target as Element;
-    const homePageElem = (eTarget.closest(`.${HOME_PAGE_ITEM_CLASS}`));
-    if (homePageElem?.id) {
-      actions[homePageElem.id as ButtonActionTypes]();
     }
   });
 }
