@@ -31,6 +31,7 @@ interface IAuthorization {
 
   create: () => void;
   createForm: (type: AuthorizationTypes, btnText: AuthorizationTypes) => void;
+  sendForm: () => void;
   enter: () => void;
   validateName: () => boolean;
   validateEmail: () => boolean;
@@ -132,6 +133,12 @@ const Authorization: IAuthorization = {
     screen.append(authorization);
   },
 
+  sendForm() {
+    this.setFormMessage('');
+    if (this.currentType === AuthorizationTypes.signupType && this.validateAll()) this.enter();
+    else if (this.validateEmail() && this.validatePassword()) this.enter();
+  },
+
   createForm(type, btnText) {
     this.currentType = type;
 
@@ -149,10 +156,9 @@ const Authorization: IAuthorization = {
 
     const enterBtn = authWrapper.querySelector('.authorization__btn_enter') as HTMLButtonElement;
     enterBtn.textContent = btnText;
-    enterBtn.addEventListener('click', () => {
-      this.setFormMessage('');
-      if (this.currentType === AuthorizationTypes.signupType && this.validateAll()) this.enter();
-      else if (this.validateEmail() && this.validatePassword()) this.enter();
+    enterBtn.addEventListener('click', () => this.sendForm());
+    document.addEventListener('keypress', (event) => {
+      if (event.code === 'Enter') this.sendForm();
     });
   },
 
