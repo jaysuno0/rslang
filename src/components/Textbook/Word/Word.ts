@@ -106,7 +106,34 @@ class Word {
     }
   }
 
+  toggleLearned(card: HTMLDivElement) {
+    const wordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: true,
+      },
+    };
+
+    card.classList.toggle('learned');
+
+    if (card.classList.contains('learned')) {
+      wordProps.optional.isLearned = true;
+      createUserWord(state.userId, state.accessToken, this.word.id, wordProps);
+    } else {
+      wordProps.optional.isLearned = false;
+      updateUserWord(state.userId, state.accessToken, this.word.id, wordProps);
+    }
+  }
+
   activateButtons(card: HTMLDivElement) {
+    const hardBtn = card.querySelector('.btn-hard') as HTMLButtonElement;
+    const learnedBtn = card.querySelector('.btn-learned') as HTMLButtonElement;
+
+    if (state.isUserLogged) {
+      hardBtn.classList.remove('hidden');
+      learnedBtn.classList.remove('hidden');
+    }
+
     card.addEventListener('click', (event) => {
       const btn = event.target as HTMLElement;
 
@@ -114,6 +141,8 @@ class Word {
         this.activateSound();
       } else if (btn.classList.contains('btn-hard')) {
         this.toggleHard(card);
+      } else if (btn.classList.contains('btn-learned')) {
+        this.toggleLearned(card);
       }
     });
   }
