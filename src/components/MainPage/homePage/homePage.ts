@@ -1,9 +1,9 @@
+import { Authorization } from '../../Authorization/Authorization';
 import '../img/homePageBack.png';
 import '../img/homePageBack2.png';
 import '../img/homePageBack3.svg';
 import '../img/homePageStats.png';
 import setupButtonListeners, { ButtonActionTypes } from '../setupButtonListeners';
-import { Authorization } from '../../Authorization/Authorization';
 
 export default class HomeScreenRender {
   template: string;
@@ -49,6 +49,9 @@ export default class HomeScreenRender {
     homePage.id = ('homePage');
     homePage.innerHTML = this.template;
     screen?.append(homePage);
+
+    const homePageBtn = document.querySelector('.registration__button') as HTMLDivElement;
+    homePageBtn.addEventListener('click', () => Authorization.create());
   }
 
   create() {
