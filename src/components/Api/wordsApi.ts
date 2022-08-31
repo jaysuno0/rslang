@@ -15,6 +15,7 @@ export interface IWord {
   textExample: string;
   transcription: string;
   wordTranslate: string;
+  translateToCompare: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
   userWord?: IWordProps;
@@ -82,6 +83,7 @@ export const getWord = async (wordId: string): Promise<IWordResp> => {
       textExample: '',
       transcription: '',
       wordTranslate: '',
+      translateToCompare: '',
       textMeaningTranslate: '',
       textExampleTranslate: '',
     },

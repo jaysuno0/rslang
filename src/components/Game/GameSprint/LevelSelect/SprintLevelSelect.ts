@@ -1,10 +1,10 @@
-import check from "./sprintSelectInit";
+import check from './sprintSelectInit';
 
 export default class LevelSelect {
-   template: string;
- 
-   constructor() {
-     this.template = `
+  template: string;
+
+  constructor() {
+    this.template = `
      <div class="game__name">
      <span>- СПРИНТ -</span>
    </div>
@@ -28,30 +28,27 @@ export default class LevelSelect {
            <option value="6">6</option>
          </select>
        </div>
-       <button type="submit" class="start-button form__button">Let's go</button>
+       <button  class="start-button form__button">Let's go</button>
      </form>
    </div>
           `;
-   }
- 
-   render() {
-     const screen = document.querySelector('.screen');
-     const levelSelect = document.createElement('div');
-     levelSelect.classList.add('levelSelect');
-     levelSelect.id = ('levelSelect');
-     levelSelect.innerHTML = this.template;
-     screen?.append(levelSelect);
-   }
- 
-   create() {
+  }
+
+  render() {
+    const screen = document.querySelector('.screen');
+    const levelSelect = document.createElement('div');
+    levelSelect.classList.add('levelSelect');
+    levelSelect.id = ('levelSelect');
+    levelSelect.innerHTML = this.template;
+    screen?.append(levelSelect);
+  }
+
+  create() {
     const screen = document.querySelector('.screen');
     if (screen) {
-       screen.innerHTML = ' ';
+      screen.innerHTML = ' ';
     }
     this.render();
     check();
-   }
- }
- 
-
- 
+  }
+}
