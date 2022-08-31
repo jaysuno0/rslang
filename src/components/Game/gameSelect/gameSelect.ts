@@ -2,12 +2,12 @@ import '../img/gameSelectSprint1.png';
 import '../img/gameSelectSprint2.png';
 import '../img/gameSelectAudio1.svg';
 import '../img/gameSelectAudio2.svg';
-import setupGameSelectButtonListeners, { ButtonGameSelectActionsTypes } from './gameSelectInit';
+import setupGameSelectButtonListeners, {ButtonGameSelectActionsTypes} from './gameSelectInit';
 import LevelSelect from '../GameSprint/LevelSelect/SprintLevelSelect';
 
 const levelSelect = new LevelSelect();
 
-export default class GameSelect {
+export default class gameSelect {
   template: string;
 
   constructor() {
@@ -66,14 +66,14 @@ export default class GameSelect {
   }
 
   create() {
-    const screen = document.querySelector('.screen');
-    if (screen) {
+   const screen = document.querySelector('.screen');
+   if (screen) {
       screen.innerHTML = ' ';
-    }
-    this.render();
-    setupGameSelectButtonListeners({
-      [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
-      [ButtonGameSelectActionsTypes.GameAudio]: () => { console.log('GameAudio Callback'); },
-    });
+   }
+   this.render();
+   setupGameSelectButtonListeners({
+    [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
+    [ButtonGameSelectActionsTypes.GameAudio]: () => { console.log('GameAudio Callback'); },
+   });
   }
 }

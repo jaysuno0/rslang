@@ -1,5 +1,4 @@
 import check from "./sprintSelectInit";
-import './sprintLevelSelect.css';
 
 export default class LevelSelect {
    template: string;
