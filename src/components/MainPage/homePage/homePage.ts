@@ -60,13 +60,5 @@ export default class HomeScreenRender {
       screen.innerHTML = ' ';
     }
     this.render();
-    setupButtonListeners({
-      [ButtonActionTypes.Home]: () => {},
-      [ButtonActionTypes.Book]: () => {},
-      [ButtonActionTypes.Game]: () => {},
-      [ButtonActionTypes.Stats]: () => {},
-      [ButtonActionTypes.Team]: () => {},
-      [ButtonActionTypes.Login]: () => Authorization.create(),
-    });
   }
 }
