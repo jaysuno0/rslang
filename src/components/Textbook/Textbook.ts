@@ -15,9 +15,10 @@ interface ITextbook {
 
   create: () => void;
   createControls: () => HTMLDivElement;
-  getPage: (group: number, pageNumber: number) => void;
+  getPage: (level: number, pageNumber: number) => void;
   nextPage: () => void;
   previousPage: () => void;
+  setLevelBackground: (level: number) => void;
 }
 
 const Textbook: ITextbook = {
@@ -27,7 +28,7 @@ const Textbook: ITextbook = {
 
   templateControls: `
     <div class="textbook__controls-wrapper">
-      <div class="textbook__controls_page">
+      <div class="textbook__controls textbook__controls_page">
         <button class="textbook__btn textbook__btn_previous">
           <img class="textbook__btn-img" src="./img/previous-page.svg" alt="previous icon">
         </button>
@@ -36,9 +37,18 @@ const Textbook: ITextbook = {
           <img class="textbook__btn-img" src="./img/next-page.svg" alt="next icon">
         </button>
       </div>
-      <div class="textbook__controls_level">
+      <div class="textbook__controls textbook__controls_level">
         <button class="textbook__btn textbook__btn_level">
           <p> уровень <span class="textbook__level">1</span></p>
+        </button>
+      </div>
+      <div class="textbook__controls textbook__controls_games">
+        <p>игры: </p>
+        <button class="textbook__btn textbook__btn_sprint">
+          <img class="textbook__btn-img" src="./img/gameSelectSprint1.png" alt="sprint game icon">
+        </button>
+        <button class="textbook__btn textbook__btn_audiocall">
+          <img class="textbook__btn-img" src="./img/gameSelectAudio2.svg" alt="audiocall game icon">
         </button>
       </div>
     </div>
@@ -49,7 +59,7 @@ const Textbook: ITextbook = {
         <li class="textbook__levels-list-item">4</li>
         <li class="textbook__levels-list-item">5</li>
         <li class="textbook__levels-list-item">6</li>
-      </ul>`,
+    </ul>`,
 
   create() {
     const textbookWrapper = document.createElement('div');
@@ -73,7 +83,7 @@ const Textbook: ITextbook = {
 
   createControls() {
     const controls = document.createElement('div');
-    controls.classList.add('textbook__controls');
+    controls.classList.add('textbook__controls-container');
     controls.innerHTML = this.templateControls;
 
     const nextPageBtn = controls.querySelector('.textbook__btn_next') as HTMLButtonElement;
@@ -99,18 +109,18 @@ const Textbook: ITextbook = {
     return controls;
   },
 
-  getPage(group, pageNumber) {
+  getPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
 
-    this.currentGroup = group;
+    this.currentGroup = level;
     this.currentPage = pageNumber;
 
     pageCounter.textContent = `${this.currentPage + 1}`;
     levelCounter.textContent = `${this.currentGroup + 1}`;
 
     async function createPage() {
-      const response = await getWords(group, pageNumber);
+      const response = await getWords(level, pageNumber);
       const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
       cardsWrapper.innerHTML = '';
 
@@ -120,7 +130,8 @@ const Textbook: ITextbook = {
       });
     }
 
-    localStorage.setItem('textbookPageParams', `${group},${pageNumber}`);
+    localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
+    this.setLevelBackground(level);
 
     createPage();
   },
@@ -147,6 +158,11 @@ const Textbook: ITextbook = {
       pageCounter.textContent = '30';
       this.getPage(this.currentGroup, this.currentPage);
     }
+  },
+
+  setLevelBackground(level) {
+    const textbook = document.querySelector('.textbook') as HTMLDivElement;
+    textbook.style.backgroundColor = this.levelsColors[level];
   },
 };
 
