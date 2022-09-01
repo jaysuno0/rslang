@@ -6,6 +6,7 @@ interface IStore {
   result: Array<boolean>;
   answers: Array<string>;
   currentWord: number;
+  audio: HTMLAudioElement;
 }
 
 const store: IStore = {
@@ -14,6 +15,9 @@ const store: IStore = {
   result: [],
   answers: [],
   currentWord: 0,
+  audio: new Audio(),
 };
+
+store.audio.addEventListener("canplaythrough", (event) => { store.audio.play(); });
 
 export default store;

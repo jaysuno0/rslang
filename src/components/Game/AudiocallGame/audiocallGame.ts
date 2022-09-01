@@ -3,7 +3,7 @@ import { renderIntro } from './render';
 import { setStartButtonHandler } from './events';
 
 const OUTPUT_AREA_SELECTOR = '.screen';
-const appOutput = document.createElement('div');
+export const appOutput = document.createElement('div');
 
 const showIntro = (isDisabledLevelSelection: boolean, group:number, page:number) => {
   renderIntro(appOutput, isDisabledLevelSelection, group);
