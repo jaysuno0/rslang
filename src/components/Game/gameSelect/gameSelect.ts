@@ -4,6 +4,7 @@ import '../img/gameSelectAudio1.svg';
 import '../img/gameSelectAudio2.svg';
 import setupGameSelectButtonListeners, { ButtonGameSelectActionsTypes } from './gameSelectInit';
 import LevelSelect from '../GameSprint/LevelSelect/SprintLevelSelect';
+import audiocallStart from '../AudiocallGame/audiocallGame';
 
 const levelSelect = new LevelSelect();
 
@@ -73,7 +74,7 @@ export default class GameSelect {
     this.render();
     setupGameSelectButtonListeners({
       [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
-      [ButtonGameSelectActionsTypes.GameAudio]: () => { console.log('GameAudio Callback'); },
-    });
+      [ButtonGameSelectActionsTypes.GameAudio]: () => { audiocallStart(); },
+   });
   }
 }
