@@ -47,8 +47,9 @@ table{
 
 input{
    border-radius: 0;
+   font: inherit;
 }
 
-button {
+button, label {
    cursor: pointer;
 }

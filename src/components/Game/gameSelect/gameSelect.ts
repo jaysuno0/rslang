@@ -2,10 +2,13 @@ import '../img/gameSelectSprint1.png';
 import '../img/gameSelectSprint2.png';
 import '../img/gameSelectAudio1.svg';
 import '../img/gameSelectAudio2.svg';
-import setupGameSelectButtonListeners, {ButtonGameSelectActionsTypes} from './gameSelectInit';
+import setupGameSelectButtonListeners, { ButtonGameSelectActionsTypes } from './gameSelectInit';
+import LevelSelect from '../GameSprint/LevelSelect/SprintLevelSelect';
 import audiocallStart from '../AudiocallGame/audiocallGame';
 
-export default class gameSelect {
+const levelSelect = new LevelSelect();
+
+export default class GameSelect {
   template: string;
 
   constructor() {
@@ -56,22 +59,22 @@ export default class gameSelect {
 
   render() {
     const screen = document.querySelector('.screen');
-    const gameSelect = document.createElement('div');
-    gameSelect.classList.add('gameSelect');
-    gameSelect.id = ('gameSelect');
-    gameSelect.innerHTML = this.template;
-    screen?.append(gameSelect);
+    const gameSelected = document.createElement('div');
+    gameSelected.classList.add('gameSelect');
+    gameSelected.id = ('gameSelect');
+    gameSelected.innerHTML = this.template;
+    screen?.append(gameSelected);
   }
 
   create() {
-   const screen = document.querySelector('.screen');
-   if (screen) {
+    const screen = document.querySelector('.screen');
+    if (screen) {
       screen.innerHTML = ' ';
-   }
-   this.render();
-   setupGameSelectButtonListeners({
-    [ButtonGameSelectActionsTypes.GameSprint]: () => { console.log('GameSprint Callback'); },
-    [ButtonGameSelectActionsTypes.GameAudio]: () => { audiocallStart(); },
+    }
+    this.render();
+    setupGameSelectButtonListeners({
+      [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
+      [ButtonGameSelectActionsTypes.GameAudio]: () => { audiocallStart(); },
    });
   }
 }
