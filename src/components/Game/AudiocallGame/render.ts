@@ -1,3 +1,5 @@
+let output: HTMLDivElement;
+
 export const renderIntro = (
   appOutput: HTMLDivElement,
   isDisabledLevelSelection: boolean,
@@ -28,13 +30,17 @@ export const renderIntro = (
     <button>
   </div>
   `;
-  const output = appOutput;
+  output = appOutput;
 
   output.innerHTML = introHTML;
 
   const levelSelector = document.querySelector('.output__level') as HTMLSelectElement;
-  if(!levelSelector) throw new Error('Error in HTML');
+  if (!levelSelector) throw new Error('Error in HTML');
 
   levelSelector.value = `${group}`;
   levelSelector.disabled = isDisabledLevelSelection;
+};
+
+export const renderWordsLoading = () => {
+  output.innerHTML = '<p>Загрузка слов...</p>';
 };

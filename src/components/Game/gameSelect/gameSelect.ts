@@ -3,7 +3,7 @@ import '../img/gameSelectSprint2.png';
 import '../img/gameSelectAudio1.svg';
 import '../img/gameSelectAudio2.svg';
 import setupGameSelectButtonListeners, {ButtonGameSelectActionsTypes} from './gameSelectInit';
-import { audiocallStart } from '../AudiocallGame/audiocallGame';
+import audiocallStart from '../AudiocallGame/audiocallGame';
 
 export default class gameSelect {
   template: string;
