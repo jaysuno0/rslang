@@ -100,6 +100,7 @@
   width: fit-content;
   height: 2rem;
   padding: .25rem;
+  padding-top: .5rem;
   border-radius: .25rem;
   background-color: #F9E084;
   transition: .3s ease;

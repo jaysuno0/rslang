@@ -6,6 +6,7 @@ interface IStore {
   result: Array<boolean>;
   answers: Array<string>;
   currentWord: number;
+  appOutput: HTMLDivElement;
   audio: HTMLAudioElement;
 }
 
@@ -16,8 +17,10 @@ const store: IStore = {
   answers: [],
   currentWord: 0,
   audio: new Audio(),
+  appOutput: document.createElement('div'),
 };
 
-store.audio.addEventListener("canplaythrough", (event) => { store.audio.play(); });
+store.appOutput.classList.add('acg__output');
+store.audio.addEventListener('canplaythrough', () => { store.audio.play(); });
 
 export default store;

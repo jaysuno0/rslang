@@ -26,3 +26,5 @@ export const setStartButtonHandler = (
 
   document.addEventListener('keyup', startKeyHandler);
 };
+
+export default setStartButtonHandler;
