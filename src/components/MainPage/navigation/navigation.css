@@ -5,6 +5,10 @@
    background-color: #f9e084;
 }
 
+.mainGame {
+   min-height: calc(100vh - 4rem)
+}
+
 .nav-wrapper {
    position: sticky;
    max-height: 100vh;
