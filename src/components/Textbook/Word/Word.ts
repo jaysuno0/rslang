@@ -2,9 +2,9 @@ import './word.css';
 import '../img/sound.svg';
 import '../img/hard.svg';
 import '../img/learned.svg';
-import { IWord } from '../../Api/wordsApi';
-import { createUserWord, IWordProps, updateUserWord } from '../../Api/userWordsApi';
 import state from '../../../state';
+import { IWord } from '../../Api/wordsApi';
+import { IWordProps } from '../../Api/userWordsApi';
 
 class Word {
   word: IWord;
@@ -87,6 +87,17 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
+  setWord(props: IWordProps) {
+    const wordId = this.word.id;
+    const userWord = state.userWords[wordId];
+
+    if (userWord) {
+      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
+        state.deleteWord(wordId);
+      } else state.updateWord(wordId, props);
+    } else state.addWord(wordId, props);
+  }
+
   toggleHard(card: HTMLDivElement) {
     const wordProps: IWordProps = {
       difficulty: 'hard',
@@ -96,14 +107,11 @@ class Word {
     };
 
     card.classList.toggle('hard');
-
     if (card.classList.contains('hard')) {
       wordProps.optional.isLearned = false;
-      createUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    } else {
-      wordProps.difficulty = 'easy';
-      updateUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    }
+      card.classList.remove('learned');
+    } else wordProps.difficulty = 'easy';
+    this.setWord(wordProps);
   }
 
   toggleLearned(card: HTMLDivElement) {
@@ -115,14 +123,11 @@ class Word {
     };
 
     card.classList.toggle('learned');
-
     if (card.classList.contains('learned')) {
+      card.classList.remove('hard');
       wordProps.optional.isLearned = true;
-      createUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    } else {
-      wordProps.optional.isLearned = false;
-      updateUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    }
+    } else wordProps.optional.isLearned = false;
+    this.setWord(wordProps);
   }
 
   activateButtons(card: HTMLDivElement) {

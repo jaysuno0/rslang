@@ -11,7 +11,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 35px;
 }
 
 
@@ -23,7 +23,6 @@
   z-index: 3;
   font-size: 30px;
 }
-
 .textbook__controls-wrapper{
   position: sticky;
   top: 0;
@@ -43,9 +42,8 @@
   background: #f9e084;
   box-shadow: 0px 0px 5px 5px #f9e084;
 }
-
 .textbook__controls {
-  background: #41414115;
+  background: #30303015;
   border-radius: 10px;
   padding: 5px;
 }
@@ -58,14 +56,12 @@
   justify-content: center;
   transition: 200ms;
 }
-
 .textbook__btn-img {
   width: 40px;
   padding: 5px;
   border-radius: 10px;
   transition: 200ms;
 }
-
 .textbook__btn-img:hover {
   background-color: #60c7b6;
 }
@@ -77,7 +73,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .textbook__page {
   padding: 0px 10px;
 }
@@ -90,7 +85,6 @@
   border-right: 10px solid #000;
   border-radius: 100px;
 }
-
 .textbook__btn_level:hover {
   background: #60c7b6;
 }
@@ -110,11 +104,9 @@
   background: #f9e084;
   box-shadow: 0px 0px 5px 5px #f9e084;
 }
-
 .textbook__levels-list.hidden {
   transform: translateY(-110%);
 }
-
 .textbook__levels-list-item {
   cursor: pointer;
   padding: 10px 15px;
@@ -124,15 +116,14 @@
   border-radius: 20px;
   transition: 200ms;
 }
-
 .textbook__levels-list-item:nth-child(1) {
   background-color: #ffeacb;
 }
 .textbook__levels-list-item:nth-child(2) {
-  background-color: #f9ca9a;
+  background-color: #ffd8d1;
 }
 .textbook__levels-list-item:nth-child(3) {
-  background-color: #f6b16a;
+  background-color: #f9ca9a;
 }
 .textbook__levels-list-item:nth-child(4) {
   background-color: #f4a04a;
@@ -146,7 +137,6 @@
 .textbook__levels-list-item:nth-child(7) {
   background-color: #ff3a16;
 }
-
 .textbook__levels-list-item:hover {
   background-color: #60c7b6;
 }

@@ -2,7 +2,7 @@
 .card {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 340px;
   padding-bottom: 10px;
   
   overflow: hidden;
@@ -12,11 +12,11 @@
 }
 
 .card.hard {
-  border: 5px solid #ff6549;
+  border: 10px outset #ffffff;
 }
 
 .card.learned {
-  border: 5px solid #49ff7d;
+  border: 10px outset #f9e084;
 }
 
 .card__wrapper {

@@ -4,27 +4,25 @@ import './img/previous-page.svg';
 
 import Word from './Word/Word';
 import { getWords } from '../Api/wordsApi';
-
-type LevelColors = '#ffeacb' | '#f9ca9a' | '#f6b16a' | '#f4a04a' | '#ff826b' | '#ff6549' | '#ff3a16';
+import { IUserWord } from '../Api/userWordsApi';
+import state from '../../state';
 
 interface ITextbook {
   currentGroup: number;
   currentPage: number;
   templateControls: string;
-  levelsColors: LevelColors[];
 
   create: () => void;
   createControls: () => HTMLDivElement;
-  getPage: (level: number, pageNumber: number) => void;
+  setPage: (level: number, pageNumber: number) => void;
   nextPage: () => void;
   previousPage: () => void;
-  setLevelBackground: (level: number) => void;
+  setCardState: (word: IUserWord, card: HTMLDivElement) => void;
 }
 
 const Textbook: ITextbook = {
   currentGroup: 0,
   currentPage: 0,
-  levelsColors: ['#ffeacb', '#f9ca9a', '#f6b16a', '#f4a04a', '#ff826b', '#ff6549', '#ff3a16'],
 
   templateControls: `
     <div class="textbook__controls-wrapper">
@@ -78,7 +76,7 @@ const Textbook: ITextbook = {
     textbookWrapper.append(cardsWrapper);
     screen.innerHTML = '';
     screen.append(textbookWrapper);
-    this.getPage(this.currentGroup, this.currentPage);
+    this.setPage(this.currentGroup, this.currentPage);
   },
 
   createControls() {
@@ -102,7 +100,7 @@ const Textbook: ITextbook = {
 
       btn.addEventListener('click', () => {
         levelsList.classList.toggle('hidden');
-        this.getPage(level, 0);
+        this.setPage(level, 0);
       });
     });
 
@@ -115,40 +113,48 @@ const Textbook: ITextbook = {
     return controls;
   },
 
-  getPage(level, pageNumber) {
+  setCardState(word, card) {
+    if (word.difficulty === 'hard') card.classList.add('hard');
+    else if (word.optional.isLearned) card.classList.add('learned');
+  },
+
+  setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
-
     this.currentGroup = level;
     this.currentPage = pageNumber;
-
     pageCounter.textContent = `${this.currentPage + 1}`;
     levelCounter.textContent = `${this.currentGroup + 1}`;
 
-    async function createPage() {
+    const createPage = async () => {
       const response = await getWords(level, pageNumber);
       const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
       cardsWrapper.innerHTML = '';
-
       response.words.forEach((wordData) => {
-        const word = new Word(wordData).render();
-        cardsWrapper.append(word);
+        const word = new Word(wordData);
+        const card = word.render();
+        cardsWrapper.append(card);
+
+        if (state.isUserLogged) {
+          const userWord = state.userWords[word.word.id];
+          if (userWord) {
+            this.setCardState(userWord, card);
+          }
+        }
       });
-    }
+    };
 
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
-    this.setLevelBackground(level);
-
-    createPage();
+    setTimeout(() => createPage(), 0);
   },
 
   nextPage() {
     if (this.currentPage < 29) {
       this.currentPage += 1;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     } else {
       this.currentPage = 0;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     }
   },
 
@@ -158,17 +164,12 @@ const Textbook: ITextbook = {
     if (this.currentPage > 0) {
       this.currentPage -= 1;
       pageCounter.textContent = `${this.currentPage + 1}`;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     } else {
       this.currentPage = 29;
       pageCounter.textContent = '30';
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     }
-  },
-
-  setLevelBackground(level) {
-    const textbook = document.querySelector('.textbook') as HTMLDivElement;
-    textbook.style.backgroundColor = this.levelsColors[level];
   },
 };
 
