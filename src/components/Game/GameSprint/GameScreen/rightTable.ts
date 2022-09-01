@@ -1,7 +1,7 @@
 import { IWord } from '../../../Api/wordsApi';
 
 const renderRightTable = (right: IWord[], i: number) => `
-    <button class="word__sound" id="${right[i].id}">
+    <button class="word__sound" id="${right[i].audio}">
       <img src="../img/sound.svg" alt="sound">
     </button>
     <span class="word__name">${right[i].word}</span>

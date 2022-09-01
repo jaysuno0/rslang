@@ -13,14 +13,11 @@ export default class GameScreen {
    </div>
    <div class="screen__card" id="screen__card">
      <div class="card__top">
-       <div class="header__point">
-         <img src="../img/gameSprintPointRight.png" alt="">
-         <img src="../img/gameSprintPointRight.png" alt="">
-         <img src="../img/gameSprintPointRight.png" alt="">
+       <div class="header__point" id="iconContainer">
        </div>
        <div class="header__bonus">
          <div class="bonus__title">Бонус за слово +</div>
-         <div class="bonus__score">10</div>
+         <div class="bonus__score" id="bonusScore">10</div>
        </div>
      </div>
      <div class="card__main">

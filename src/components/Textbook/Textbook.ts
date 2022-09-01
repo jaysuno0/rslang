@@ -5,6 +5,8 @@ import './img/previous-page.svg';
 import Word from './Word/Word';
 import { getWords } from '../Api/wordsApi';
 
+import { gameFromBook } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
+
 type LevelColors = '#ffeacb' | '#f9ca9a' | '#f6b16a' | '#f4a04a' | '#ff826b' | '#ff6549' | '#ff3a16';
 
 interface ITextbook {
@@ -109,7 +111,9 @@ const Textbook: ITextbook = {
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
 
-    sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
+    sprintGameBtn.addEventListener('click', () => {
+      gameFromBook(this.currentGroup, this.currentPage);
+    });
     audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
 
     return controls;
