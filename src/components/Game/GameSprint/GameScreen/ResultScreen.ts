@@ -6,75 +6,19 @@ export default class ResultScreen {
     <div class="result__title">Результаты игры</div>
     <div class="result__tables">
       <div class="result__table win">
-        <div class="table__header">
-          <span class="table__title">Верные ответы:</span>
-          <span class="table__count">0</span>
-        </div>
-        <div class="table__words">
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg"  alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-        </div>
+      <div class="table__header">
+        <span class="table__title">Верные ответы:</span>
+        <span class="table__count" id="rightCount">0</span>
+      </div>
+      <div class="table__words" id="rightWords">
+      </div>
       </div>
       <div class="result__table lose">
         <div class="table__header">
           <span class="table__title">Неверные ответы:</span>
-          <span class="table__count">0</span>
+          <span class="table__count" id="wrongCount">0</span>
         </div>
-        <div class="table__words">
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg"  alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
-          <div class="table__word">
-            <button class="word__sound">
-              <img src="../img/sound.svg" alt="sound">
-            </button>
-            <span class="word__name">butterfly</span>
-            <span class="word__translate">бабочка</span>
-          </div>
+        <div class="table__words" id="wrongWords">
         </div>
       </div>
     </div>

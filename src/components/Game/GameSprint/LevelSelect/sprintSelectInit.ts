@@ -1,6 +1,9 @@
 import { getWords, IWord } from '../../../Api/wordsApi';
 import GameScreen from '../GameScreen/GameScreen';
 import ResultScreen from '../GameScreen/ResultScreen';
+import renderRightTable from '../GameScreen/rightTable';
+import renderWrongTable from '../GameScreen/wrongTable';
+import { footerHidden } from '../../footerHidden';
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
@@ -9,20 +12,46 @@ const RIGHT_ANSWER_SCORE = 10;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
 const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
 
+export let timerId: any;
 let totalScore = 0;
-const scoreBonus = 1;
+let scoreBonus = 1;
+let totalWrongAnswer: IWord[] = [];
+let totalRightAnswer: IWord[] = [];
+
+function fillResultTable(wrong: IWord[], right: IWord[]) {
+  const rightCount = document.getElementById('rightCount');
+  const wrongCount = document.getElementById('wrongCount');
+  const rightWordsContainer = document.getElementById('rightWords');
+  const wrongWordsContainer = document.getElementById('wrongWords');
+  if (rightCount && wrongCount) {
+    rightCount.innerHTML = right.length.toString();
+    wrongCount.innerHTML = wrong.length.toString();
+    right.forEach((word, i) => {
+      const wordContainer = document.createElement('div');
+      wordContainer.classList.add('table__word');
+      wordContainer.innerHTML = renderRightTable(right, i);
+      rightWordsContainer?.append(wordContainer);
+    });
+
+    wrong.forEach((word, i) => {
+      const wordContainer = document.createElement('div');
+      wordContainer.classList.add('table__word');
+      wordContainer.innerHTML = renderWrongTable(wrong, i);
+      wrongWordsContainer?.append(wordContainer);
+    });
+  }
+}
 
 function endGame() {
   resultScreen.create();
-  totalScore = 0;
-  console.log('end callback');
+  fillResultTable(totalWrongAnswer, totalRightAnswer);
 }
 
 function timer() {
   let SECONDS = 60;
   const timerContainer = document.getElementById('timer');
   if (timerContainer) {
-    const timerId = setInterval(() => {
+    timerId = setInterval(() => {
       SECONDS -= 1;
       timerContainer.innerHTML = (SECONDS).toString();
       if (SECONDS === 0) {
@@ -57,12 +86,16 @@ function checkRightAnswer(words: IWord[]) {
   const card = document.getElementById('screen__card');
   const cardWord = document.getElementById('cardWord')?.innerHTML;
   const cardTranslate = document.getElementById('cardTranslate')?.innerHTML;
-  const cardRightTranslate = words.find((word) => word.word === cardWord)?.wordTranslate;
+  const currentWord = words.find((word) => word.word === cardWord);
+  const cardRightTranslate = currentWord?.wordTranslate;
 
   if (!card) { return; }
+  if (!currentWord) { return; }
   if (cardTranslate === cardRightTranslate) {
+    totalRightAnswer.push(currentWord);
     rightAnswer(card);
   } else {
+    totalWrongAnswer.push(currentWord);
     wrongAnswer(card);
   }
 }
@@ -71,17 +104,21 @@ function checkWrongAnswer(words: IWord[]) {
   const card = document.getElementById('screen__card');
   const cardWord = document.getElementById('cardWord')?.innerHTML;
   const cardTranslate = document.getElementById('cardTranslate')?.innerHTML;
-  const cardRightTranslate = words.find((word) => word.word === cardWord)?.wordTranslate;
+  const currentWord = words.find((word) => word.word === cardWord);
+  const cardRightTranslate = currentWord?.wordTranslate;
 
   if (!card) { return; }
+  if (!currentWord) { return; }
   if (cardTranslate !== cardRightTranslate) {
+    totalRightAnswer.push(currentWord);
     rightAnswer(card);
   } else {
+    totalWrongAnswer.push(currentWord);
     wrongAnswer(card);
   }
 }
 
-function fill(word:string, translate: string) {
+function fillGameCard(word:string, translate: string) {
   const cardWord = document.getElementById('cardWord');
   const cardTranslate = document.getElementById('cardTranslate');
   if (cardWord && cardTranslate) {
@@ -97,7 +134,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
   yesAnswerButton?.addEventListener('click', () => {
     if (countAnswer > 0) {
       checkRightAnswer(words);
-      fill(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
+      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
       countAnswer -= 1;
     } else {
       checkRightAnswer(words);
@@ -108,7 +145,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
   noAnswerButton?.addEventListener('click', () => {
     if (countAnswer > 0) {
       checkWrongAnswer(words);
-      fill(words[countAnswer - 1].word, words[countAnswer - 1].wordTranslate);
+      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
       countAnswer -= 1;
     } else {
       checkWrongAnswer(words);
@@ -118,15 +155,19 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
 }
 
 function startGame() {
+  totalScore = 0;
+  scoreBonus = 1;
+  totalWrongAnswer = [];
+  totalRightAnswer = [];
   const form = document.querySelector<HTMLSelectElement>('.select__item');
   const startButton = document.querySelector('.start-button');
   const randomPage = Math.floor(Math.random() * (30 - 1)) + 1;
   if (!form || !startButton) { return; }
   startButton.addEventListener('click', async (e) => {
     e.preventDefault();
+    footerHidden();
 
     const gameWords = await (await getWords(+form.value - 1, randomPage)).words;
-
     const gameWordsState = gameWords.map((word) => {
       const isCorrect = Math.round(Math.random());
       const translateToCompare = isCorrect
@@ -135,11 +176,10 @@ function startGame() {
       return { ...word, isCorrect, translateToCompare };
     });
 
-    const sortGameWords = gameWordsState.sort(() => Math.random() - 0.5);
     gameScreen.create();
-    fill(sortGameWords[MAX_ANSWER].word, sortGameWords[MAX_ANSWER].translateToCompare);
+    fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
     timer();
-    cardButtonListeners(sortGameWords, MAX_ANSWER);
+    cardButtonListeners(gameWordsState, MAX_ANSWER);
   });
 }
 export default startGame;

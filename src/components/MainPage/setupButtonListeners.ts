@@ -1,3 +1,6 @@
+import { timerId } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
+import { footerShow } from '../Game/footerHidden';
+
 export enum ButtonActionTypes {
   Home = 'home',
   Textbook = 'book',
@@ -13,6 +16,8 @@ function setupButtonListeners(actions: ButtonActions) {
   const DIV_NAV_ID = 'nav';
   const nav = document.getElementById(DIV_NAV_ID);
   nav?.addEventListener('click', (e) => {
+    footerShow();
+    clearTimeout(timerId);
     const eTarget = e.target as Element;
     const navElem = (eTarget.closest(`.${NAV_ITEM_CLASS}`));
     if (navElem?.id) {
@@ -24,6 +29,8 @@ function setupButtonListeners(actions: ButtonActions) {
   const DIV_HEADER_ID = 'header';
   const header = document.getElementById(DIV_HEADER_ID);
   header?.addEventListener('click', (e) => {
+    footerShow();
+    clearTimeout(timerId);
     const eTarget = e.target as Element;
     const headerElem = (eTarget.closest(`.${HEADER_ITEM_CLASS}`));
     if (headerElem?.id) {
