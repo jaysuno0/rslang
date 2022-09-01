@@ -87,7 +87,13 @@
   gap: 25px;
 }
 
-.game-frame__answers-wrapper {
+.game-frame__answer:hover {
+  transition: .2s ease;
+  cursor: pointer;
+}
+
+.game-frame__answer:hover {
+  color: #F9E084;
 }
 
 .game-frame__audio-btn {
