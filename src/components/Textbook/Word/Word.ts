@@ -2,18 +2,26 @@ import './word.css';
 import '../img/sound.svg';
 import '../img/hard.svg';
 import '../img/learned.svg';
-import { IWord } from '../../Api/wordsApi';
-import { createUserWord, IWordProps, updateUserWord } from '../../Api/userWordsApi';
 import state from '../../../state';
+import { IWord } from '../../Api/wordsApi';
+import {
+  createUserWord,
+  deleteUserWord,
+  IWordProps,
+  updateUserWord,
+} from '../../Api/userWordsApi';
 
 class Word {
   word: IWord;
+
+  isUserWord: boolean;
 
   base: string;
 
   template: string;
 
   constructor(word: IWord) {
+    this.isUserWord = false;
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
@@ -87,6 +95,19 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
+  setWord(props: IWordProps) {
+    const { word } = this;
+    if (this.isUserWord) {
+      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
+        deleteUserWord(state.userId, state.accessToken, word.id);
+        this.isUserWord = false;
+      } else updateUserWord(state.userId, state.accessToken, word.id, props);
+    } else {
+      createUserWord(state.userId, state.accessToken, word.id, props);
+      this.isUserWord = true;
+    }
+  }
+
   toggleHard(card: HTMLDivElement) {
     const wordProps: IWordProps = {
       difficulty: 'hard',
@@ -96,14 +117,11 @@ class Word {
     };
 
     card.classList.toggle('hard');
-
     if (card.classList.contains('hard')) {
       wordProps.optional.isLearned = false;
-      createUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    } else {
-      wordProps.difficulty = 'easy';
-      updateUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    }
+      card.classList.remove('learned');
+    } else wordProps.difficulty = 'easy';
+    this.setWord(wordProps);
   }
 
   toggleLearned(card: HTMLDivElement) {
@@ -115,14 +133,11 @@ class Word {
     };
 
     card.classList.toggle('learned');
-
     if (card.classList.contains('learned')) {
+      card.classList.remove('hard');
       wordProps.optional.isLearned = true;
-      createUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    } else {
-      wordProps.optional.isLearned = false;
-      updateUserWord(state.userId, state.accessToken, this.word.id, wordProps);
-    }
+    } else wordProps.optional.isLearned = false;
+    this.setWord(wordProps);
   }
 
   activateButtons(card: HTMLDivElement) {

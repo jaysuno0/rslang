@@ -2,7 +2,7 @@
 .card {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 370px;
   padding-bottom: 10px;
   
   overflow: hidden;
@@ -12,11 +12,11 @@
 }
 
 .card.hard {
-  border: 5px solid #ff6549;
+  border: 10px outset #ffffff;
 }
 
 .card.learned {
-  border: 5px solid #49ff7d;
+  border: 10px outset #f9e084;
 }
 
 .card__wrapper {
@@ -37,7 +37,7 @@
 /**** card button ****/
 .card__btn {
   position: absolute;
-  padding: 10px;
+  padding: 12px;
 
   display: flex;
   justify-content: center;
@@ -64,14 +64,14 @@
 }
 
 .card__btn_hard {
-  top: 65px;
+  top: 75px;
 }
 .card__btn.hidden{
   display: none;
 }
 
 .card__btn_learned {
-  top: 132px;
+  top: 152px;
 }
 
 /**** image ****/

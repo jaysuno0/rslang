@@ -3,28 +3,32 @@ import './img/next-page.svg';
 import './img/previous-page.svg';
 
 import Word from './Word/Word';
-import { getWords } from '../Api/wordsApi';
-
-type LevelColors = '#ffeacb' | '#f9ca9a' | '#f6b16a' | '#f4a04a' | '#ff826b' | '#ff6549' | '#ff3a16';
+import { getWords, IWord } from '../Api/wordsApi';
+import state from '../../state';
+import { getUserAggregatedWords, IWordsParams } from '../Api/userAggregatedWords';
 
 interface ITextbook {
+  wordsPerPage: number;
   currentGroup: number;
   currentPage: number;
+  learnedWordsNumber: number;
   templateControls: string;
-  levelsColors: LevelColors[];
 
   create: () => void;
   createControls: () => HTMLDivElement;
-  getPage: (level: number, pageNumber: number) => void;
+  addCardsToPage: (words: IWord[]) => void;
+  setPage: (level: number, pageNumber: number) => void;
   nextPage: () => void;
   previousPage: () => void;
-  setLevelBackground: (level: number) => void;
+  setCardState: (wordData: Word, card: HTMLDivElement) => void;
+  addLearnedWord: () => void;
 }
 
 const Textbook: ITextbook = {
+  wordsPerPage: 20,
   currentGroup: 0,
   currentPage: 0,
-  levelsColors: ['#ffeacb', '#f9ca9a', '#f6b16a', '#f4a04a', '#ff826b', '#ff6549', '#ff3a16'],
+  learnedWordsNumber: 0,
 
   templateControls: `
     <div class="textbook__controls-wrapper">
@@ -78,7 +82,7 @@ const Textbook: ITextbook = {
     textbookWrapper.append(cardsWrapper);
     screen.innerHTML = '';
     screen.append(textbookWrapper);
-    this.getPage(this.currentGroup, this.currentPage);
+    this.setPage(this.currentGroup, this.currentPage);
   },
 
   createControls() {
@@ -94,7 +98,6 @@ const Textbook: ITextbook = {
     const levelsListBtn = controls.querySelector('.textbook__btn_level') as HTMLButtonElement;
     const levelsList = controls.querySelector('.textbook__levels-list') as HTMLDivElement;
     const levelBtns = controls.querySelectorAll('.textbook__levels-list-item');
-
     levelsListBtn.addEventListener('click', () => levelsList.classList.toggle('hidden'));
     levelBtns.forEach((btn) => {
       const levelElement = btn.textContent as string;
@@ -102,53 +105,79 @@ const Textbook: ITextbook = {
 
       btn.addEventListener('click', () => {
         levelsList.classList.toggle('hidden');
-        this.getPage(level, 0);
+        this.setPage(level, 0);
       });
     });
 
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
-
     sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
     audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
 
     return controls;
   },
 
-  getPage(level, pageNumber) {
+  setCardState(wordData, card) {
+    const word = wordData;
+    if (word.word.userWord?.difficulty === 'hard') {
+      card.classList.add('hard');
+      word.isUserWord = true;
+    } else if (word.word.userWord?.optional.isLearned) {
+      card.classList.add('learned');
+      this.addLearnedWord();
+      word.isUserWord = true;
+    }
+  },
+
+  addCardsToPage(cards) {
+    const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
+    cardsWrapper.innerHTML = '';
+
+    cards.forEach((wordData) => {
+      const word = new Word(wordData);
+      const card = word.render();
+      cardsWrapper.append(card);
+
+      if (state.isUserLogged) {
+        this.setCardState(word, card);
+      }
+    });
+  },
+
+  setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
-
     this.currentGroup = level;
     this.currentPage = pageNumber;
-
     pageCounter.textContent = `${this.currentPage + 1}`;
     levelCounter.textContent = `${this.currentGroup + 1}`;
 
-    async function createPage() {
-      const response = await getWords(level, pageNumber);
-      const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
-      cardsWrapper.innerHTML = '';
-
-      response.words.forEach((wordData) => {
-        const word = new Word(wordData).render();
-        cardsWrapper.append(word);
-      });
-    }
+    const createPage = async () => {
+      if (state.isUserLogged) {
+        const params: IWordsParams = {
+          group: level,
+          page: pageNumber,
+          wordsPerPage: this.wordsPerPage,
+        };
+        const words = await getUserAggregatedWords(state.userId, state.accessToken, params);
+        this.addCardsToPage(words.words);
+      } else {
+        const words = await getWords(level, pageNumber);
+        this.addCardsToPage(words.words);
+      }
+    };
 
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
-    this.setLevelBackground(level);
-
     createPage();
   },
 
   nextPage() {
     if (this.currentPage < 29) {
       this.currentPage += 1;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     } else {
       this.currentPage = 0;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     }
   },
 
@@ -158,17 +187,20 @@ const Textbook: ITextbook = {
     if (this.currentPage > 0) {
       this.currentPage -= 1;
       pageCounter.textContent = `${this.currentPage + 1}`;
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     } else {
       this.currentPage = 29;
       pageCounter.textContent = '30';
-      this.getPage(this.currentGroup, this.currentPage);
+      this.setPage(this.currentGroup, this.currentPage);
     }
   },
 
-  setLevelBackground(level) {
-    const textbook = document.querySelector('.textbook') as HTMLDivElement;
-    textbook.style.backgroundColor = this.levelsColors[level];
+  addLearnedWord() {
+    this.learnedWordsNumber += 1;
+    if (this.learnedWordsNumber === this.wordsPerPage) {
+      const gameControls = document.querySelector('.textbook__controls_games') as HTMLDivElement;
+      gameControls.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled', ''));
+    }
   },
 };
 
