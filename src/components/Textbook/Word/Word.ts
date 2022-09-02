@@ -10,6 +10,7 @@ import {
   IWordProps,
   updateUserWord,
 } from '../../Api/userWordsApi';
+import textbookState from '../textbookState';
 
 class Word {
   word: IWord;
@@ -25,13 +26,13 @@ class Word {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
-      <button class="card__btn card__btn_sound btn-sound">
+      <button class="card__btn card__btn_sound btn-sound" title="воспроизвести аудио">
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
-      <button class="card__btn card__btn_hard btn-hard hidden">
+      <button class="card__btn card__btn_hard btn-hard hidden" title="добавить в список сложных">
         <img class="card__btn-image btn-hard" src="./img/hard.svg" alt="sound icon">
       </button>
-      <button class="card__btn card__btn_learned btn-learned hidden">
+      <button class="card__btn card__btn_learned btn-learned hidden" title="добавить в список изученных">
         <img class="card__sound-btn-image btn-learned" src="./img/learned.svg" alt="learned icon">
       </button>
       <img class="card__img" alt="word picture">
@@ -119,7 +120,10 @@ class Word {
     card.classList.toggle('hard');
     if (card.classList.contains('hard')) {
       wordProps.optional.isLearned = false;
-      card.classList.remove('learned');
+      if (card.classList.contains('learned')) {
+        card.classList.remove('learned');
+        textbookState.deleteLearnedWord();
+      }
     } else wordProps.difficulty = 'easy';
     this.setWord(wordProps);
   }
@@ -136,7 +140,11 @@ class Word {
     if (card.classList.contains('learned')) {
       card.classList.remove('hard');
       wordProps.optional.isLearned = true;
-    } else wordProps.optional.isLearned = false;
+      textbookState.addLearnedWord();
+    } else {
+      wordProps.optional.isLearned = false;
+      textbookState.deleteLearnedWord();
+    }
     this.setWord(wordProps);
   }
 
@@ -151,7 +159,6 @@ class Word {
 
     card.addEventListener('click', (event) => {
       const btn = event.target as HTMLElement;
-
       if (btn.classList.contains('btn-sound')) {
         this.activateSound();
       } else if (btn.classList.contains('btn-hard')) {

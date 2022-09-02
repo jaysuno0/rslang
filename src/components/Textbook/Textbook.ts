@@ -3,15 +3,12 @@ import './img/next-page.svg';
 import './img/previous-page.svg';
 
 import Word from './Word/Word';
-import { getWords, IWord } from '../Api/wordsApi';
 import state from '../../state';
+import textbookState from './textbookState';
+import { getWords, IWord } from '../Api/wordsApi';
 import { getUserAggregatedWords, IWordsParams } from '../Api/userAggregatedWords';
 
 interface ITextbook {
-  wordsPerPage: number;
-  currentGroup: number;
-  currentPage: number;
-  learnedWordsNumber: number;
   templateControls: string;
 
   create: () => void;
@@ -21,15 +18,9 @@ interface ITextbook {
   nextPage: () => void;
   previousPage: () => void;
   setCardState: (wordData: Word, card: HTMLDivElement) => void;
-  addLearnedWord: () => void;
 }
 
 const Textbook: ITextbook = {
-  wordsPerPage: 20,
-  currentGroup: 0,
-  currentPage: 0,
-  learnedWordsNumber: 0,
-
   templateControls: `
     <div class="textbook__controls-wrapper">
       <div class="textbook__controls textbook__controls_page">
@@ -73,7 +64,7 @@ const Textbook: ITextbook = {
 
     if (pageParamsString) {
       const params = pageParamsString.split(',').map((item) => Number(item));
-      [this.currentGroup, this.currentPage] = params;
+      [textbookState.currentGroup, textbookState.currentPage] = params;
     }
 
     textbookWrapper.classList.add('textbook');
@@ -82,7 +73,7 @@ const Textbook: ITextbook = {
     textbookWrapper.append(cardsWrapper);
     screen.innerHTML = '';
     screen.append(textbookWrapper);
-    this.setPage(this.currentGroup, this.currentPage);
+    this.setPage(textbookState.currentGroup, textbookState.currentPage);
   },
 
   createControls() {
@@ -111,8 +102,8 @@ const Textbook: ITextbook = {
 
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
-    sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
-    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
+    sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
+    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
 
     return controls;
   },
@@ -124,7 +115,7 @@ const Textbook: ITextbook = {
       word.isUserWord = true;
     } else if (word.word.userWord?.optional.isLearned) {
       card.classList.add('learned');
-      this.addLearnedWord();
+      textbookState.addLearnedWord();
       word.isUserWord = true;
     }
   },
@@ -147,17 +138,17 @@ const Textbook: ITextbook = {
   setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
-    this.currentGroup = level;
-    this.currentPage = pageNumber;
-    pageCounter.textContent = `${this.currentPage + 1}`;
-    levelCounter.textContent = `${this.currentGroup + 1}`;
+    textbookState.currentGroup = level;
+    textbookState.currentPage = pageNumber;
+    pageCounter.textContent = `${textbookState.currentPage + 1}`;
+    levelCounter.textContent = `${textbookState.currentGroup + 1}`;
 
     const createPage = async () => {
       if (state.isUserLogged) {
         const params: IWordsParams = {
           group: level,
           page: pageNumber,
-          wordsPerPage: this.wordsPerPage,
+          wordsPerPage: textbookState.wordsPerPage,
         };
         const words = await getUserAggregatedWords(state.userId, state.accessToken, params);
         this.addCardsToPage(words.words);
@@ -172,34 +163,26 @@ const Textbook: ITextbook = {
   },
 
   nextPage() {
-    if (this.currentPage < 29) {
-      this.currentPage += 1;
-      this.setPage(this.currentGroup, this.currentPage);
+    if (textbookState.currentPage < 29) {
+      textbookState.currentPage += 1;
+      this.setPage(textbookState.currentGroup, textbookState.currentPage);
     } else {
-      this.currentPage = 0;
-      this.setPage(this.currentGroup, this.currentPage);
+      textbookState.currentPage = 0;
+      this.setPage(textbookState.currentGroup, textbookState.currentPage);
     }
   },
 
   previousPage() {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
 
-    if (this.currentPage > 0) {
-      this.currentPage -= 1;
-      pageCounter.textContent = `${this.currentPage + 1}`;
-      this.setPage(this.currentGroup, this.currentPage);
+    if (textbookState.currentPage > 0) {
+      textbookState.currentPage -= 1;
+      pageCounter.textContent = `${textbookState.currentPage + 1}`;
+      this.setPage(textbookState.currentGroup, textbookState.currentPage);
     } else {
-      this.currentPage = 29;
+      textbookState.currentPage = 29;
       pageCounter.textContent = '30';
-      this.setPage(this.currentGroup, this.currentPage);
-    }
-  },
-
-  addLearnedWord() {
-    this.learnedWordsNumber += 1;
-    if (this.learnedWordsNumber === this.wordsPerPage) {
-      const gameControls = document.querySelector('.textbook__controls_games') as HTMLDivElement;
-      gameControls.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled', ''));
+      this.setPage(textbookState.currentGroup, textbookState.currentPage);
     }
   },
 };

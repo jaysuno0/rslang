@@ -12,11 +12,11 @@
 }
 
 .card.hard {
-  border: 10px outset #ffffff;
+  border: 12px outset rgb(204,0,0);
 }
 
 .card.learned {
-  border: 10px outset #f9e084;
+  border: 12px outset #f9e084;
 }
 
 .card__wrapper {

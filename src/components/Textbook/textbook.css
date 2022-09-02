@@ -146,3 +146,12 @@
   align-items: center;
   gap: 8px;
 }
+.textbook__controls_games.disabled {
+  background: transparent;
+}
+.textbook__controls_games.disabled button {
+  cursor: default;
+}
+.textbook__controls_games.disabled button img:hover {
+  background-color: transparent;
+}
