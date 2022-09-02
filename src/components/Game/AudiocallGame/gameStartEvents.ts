@@ -1,9 +1,13 @@
 import { startGame } from './gameStart';
 
-let startBtn: HTMLButtonElement;
+const startKeyHandler = (event: KeyboardEvent) => {
+  const startBtn = document.querySelector('.output__start-btn') as HTMLButtonElement;
+  if (!startBtn) {
+    document.removeEventListener('keydown', startKeyHandler);
+    return;
+  }
 
-const startKeyHandler = (e: KeyboardEvent) => {
-  if (e.code === 'Enter') {
+  if (event.code === 'Enter') {
     startBtn.click();
   }
 };
@@ -13,18 +17,18 @@ export const setStartButtonHandler = (
   group:number,
   page:number,
 ) => {
-  startBtn = document.querySelector('.output__start-btn') as HTMLButtonElement;
+  const startBtn = document.querySelector('.output__start-btn') as HTMLButtonElement;
   const levelSelector = document.querySelector('.output__level') as HTMLSelectElement;
   if (!startBtn || !levelSelector) throw new Error('Error in HTML');
 
   startBtn.addEventListener('click', () => {
-    document.removeEventListener('keyup', startKeyHandler);
+    document.removeEventListener('keydown', startKeyHandler);
     const level = isDisabledLevelSelection ? page : parseInt(levelSelector.value, 10);
     if (Number.isNaN(level)) throw new Error('Error in HTML');
     startGame(isDisabledLevelSelection, level, page);
   });
 
-  document.addEventListener('keyup', startKeyHandler);
+  document.addEventListener('keydown', startKeyHandler);
 };
 
 export default setStartButtonHandler;
