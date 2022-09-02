@@ -45,7 +45,7 @@
   padding: .25rem;
   border-radius: .25rem;
   background-color: #F9E084;
-  transition: .3s ease;
+  transition: .2s ease;
 }
 
 .output__btn:hover,
@@ -53,6 +53,13 @@
 .game-frame__btn:hover,
 .game-frame__audio-btn:hover {
   box-shadow: 0px 0px 15px #885024;
+}
+
+.output__btn:active,
+.output__level:active,
+.game-frame__btn:active,
+.game-frame__audio-btn:active {
+  box-shadow: none;
 }
 
 .output__game-frame {
@@ -87,27 +94,40 @@
   gap: 25px;
 }
 
-.game-frame__answer:hover {
+.game-frame__answer {
   transition: .2s ease;
-  cursor: pointer;
 }
 
 .game-frame__answer:hover {
   color: #F9E084;
+  cursor: pointer;
 }
+
+.game-frame__green-answer {
+  color: #5eac24;
+}
+
+.game-frame__red-answer {
+  color: rgba(204,0,0,1);
+}
+
 
 .game-frame__audio-btn {
   width: fit-content;
   height: 2rem;
   padding: .25rem;
-  padding-top: .5rem;
   border-radius: .25rem;
   background-color: #F9E084;
-  transition: .3s ease;
 }
 
 .game-frame__audio-btn.big {
   width: 10rem;
   height: 10rem;
+  padding-top: .5rem;
   border-radius: 5rem;
+  transition: .2s ease;
+}
+
+.game-frame__audio-btn:hover {
+  transition: .2s ease;
 }

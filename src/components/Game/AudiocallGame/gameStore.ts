@@ -6,6 +6,8 @@ interface IStore {
   result: Array<boolean>;
   answers: Array<string>;
   currentWord: number;
+  isAnswered: boolean;
+  isEventsDisabled: boolean;
   appOutput: HTMLDivElement;
   audio: HTMLAudioElement;
 }
@@ -16,6 +18,8 @@ const store: IStore = {
   result: [],
   answers: [],
   currentWord: 0,
+  isAnswered: false,
+  isEventsDisabled: false,
   audio: new Audio(),
   appOutput: document.createElement('div'),
 };

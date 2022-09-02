@@ -1,6 +1,6 @@
 import './audiocallGame.css';
 import { renderIntro } from './render';
-import { setStartButtonHandler } from './events';
+import { setStartButtonHandler } from './gameStartEvents';
 import { footerHidden } from '../footerHidden';
 import store from './gameStore';
 

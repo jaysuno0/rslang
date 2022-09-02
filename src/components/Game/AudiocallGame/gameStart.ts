@@ -2,7 +2,8 @@ import { getWords } from '../../Api/wordsApi';
 import { getRandomNumber, getRandomOrder } from './utils';
 import { renderWordsLoading, renderErrMsg } from './render';
 import store from './gameStore';
-import showGameFrame from './gameFrame';
+import { showGameFrame } from './gameFrame';
+import { setGameFrameHandlers } from './gameFrameEvents';
 
 const PAGES = 29;
 
@@ -24,7 +25,7 @@ export const startGame = async (
   store.words = wordsResp.words;
   store.order = getRandomOrder(wordsResp.words.length);
   showGameFrame();
-  // setGameFrameHandlers();
+  setGameFrameHandlers();
 };
 
 export default startGame;
