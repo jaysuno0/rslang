@@ -3,6 +3,7 @@ import './img/next-page.svg';
 import './img/previous-page.svg';
 
 import Word from './Word/Word';
+import { gameFromBook } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
 import state from '../../state';
 import textbookState from './textbookState';
 import { getWords, IWord } from '../Api/wordsApi';
@@ -102,9 +103,11 @@ const Textbook: ITextbook = {
 
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
-    sprintGameBtn.addEventListener('click', () => console.log(`sprint game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
-    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
-
+    
+    sprintGameBtn.addEventListener('click', () => {
+      gameFromBook(this.currentGroup, this.currentPage);
+    });
+    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${this.currentGroup}, page: ${this.currentPage}`));
     return controls;
   },
 
