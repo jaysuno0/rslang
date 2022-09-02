@@ -1,20 +1,39 @@
 import './word.css';
 import '../img/sound.svg';
+import '../img/hard.svg';
+import '../img/learned.svg';
+import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
+import {
+  createUserWord,
+  deleteUserWord,
+  IWordProps,
+  updateUserWord,
+} from '../../Api/userWordsApi';
+import textbookState from '../textbookState';
 
 class Word {
   word: IWord;
+
+  isUserWord: boolean;
 
   base: string;
 
   template: string;
 
   constructor(word: IWord) {
+    this.isUserWord = false;
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
-      <button class="card__sound-btn">
-        <img class="card__sound-btn-image" src="./img/sound.svg" alt="sound icon">
+      <button class="card__btn card__btn_sound btn-sound" title="воспроизвести аудио">
+        <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
+      </button>
+      <button class="card__btn card__btn_hard btn-hard hidden" title="добавить в список сложных">
+        <img class="card__btn-image btn-hard" src="./img/hard.svg" alt="sound icon">
+      </button>
+      <button class="card__btn card__btn_learned btn-learned hidden" title="добавить в список изученных">
+        <img class="card__sound-btn-image btn-learned" src="./img/learned.svg" alt="learned icon">
       </button>
       <img class="card__img" alt="word picture">
       <div class="card__info-wrapper">
@@ -52,7 +71,6 @@ class Word {
     const definitionTranslation = card.querySelector('.card__definition-translation') as HTMLParagraphElement;
     const example = card.querySelector('.card__example') as HTMLParagraphElement;
     const exampleTranslation = card.querySelector('.card__example-translation') as HTMLParagraphElement;
-    const soundBtn = card.querySelector('.card__sound-btn') as HTMLButtonElement;
 
     img.setAttribute('src', this.base + this.word.image);
     word.textContent = this.word.word;
@@ -63,17 +81,92 @@ class Word {
     example.innerHTML = this.word.textExample;
     exampleTranslation.textContent = this.word.textExampleTranslate;
 
-    soundBtn.addEventListener('click', () => {
-      const audioWord = new Audio(`${this.base}${this.word.audio}`);
-      const audioMeaning = new Audio(`${this.base}${this.word.audioMeaning}`);
-      const audioExample = new Audio(`${this.base}${this.word.audioExample}`);
-
-      audioWord.play();
-      audioWord.onended = () => audioMeaning.play();
-      audioMeaning.onended = () => audioExample.play();
-    });
+    this.activateButtons(card);
 
     return card;
+  }
+
+  activateSound() {
+    const audioWord = new Audio(`${this.base}${this.word.audio}`);
+    const audioMeaning = new Audio(`${this.base}${this.word.audioMeaning}`);
+    const audioExample = new Audio(`${this.base}${this.word.audioExample}`);
+
+    audioWord.play();
+    audioWord.onended = () => audioMeaning.play();
+    audioMeaning.onended = () => audioExample.play();
+  }
+
+  setWord(props: IWordProps) {
+    const { word } = this;
+    if (this.isUserWord) {
+      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
+        deleteUserWord(state.userId, state.accessToken, word.id);
+        this.isUserWord = false;
+      } else updateUserWord(state.userId, state.accessToken, word.id, props);
+    } else {
+      createUserWord(state.userId, state.accessToken, word.id, props);
+      this.isUserWord = true;
+    }
+  }
+
+  toggleHard(card: HTMLDivElement) {
+    const wordProps: IWordProps = {
+      difficulty: 'hard',
+      optional: {
+        isLearned: false,
+      },
+    };
+
+    card.classList.toggle('hard');
+    if (card.classList.contains('hard')) {
+      wordProps.optional.isLearned = false;
+      if (card.classList.contains('learned')) {
+        card.classList.remove('learned');
+        textbookState.deleteLearnedWord();
+      }
+    } else wordProps.difficulty = 'easy';
+    this.setWord(wordProps);
+  }
+
+  toggleLearned(card: HTMLDivElement) {
+    const wordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: true,
+      },
+    };
+
+    card.classList.toggle('learned');
+    if (card.classList.contains('learned')) {
+      card.classList.remove('hard');
+      wordProps.optional.isLearned = true;
+      textbookState.addLearnedWord();
+    } else {
+      wordProps.optional.isLearned = false;
+      textbookState.deleteLearnedWord();
+    }
+    this.setWord(wordProps);
+  }
+
+  activateButtons(card: HTMLDivElement) {
+    const hardBtn = card.querySelector('.btn-hard') as HTMLButtonElement;
+    const learnedBtn = card.querySelector('.btn-learned') as HTMLButtonElement;
+
+    if (state.isUserLogged) {
+      hardBtn.classList.remove('hidden');
+      learnedBtn.classList.remove('hidden');
+    }
+
+    card.addEventListener('click', (event) => {
+      const btn = event.target as HTMLElement;
+      if (btn.classList.contains('btn-sound')) {
+        this.activateSound();
+      } else if (btn.classList.contains('btn-hard')) {
+        this.toggleHard(card);
+      } else if (btn.classList.contains('btn-learned')) {
+        this.toggleLearned(card);
+      }
+    });
   }
 }
 
