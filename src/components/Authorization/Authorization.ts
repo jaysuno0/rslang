@@ -158,7 +158,10 @@ const Authorization: IAuthorization = {
     enterBtn.textContent = btnText;
     enterBtn.addEventListener('click', () => this.sendForm());
     document.addEventListener('keypress', (event) => {
-      if (event.code === 'Enter') this.sendForm();
+      if (event.code === 'Enter') {
+        event.preventDefault();
+        this.sendForm();
+      }
     });
   },
 

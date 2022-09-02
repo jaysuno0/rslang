@@ -1,0 +1,106 @@
+.acg__output {
+  display: flex;
+  flex-direction: column;
+}
+
+.output__game-name {
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.acg__output p{
+  padding: 1.5rem;
+  padding-bottom: 0;
+  font-size: 1.5rem;
+}
+
+.output__level-list{
+  padding: 3rem;
+  padding-top: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.output__level-wraper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.output__level {
+  height: 1.75rem;
+  outline: none;
+  border-radius: .25rem;
+  border: none;
+  background-color: #F9E084;
+  transition: .3s ease;
+}
+
+.output__btn, .game-frame__btn {
+  width: fit-content;
+  height: 1.75rem;
+  padding: .25rem;
+  border-radius: .25rem;
+  background-color: #F9E084;
+  transition: .3s ease;
+}
+
+.output__btn:hover,
+.output__level:hover,
+.game-frame__btn:hover,
+.game-frame__audio-btn:hover {
+  box-shadow: 0px 0px 15px #885024;
+}
+
+.output__game-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-frame__word-image {
+  margin-bottom: .5rem;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 3.75rem;
+  background-position: center;
+  background-size: cover;
+}
+
+.game-frame__word-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.game-frame__answers-wrapper {
+  padding: 25px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.game-frame__answers-wrapper {
+}
+
+.game-frame__audio-btn {
+  width: fit-content;
+  height: 2rem;
+  padding: .25rem;
+  border-radius: .25rem;
+  background-color: #F9E084;
+  transition: .3s ease;
+}
+
+.game-frame__audio-btn.big {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 5rem;
+}
