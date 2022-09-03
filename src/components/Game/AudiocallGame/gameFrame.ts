@@ -35,13 +35,13 @@ export const showGameFrame = () => {
   store.isEventsDisabled = false;
 };
 
-const markAnswer = (answerIdx: number, style: string) => {
+const markAnswer = (answerIdxs: number[], styles: string[]) => {
   const answers = document.querySelectorAll<HTMLSpanElement>('.game-frame__answer');
 
   if (!answers.length) throw new Error('Error in HTML');
 
   answers.forEach((answer) => answer.classList.remove('game-frame__answer'));
-  answers[answerIdx]?.classList.add(`game-frame__${style}`);
+  answerIdxs.forEach((idx, i) => answers[idx]?.classList.add(`game-frame__${styles[i]}`));
 };
 
 export const setAnswer = (answer = 0) => {
@@ -58,11 +58,14 @@ export const setAnswer = (answer = 0) => {
 
   store.isAnswered = true;
   if (answer === 0) {
-    markAnswer(rightAnswer, GREEN);
+    markAnswer([rightAnswer], [GREEN]);
   } else {
     const userAnswer = answer - 1;
-    const color = userAnswer === rightAnswer ? GREEN : RED;
-    markAnswer(userAnswer, color);
+    if (userAnswer !== rightAnswer) {
+      markAnswer([userAnswer, rightAnswer], [RED, GREEN]);
+    } else {
+      markAnswer([rightAnswer], [GREEN]);
+    }
   }
   nextBtn.innerHTML = 'Дальше &#9658;';
   audioBtn.classList.remove('big');
