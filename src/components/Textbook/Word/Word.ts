@@ -7,10 +7,23 @@ import { IWord } from '../../Api/wordsApi';
 import {
   createUserWord,
   deleteUserWord,
+  getUserWord,
   IWordProps,
   updateUserWord,
+  IUserWordResp,
 } from '../../Api/userWordsApi';
 import textbookState from '../textbookState';
+
+function createWordState():IWordProps {
+  const newWordState: IWordProps = {
+    difficulty: 'easy',
+    optional: {
+      isLearned: false,
+    },
+  };
+
+  return newWordState;
+}
 
 class Word {
   word: IWord;
@@ -96,56 +109,54 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
-  setWord(props: IWordProps) {
-    const { word } = this;
-    if (this.isUserWord) {
-      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
-        deleteUserWord(state.userId, state.accessToken, word.id);
-        this.isUserWord = false;
-      } else updateUserWord(state.userId, state.accessToken, word.id, props);
-    } else {
-      createUserWord(state.userId, state.accessToken, word.id, props);
-      this.isUserWord = true;
-    }
+  updateOrDelete(props: IWordProps) {
+    const { id } = this.word;
+    if (props.difficulty === 'easy' && props.optional.isLearned === false) {
+      deleteUserWord(state.userId, state.accessToken, id);
+      this.isUserWord = false;
+    } else updateUserWord(state.userId, state.accessToken, id, props);
   }
 
-  toggleHard(card: HTMLDivElement) {
-    const wordProps: IWordProps = {
-      difficulty: 'hard',
-      optional: {
-        isLearned: false,
-      },
-    };
-
+  async toggleHard(card: HTMLDivElement) {
+    if (card.classList.contains('learned')) textbookState.deleteLearnedWord();
     card.classList.toggle('hard');
-    if (card.classList.contains('hard')) {
-      wordProps.optional.isLearned = false;
-      if (card.classList.contains('learned')) {
+    const newWordState = createWordState();
+
+    if (this.isUserWord) {
+      const resp: IUserWordResp = await getUserWord(state.userId, state.accessToken, this.word.id);
+      newWordState.optional = resp.userWord.optional;
+      if (card.classList.contains('hard')) {
         card.classList.remove('learned');
-        textbookState.deleteLearnedWord();
+        newWordState.optional.isLearned = false;
+        newWordState.difficulty = 'hard';
       }
-    } else wordProps.difficulty = 'easy';
-    this.setWord(wordProps);
+      this.updateOrDelete(newWordState);
+    } else {
+      if (card.classList.contains('hard')) newWordState.difficulty = 'hard';
+      this.isUserWord = true;
+      createUserWord(state.userId, state.accessToken, this.word.id, newWordState);
+    }
   }
 
-  toggleLearned(card: HTMLDivElement) {
-    const wordProps: IWordProps = {
-      difficulty: 'easy',
-      optional: {
-        isLearned: true,
-      },
-    };
-
+  async toggleLearned(card: HTMLDivElement) {
     card.classList.toggle('learned');
-    if (card.classList.contains('learned')) {
-      card.classList.remove('hard');
-      wordProps.optional.isLearned = true;
-      textbookState.addLearnedWord();
+    textbookState.setLearnedWords(card);
+    const newWordState = createWordState();
+
+    if (this.isUserWord) {
+      const resp: IUserWordResp = await getUserWord(state.userId, state.accessToken, this.word.id);
+      newWordState.optional = resp.userWord.optional;
+      if (card.classList.contains('learned')) {
+        card.classList.remove('hard');
+        newWordState.optional.isLearned = true;
+        newWordState.difficulty = 'easy';
+      } else newWordState.optional.isLearned = false;
+      this.updateOrDelete(newWordState);
     } else {
-      wordProps.optional.isLearned = false;
-      textbookState.deleteLearnedWord();
+      if (card.classList.contains('learned')) newWordState.optional.isLearned = true;
+      this.isUserWord = true;
+      createUserWord(state.userId, state.accessToken, this.word.id, newWordState);
     }
-    this.setWord(wordProps);
   }
 
   activateButtons(card: HTMLDivElement) {
