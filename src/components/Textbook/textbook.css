@@ -1,4 +1,6 @@
 .textbook {
+  align-self: flex-start;
+  width: 100%;
   padding-top: 2px;
   padding-bottom: 30px;
 }
@@ -23,6 +25,7 @@
   position: sticky;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 3;
 }
 .textbook__controls-wrapper{
