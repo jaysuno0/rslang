@@ -18,6 +18,10 @@
 .textbook__hard-level-img {
   width: 27px;
 }
+.textbook__message {
+  padding: 3rem 0px;
+  font-size: 25px;
+}
 
 
 /*** textbook controls ***/

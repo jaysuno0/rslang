@@ -157,6 +157,11 @@ const Textbook: ITextbook = {
         words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
       }
       this.addCardsToPage(words);
+
+      if (isHard && words.length === 0) {
+        const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
+        cardsWrapper.innerHTML = '<p class="textbook__message">Вы ещё не отметили ни одно слово, как сложное :)</p>';
+      }
     } else {
       const words = await getWords(textbookState.currentGroup, textbookState.currentPage);
       this.addCardsToPage(words.words);
