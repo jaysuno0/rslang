@@ -9,16 +9,15 @@ import state from '../../state';
 import textbookState from './textbookState';
 import { getWords, IWord } from '../Api/wordsApi';
 import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../Api/userAggregatedWords';
-import { getUserWords } from '../Api/userWordsApi';
 
 interface ITextbook {
   templateControls: string;
 
   create: () => void;
   createControls: () => HTMLDivElement;
+  getWords: (isHard: boolean) => void;
   addCardsToPage: (words: IWord[]) => void;
-  setPage: (level: number, pageNumber: number) => void;
-  getHardWordsIds: () => void;
+  setPage: (level: number, page: number) => void;
   nextPage: () => void;
   previousPage: () => void;
   setCardState: (wordData: Word, card: HTMLDivElement) => void;
@@ -142,10 +141,26 @@ const Textbook: ITextbook = {
     });
   },
 
-  async getHardWordsIds() {
-    const allUserWords = (await getUserWords(state.userId, state.accessToken)).userWords;
-    const wordIds = allUserWords.filter((word) => word.difficulty === 'hard').map((word) => word.id);
-    return wordIds;
+  async getWords(isHard: boolean) {
+    if (state.isUserLogged) {
+      let words: IWord[];
+      const params: IWordsParams = {
+        wordsPerPage: textbookState.wordsPerPage,
+      };
+
+      if (isHard) {
+        params.filter = GET_HARD;
+        words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
+      } else {
+        params.group = textbookState.currentGroup;
+        params.page = textbookState.currentPage;
+        words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
+      }
+      this.addCardsToPage(words);
+    } else {
+      const words = await getWords(textbookState.currentGroup, textbookState.currentPage);
+      this.addCardsToPage(words.words);
+    }
   },
 
   setPage(level, pageNumber) {
@@ -154,39 +169,17 @@ const Textbook: ITextbook = {
     textbookState.learnedWordsNumber = 0;
     textbookState.toggleGameControls(true);
 
-    const createPage = async (isHard: boolean) => {
-      if (state.isUserLogged) {
-        let words: IWord[];
-        const params: IWordsParams = {
-          wordsPerPage: textbookState.wordsPerPage,
-        };
-
-        if (isHard) {
-          params.filter = GET_HARD;
-          words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
-        } else {
-          params.group = level;
-          params.page = pageNumber;
-          words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
-        }
-        this.addCardsToPage(words);
-      } else {
-        const words = await getWords(level, pageNumber);
-        this.addCardsToPage(words.words);
-      }
-    };
-
     if (Number.isNaN(level)) {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
       textbookState.togglePageControls(false);
-      createPage(true);
+      this.getWords(true);
     } else {
       textbookState.togglePageControls(true);
       textbookState.currentGroup = level;
       textbookState.currentPage = pageNumber;
       pageCounter.textContent = `${textbookState.currentPage + 1}`;
       levelCounter.textContent = `${textbookState.currentGroup + 1}`;
-      createPage(false);
+      this.getWords(false);
     }
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
   },

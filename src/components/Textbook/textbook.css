@@ -93,7 +93,13 @@
 .textbook__btn_level p{
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 5px;
+}
+.textbook__btn_level span{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .textbook__levels-list {
