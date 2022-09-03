@@ -1,6 +1,7 @@
 import './textbook.css';
 import './img/next-page.svg';
 import './img/previous-page.svg';
+import './img/hard-black.svg';
 
 import Word from './Word/Word';
 import { gameFromBook } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
@@ -56,7 +57,7 @@ const Textbook: ITextbook = {
         <li class="textbook__levels-list-item">5</li>
         <li class="textbook__levels-list-item">6</li>
         <li class="textbook__levels-list-item hard-words">
-          <img src="./img/hard.svg" alt="hard icon">
+          <img class="textbook__hard-level-img" src="./img/hard.svg" alt="hard icon">
         </li>
     </ul>`,
 
@@ -107,9 +108,7 @@ const Textbook: ITextbook = {
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
 
-    sprintGameBtn.addEventListener('click', () => {
-      gameFromBook(textbookState.currentGroup, textbookState.currentPage);
-    });
+    sprintGameBtn.addEventListener('click', () => gameFromBook(textbookState.currentGroup, textbookState.currentPage));
     audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
     return controls;
   },
@@ -144,10 +143,8 @@ const Textbook: ITextbook = {
   setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
-    textbookState.currentGroup = level;
-    textbookState.currentPage = pageNumber;
-    pageCounter.textContent = `${textbookState.currentPage + 1}`;
-    levelCounter.textContent = `${textbookState.currentGroup + 1}`;
+    textbookState.learnedWordsNumber = 0;
+    textbookState.toggleGameControls(true);
 
     const createPage = async () => {
       if (state.isUserLogged) {
@@ -164,8 +161,19 @@ const Textbook: ITextbook = {
       }
     };
 
-    localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
-    createPage();
+    if (Number.isNaN(level)) {
+      levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
+      textbookState.togglePageControls(false);
+    } else {
+      textbookState.togglePageControls(true);
+      textbookState.currentGroup = level;
+      textbookState.currentPage = pageNumber;
+      pageCounter.textContent = `${textbookState.currentPage + 1}`;
+      levelCounter.textContent = `${textbookState.currentGroup + 1}`;
+
+      localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
+      createPage();
+    }
   },
 
   nextPage() {

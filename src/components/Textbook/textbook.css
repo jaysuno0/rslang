@@ -13,6 +13,9 @@
   justify-content: center;
   gap: 35px;
 }
+.textbook__hard-level-img {
+  width: 27px;
+}
 
 
 /*** textbook controls ***/
@@ -87,6 +90,11 @@
 .textbook__btn_level:hover {
   background: #60c7b6;
 }
+.textbook__btn_level p{
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
 
 .textbook__levels-list {
   width: 100%;
@@ -139,9 +147,6 @@
 .textbook__levels-list-item:hover {
   background-color: #60c7b6;
 }
-.textbook__levels-list-item img {
-  width: 27px;
-}
 
 /* game controls */
 .textbook__controls_games {
@@ -150,12 +155,12 @@
   align-items: center;
   gap: 8px;
 }
-.textbook__controls_games.disabled {
+.textbook__controls.disabled {
   background: transparent;
 }
-.textbook__controls_games.disabled button {
+.textbook__controls.disabled button {
   cursor: default;
 }
-.textbook__controls_games.disabled button img:hover {
+.textbook__controls.disabled button img:hover {
   background-color: transparent;
 }

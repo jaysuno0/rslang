@@ -6,7 +6,12 @@ interface ITextbookState {
 
   addLearnedWord: () => void;
   deleteLearnedWord: () => void;
+<<<<<<< HEAD
   setLearnedWords: (card: HTMLDivElement) => void;
+=======
+  togglePageControls: (enable: boolean) => void;
+  toggleGameControls: (enable: boolean) => void;
+>>>>>>> 9af00a6 (feat: add textbook-controls togglers)
 }
 
 const textbookState: ITextbookState = {
@@ -17,19 +22,43 @@ const textbookState: ITextbookState = {
 
   addLearnedWord() {
     this.learnedWordsNumber += 1;
-    if (this.learnedWordsNumber === this.wordsPerPage) {
-      const gameControls = document.querySelector('.textbook__controls_games') as HTMLDivElement;
-      gameControls.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled', ''));
-      gameControls.classList.add('disabled');
-    }
+    if (this.learnedWordsNumber === this.wordsPerPage) this.toggleGameControls(false);
   },
 
   deleteLearnedWord() {
     if (this.learnedWordsNumber > 0) this.learnedWordsNumber -= 1;
-    if (this.learnedWordsNumber < this.wordsPerPage) {
-      const gameControls = document.querySelector('.textbook__controls_games') as HTMLDivElement;
-      gameControls.querySelectorAll('button').forEach((btn) => btn.removeAttribute('disabled'));
-      gameControls.classList.remove('disabled');
+    if (this.learnedWordsNumber < this.wordsPerPage) this.toggleGameControls(true);
+  },
+
+  togglePageControls(enable) {
+    const previousBtn = document.querySelector('.textbook__btn_previous') as HTMLButtonElement;
+    const nextPageBtn = document.querySelector('.textbook__btn_next') as HTMLButtonElement;
+    const pageControlsWrapper = document.querySelector('.textbook__controls_page') as HTMLDivElement;
+
+    if (enable) {
+      previousBtn.removeAttribute('disabled');
+      nextPageBtn.removeAttribute('disabled');
+      pageControlsWrapper.classList.remove('disabled');
+    } else {
+      pageControlsWrapper.classList.add('disabled');
+      previousBtn.setAttribute('disabled', '');
+      nextPageBtn.setAttribute('disabled', '');
+    }
+  },
+
+  toggleGameControls(enable) {
+    const sparintBtn = document.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
+    const audiocallBtn = document.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
+    const gameControlsWrapper = document.querySelector('.textbook__controls_games') as HTMLDivElement;
+
+    if (enable) {
+      sparintBtn.removeAttribute('disabled');
+      audiocallBtn.removeAttribute('disabled');
+      gameControlsWrapper.classList.remove('disabled');
+    } else {
+      gameControlsWrapper.classList.add('disabled');
+      sparintBtn.setAttribute('disabled', '');
+      audiocallBtn.setAttribute('disabled', '');
     }
   },
 
