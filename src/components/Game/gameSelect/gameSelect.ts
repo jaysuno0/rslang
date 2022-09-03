@@ -75,6 +75,6 @@ export default class GameSelect {
     setupGameSelectButtonListeners({
       [ButtonGameSelectActionsTypes.GameSprint]: () => levelSelect.create(),
       [ButtonGameSelectActionsTypes.GameAudio]: () => { audiocallStart(); },
-   });
+    });
   }
 }

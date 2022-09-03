@@ -8,7 +8,6 @@ import { footerHidden } from '../../footerHidden';
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
-const MAX_ANSWER = 19;
 const RIGHT_ANSWER_SCORE = 10;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
 const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
@@ -222,10 +221,10 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
   }
 
   const answerKeyHandler = (e: KeyboardEvent) => {
-    const yesAnswerButton = document.getElementById('yes');
-    const noAnswerButton = document.getElementById('no');
-    if(!yesAnswerButton || !noAnswerButton) {
-      document.removeEventListener('keyup',answerKeyHandler)
+    const yesButton = document.getElementById('yes');
+    const noButton = document.getElementById('no');
+    if (!yesButton || !noButton) {
+      document.removeEventListener('keyup', answerKeyHandler);
     }
     if (e.code === 'ArrowRight') {
       answerYes();
@@ -233,7 +232,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     if (e.code === 'ArrowLeft') {
       answerNo();
     }
-  }
+  };
   yesAnswerButton?.addEventListener('click', () => {
     answerYes();
   });
@@ -242,7 +241,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     answerNo();
   });
 
-  document.addEventListener('keyup', answerKeyHandler)
+  document.addEventListener('keyup', answerKeyHandler);
 }
 
 function startGame() {
@@ -268,7 +267,10 @@ function startGame() {
       return { ...word, isCorrect, translateToCompare };
     });
     gameScreen.create();
-    fillGameCard(gameWordsState[gameWordsState.length - 1].word, gameWordsState[gameWordsState.length - 1].translateToCompare);
+    fillGameCard(
+      gameWordsState[gameWordsState.length - 1].word,
+      gameWordsState[gameWordsState.length - 1].translateToCompare,
+    );
     timer();
     cardButtonListeners(gameWordsState, gameWordsState.length - 1);
   });
@@ -290,7 +292,10 @@ export async function gameFromBook(level: number, page: number) {
     return { ...word, isCorrect, translateToCompare };
   });
   gameScreen.create();
-  fillGameCard(gameWordsState[gameWordsState.length - 1].word, gameWordsState[gameWordsState.length - 1].translateToCompare);
+  fillGameCard(
+    gameWordsState[gameWordsState.length - 1].word,
+    gameWordsState[gameWordsState.length - 1].translateToCompare,
+  );
   timer();
   cardButtonListeners(gameWordsState, gameWordsState.length - 1);
 }

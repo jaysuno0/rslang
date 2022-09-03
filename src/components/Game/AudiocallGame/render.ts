@@ -5,7 +5,6 @@ const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" vie
   2.079 5.041s-.804 3.75-2.096 5.039l1.25 1.254c1.612-1.608 2.613-3.834 2.616-6.291.005-2.457-.986-4.681-2.595-6.293l-1.254 1.25z"/></svg>
 `;
 
-
 export const renderIntro = (
   appOutput: HTMLDivElement,
   isDisabledLevelSelection: boolean,
@@ -63,11 +62,9 @@ export const renderGameFrame = (
   appOutput: HTMLDivElement,
   word: string,
   imageURL: string,
-  answers: string[]
+  answers: string[],
 ) => {
-  const renderedAnswers = answers.map((str, i) => {
-    return `<span id="answer-${i + 1}" class="game-frame__answer">${i + 1}. ${str}</span>`;
-  }).join('');
+  const renderedAnswers = answers.map((str, i) => `<span id="answer-${i + 1}" class="game-frame__answer">${i + 1}. ${str}</span>`).join('');
   const gameFrame = document.createElement('div');
 
   gameFrame.classList.add('output__game-frame');

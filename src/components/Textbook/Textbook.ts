@@ -103,7 +103,7 @@ const Textbook: ITextbook = {
 
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
-    
+
     sprintGameBtn.addEventListener('click', () => {
       gameFromBook(textbookState.currentGroup, textbookState.currentPage);
     });
