@@ -10,6 +10,15 @@ export interface IWordProps {
   difficulty: string;
   optional: {
     isLearned?: boolean,
+    sprintAnswers?: {
+      right: number,
+      wrong: number,
+    },
+    audiocallAnswers?: {
+      right: number,
+      wrong: number,
+    },
+    rightAnswersInRow?: number,
   };
 }
 

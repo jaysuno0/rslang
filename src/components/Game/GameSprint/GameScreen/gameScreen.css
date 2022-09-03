@@ -40,6 +40,14 @@
    gap: 0.5rem;
 }
 
+.header__point {
+   display: flex;
+   justify-content: center;
+   gap: 0.5rem;
+   width: 1.5rem;
+   height: 1.5rem;
+}
+
 .header__point img{
    width: 1.5rem;
    height: 1.5rem;

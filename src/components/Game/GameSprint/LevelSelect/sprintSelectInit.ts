@@ -3,6 +3,7 @@ import GameScreen from '../GameScreen/GameScreen';
 import ResultScreen from '../GameScreen/ResultScreen';
 import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
+import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
 
 const gameScreen = new GameScreen();
@@ -11,10 +12,18 @@ const MAX_ANSWER = 19;
 const RIGHT_ANSWER_SCORE = 10;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
 const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
+const RIGHT_ANSWER_BONUS_SCORE_0 = '10';
+const RIGHT_ANSWER_BONUS_SCORE_1 = '20';
+const RIGHT_ANSWER_BONUS_SCORE_2 = '30';
+const RIGHT_ANSWER_BONUS_SCORE_3 = '40';
+const BASE = 'https://rslang142-learnwords.herokuapp.com/';
+const RIGHT_ANSWER_AUDIO = new Audio('https://song.nazvonok.ru/song/e9dc/gomer-simpson-woohoo.mp3?id=21179');
+const WRONG_ANSWER_AUDIO = new Audio('https://song.nazvonok.ru/song/9ff2/ugu-filina-korotkoe-uhane-filina.mp3?id=26318');
 
-export let timerId: any;
+let timerId: ReturnType<typeof setTimeout>;
 let totalScore = 0;
 let scoreBonus = 1;
+let rightAnswerBonus = 1;
 let totalWrongAnswer: IWord[] = [];
 let totalRightAnswer: IWord[] = [];
 
@@ -23,21 +32,41 @@ function fillResultTable(wrong: IWord[], right: IWord[]) {
   const wrongCount = document.getElementById('wrongCount');
   const rightWordsContainer = document.getElementById('rightWords');
   const wrongWordsContainer = document.getElementById('wrongWords');
+  if (!wrongWordsContainer) { return; }
+  if (!rightWordsContainer) { return; }
   if (rightCount && wrongCount) {
     rightCount.innerHTML = right.length.toString();
     wrongCount.innerHTML = wrong.length.toString();
+    if (right.length === 0) {
+      rightWordsContainer.innerHTML = 'У тебя нету правильных ответов , старайся лучше в следующий раз';
+    }
+    if (wrong.length === 0) {
+      wrongWordsContainer.innerHTML = 'Отличная работа, ни одной ошибки ';
+    }
     right.forEach((word, i) => {
       const wordContainer = document.createElement('div');
       wordContainer.classList.add('table__word');
       wordContainer.innerHTML = renderRightTable(right, i);
-      rightWordsContainer?.append(wordContainer);
+      rightWordsContainer.append(wordContainer);
+      const audioButton = wordContainer.querySelector('.word__sound');
+      if (!audioButton) { return; }
+      audioButton.addEventListener('click', () => {
+        const audioWord = new Audio(`${BASE}${word.audio}`);
+        audioWord.play();
+      });
     });
 
     wrong.forEach((word, i) => {
       const wordContainer = document.createElement('div');
       wordContainer.classList.add('table__word');
       wordContainer.innerHTML = renderWrongTable(wrong, i);
-      wrongWordsContainer?.append(wordContainer);
+      wrongWordsContainer.append(wordContainer);
+      const audioButton = wordContainer.querySelector('.word__sound');
+      if (!audioButton) { return; }
+      audioButton.addEventListener('click', () => {
+        const audioWord = new Audio(`${BASE}${word.audio}`);
+        audioWord.play();
+      });
     });
   }
 }
@@ -62,24 +91,62 @@ function timer() {
   }
 }
 
+export function clearGameInterval() {
+  clearInterval(timerId);
+}
+
 function removeAnswerClassList(card: HTMLElement, className: string) {
   card.classList.remove(`${className}`);
 }
 
 function rightAnswer(card: HTMLElement) {
   const score = document.getElementById('score__point');
+  const bonusScore = document.getElementById('bonusScore');
+  const bonusIconContainer = document.getElementById('iconContainer');
   if (!score) { return; }
+  if (!bonusScore) { return; }
+  if (!bonusIconContainer) { return; }
 
-  totalScore += (RIGHT_ANSWER_SCORE * scoreBonus);
-  score.innerHTML = `${totalScore}`;
+  RIGHT_ANSWER_AUDIO.play();
 
   card.classList.add(RIGHT_ANSWER_CLASS_NAME);
   setTimeout(() => removeAnswerClassList(card, RIGHT_ANSWER_CLASS_NAME), 200);
+
+  rightAnswerBonus += 1;
+  if (rightAnswerBonus > 3) {
+    bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_1;
+    scoreBonus = 2;
+    bonusIconContainer.innerHTML = renderScoreBonusIcon();
+  }
+  if (rightAnswerBonus > 6) {
+    bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_2;
+    scoreBonus = 3;
+    bonusIconContainer.innerHTML = renderScoreBonusIcon().repeat(2);
+  }
+  if (rightAnswerBonus > 9) {
+    bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_3;
+    scoreBonus = 4;
+    bonusIconContainer.innerHTML = renderScoreBonusIcon().repeat(3);
+  }
+
+  totalScore += (RIGHT_ANSWER_SCORE * scoreBonus);
+  score.innerHTML = `${totalScore}`;
 }
 
 function wrongAnswer(card: HTMLElement) {
+  const bonusScore = document.getElementById('bonusScore');
+  const bonusIconContainer = document.getElementById('iconContainer');
+  if (!bonusScore) { return; }
+  if (!bonusIconContainer) { return; }
+
+  WRONG_ANSWER_AUDIO.play();
+
   card.classList.add(WRONG_ANSWER_CLASS_NAME);
   setTimeout(() => removeAnswerClassList(card, WRONG_ANSWER_CLASS_NAME), 200);
+  scoreBonus = 1;
+  rightAnswerBonus = 1;
+  bonusIconContainer.innerHTML = '';
+  bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_0;
 }
 
 function checkRightAnswer(words: IWord[]) {
@@ -118,7 +185,7 @@ function checkWrongAnswer(words: IWord[]) {
   }
 }
 
-function fillGameCard(word:string, translate: string) {
+export function fillGameCard(word:string, translate: string) {
   const cardWord = document.getElementById('cardWord');
   const cardTranslate = document.getElementById('cardTranslate');
   if (cardWord && cardTranslate) {
@@ -127,7 +194,7 @@ function fillGameCard(word:string, translate: string) {
   }
 }
 
-function cardButtonListeners(words: IWord[], answerCount: number) {
+export function cardButtonListeners(words: IWord[], answerCount: number) {
   let countAnswer = answerCount;
   const yesAnswerButton = document.getElementById('yes');
   const noAnswerButton = document.getElementById('no');
@@ -156,6 +223,7 @@ function cardButtonListeners(words: IWord[], answerCount: number) {
 
 function startGame() {
   totalScore = 0;
+  rightAnswerBonus = 1;
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
@@ -183,3 +251,23 @@ function startGame() {
   });
 }
 export default startGame;
+
+export async function gameFromBook(level: number, page: number) {
+  totalScore = 0;
+  rightAnswerBonus = 1;
+  scoreBonus = 1;
+  totalWrongAnswer = [];
+  totalRightAnswer = [];
+  const gameWords = await (await getWords(level, page)).words;
+  const gameWordsState = gameWords.map((word) => {
+    const isCorrect = Math.round(Math.random());
+    const translateToCompare = isCorrect
+      ? word.wordTranslate
+      : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
+    return { ...word, isCorrect, translateToCompare };
+  });
+  gameScreen.create();
+  fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
+  timer();
+  cardButtonListeners(gameWordsState, MAX_ANSWER);
+}
