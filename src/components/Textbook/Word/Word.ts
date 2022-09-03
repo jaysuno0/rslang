@@ -4,26 +4,14 @@ import '../img/hard.svg';
 import '../img/learned.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
+// import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../../Api/userAggregatedWords';
 import {
   createUserWord,
   deleteUserWord,
-  getUserWord,
   IWordProps,
   updateUserWord,
-  IUserWordResp,
 } from '../../Api/userWordsApi';
 import textbookState from '../textbookState';
-
-function createWordState():IWordProps {
-  const newWordState: IWordProps = {
-    difficulty: 'easy',
-    optional: {
-      isLearned: false,
-    },
-  };
-
-  return newWordState;
-}
 
 class Word {
   word: IWord;
@@ -109,53 +97,61 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
-  updateOrDelete(props: IWordProps) {
-    const { id } = this.word;
-    if (props.difficulty === 'easy' && props.optional.isLearned === false) {
-      deleteUserWord(state.userId, state.accessToken, id);
-      this.isUserWord = false;
-    } else updateUserWord(state.userId, state.accessToken, id, props);
-  }
-
-  async toggleHard(card: HTMLDivElement) {
-    if (card.classList.contains('learned')) textbookState.deleteLearnedWord();
-    card.classList.toggle('hard');
-    const newWordState = createWordState();
-
+  setWord(props: IWordProps) {
+    const { word } = this;
     if (this.isUserWord) {
-      const resp: IUserWordResp = await getUserWord(state.userId, state.accessToken, this.word.id);
-      newWordState.optional = resp.userWord.optional;
-      if (card.classList.contains('hard')) {
-        card.classList.remove('learned');
-        newWordState.optional.isLearned = false;
-        newWordState.difficulty = 'hard';
-      }
-      this.updateOrDelete(newWordState);
+      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
+        deleteUserWord(state.userId, state.accessToken, word.id);
+        this.isUserWord = false;
+      } else updateUserWord(state.userId, state.accessToken, word.id, props);
     } else {
-      if (card.classList.contains('hard')) newWordState.difficulty = 'hard';
+      createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;
-      createUserWord(state.userId, state.accessToken, this.word.id, newWordState);
     }
   }
 
-  async toggleLearned(card: HTMLDivElement) {
-    card.classList.toggle('learned');
-    textbookState.setLearnedWords(card);
-    const newWordState = createWordState();
+  toggleHard(card: HTMLDivElement) {
+    const wordProps: IWordProps = {
+      difficulty: 'hard',
+      optional: {
+        isLearned: false,
+      },
+    };
 
-    if (this.isUserWord) {
-      const resp: IUserWordResp = await getUserWord(state.userId, state.accessToken, this.word.id);
-      newWordState.optional = resp.userWord.optional;
+    card.classList.toggle('hard');
+    if (card.classList.contains('hard')) {
+      wordProps.optional.isLearned = false;
       if (card.classList.contains('learned')) {
-        card.classList.remove('hard');
-        newWordState.optional.isLearned = true;
-        newWordState.difficulty = 'easy';
-      } else newWordState.optional.isLearned = false;
-      this.updateOrDelete(newWordState);
+        card.classList.remove('learned');
+        textbookState.deleteLearnedWord();
+      }
+    } else wordProps.difficulty = 'easy';
+    this.setWord(wordProps);
+  }
+
+  toggleLearned(card: HTMLDivElement) {
+    const wordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: true,
+      },
+    };
+
+    card.classList.toggle('learned');
+    if (card.classList.contains('learned')) {
+      card.classList.remove('hard');
+      wordProps.optional.isLearned = true;
+      textbookState.addLearnedWord();
     } else {
-      if (card.classList.contains('learned')) newWordState.optional.isLearned = true;
-      this.isUserWord = true;
-      createUserWord(state.userId, state.accessToken, this.word.id, newWordState);
+      wordProps.optional.isLearned = false;
+      textbookState.deleteLearnedWord();
+    }
+
+    this.setWord(wordProps);
+    if (textbookState.currentGroup === 6) {
+      card.remove();
+      textbookState.deleteHardWord();
+      // if (textbookState.hardWordsCount > textbookState.wordsPerPage) this.replaceHardWord();
     }
   }
 
@@ -179,6 +175,15 @@ class Word {
       }
     });
   }
+
+  // async replaceHardWord() {
+  //   const params: IWordsParams = {
+  //     wordsPerPage: 1,
+  //     page: textbookState.currentPage + 1,
+  //     filter: GET_HARD,
+  //   };
+  //   const word = await getUserAggregatedWords(state.userId, state.accessToken, params);
+  // }
 }
 
 export default Word;

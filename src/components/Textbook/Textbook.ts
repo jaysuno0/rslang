@@ -16,11 +16,11 @@ interface ITextbook {
   create: () => void;
   createControls: () => HTMLDivElement;
   getWords: (isHard: boolean) => void;
+  setCardState: (wordData: Word, card: HTMLDivElement) => void;
   addCardsToPage: (words: IWord[]) => void;
   setPage: (level: number, page: number) => void;
   nextPage: () => void;
   previousPage: () => void;
-  setCardState: (wordData: Word, card: HTMLDivElement) => void;
 }
 
 const Textbook: ITextbook = {
@@ -147,14 +147,19 @@ const Textbook: ITextbook = {
       let words: IWord[];
       const params: IWordsParams = {
         wordsPerPage: textbookState.wordsPerPage,
+        page: textbookState.currentPage,
       };
 
       if (isHard) {
         params.filter = GET_HARD;
-        words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
+        const response = await getUserAggregatedWords(state.userId, state.accessToken, params);
+        words = response.words;
+        if (response.totalCount) {
+          textbookState.hardWordsCount = response.totalCount;
+        } else textbookState.lastPage = 0;
       } else {
+        textbookState.lastPage = 29;
         params.group = textbookState.currentGroup;
-        params.page = textbookState.currentPage;
         words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
       }
       this.addCardsToPage(words);
@@ -172,26 +177,22 @@ const Textbook: ITextbook = {
   setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
+
     textbookState.learnedWordsNumber = 0;
-    textbookState.toggleGameControls(true);
+    textbookState.currentGroup = level;
+    textbookState.currentPage = pageNumber;
+    pageCounter.textContent = `${textbookState.currentPage + 1}`;
+    levelCounter.textContent = `${textbookState.currentGroup + 1}`;
 
     if (level === 6) {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
-      textbookState.togglePageControls(false);
       this.getWords(true);
-    } else {
-      textbookState.togglePageControls(true);
-      textbookState.currentGroup = level;
-      textbookState.currentPage = pageNumber;
-      pageCounter.textContent = `${textbookState.currentPage + 1}`;
-      levelCounter.textContent = `${textbookState.currentGroup + 1}`;
-      this.getWords(false);
-    }
+    } else this.getWords(false);
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
   },
 
   nextPage() {
-    if (textbookState.currentPage < 29) {
+    if (textbookState.currentPage < textbookState.lastPage) {
       textbookState.currentPage += 1;
       this.setPage(textbookState.currentGroup, textbookState.currentPage);
     } else {
@@ -208,8 +209,8 @@ const Textbook: ITextbook = {
       pageCounter.textContent = `${textbookState.currentPage + 1}`;
       this.setPage(textbookState.currentGroup, textbookState.currentPage);
     } else {
-      textbookState.currentPage = 29;
-      pageCounter.textContent = '30';
+      textbookState.currentPage = textbookState.lastPage;
+      pageCounter.textContent = `${textbookState.lastPage}`;
       this.setPage(textbookState.currentGroup, textbookState.currentPage);
     }
   },

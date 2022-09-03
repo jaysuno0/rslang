@@ -3,15 +3,14 @@ interface ITextbookState {
   currentGroup: number;
   currentPage: number;
   learnedWordsNumber: number;
+  lastPage: number;
+  hardWordsCount: number;
 
   addLearnedWord: () => void;
   deleteLearnedWord: () => void;
-<<<<<<< HEAD
-  setLearnedWords: (card: HTMLDivElement) => void;
-=======
-  togglePageControls: (enable: boolean) => void;
   toggleGameControls: (enable: boolean) => void;
->>>>>>> 9af00a6 (feat: add textbook-controls togglers)
+  countLastPage: () => void;
+  deleteHardWord: () => void;
 }
 
 const textbookState: ITextbookState = {
@@ -19,6 +18,8 @@ const textbookState: ITextbookState = {
   currentGroup: 0,
   currentPage: 0,
   learnedWordsNumber: 0,
+  lastPage: 29,
+  hardWordsCount: 0,
 
   addLearnedWord() {
     this.learnedWordsNumber += 1;
@@ -28,22 +29,6 @@ const textbookState: ITextbookState = {
   deleteLearnedWord() {
     if (this.learnedWordsNumber > 0) this.learnedWordsNumber -= 1;
     if (this.learnedWordsNumber < this.wordsPerPage) this.toggleGameControls(true);
-  },
-
-  togglePageControls(enable) {
-    const previousBtn = document.querySelector('.textbook__btn_previous') as HTMLButtonElement;
-    const nextPageBtn = document.querySelector('.textbook__btn_next') as HTMLButtonElement;
-    const pageControlsWrapper = document.querySelector('.textbook__controls_page') as HTMLDivElement;
-
-    if (enable) {
-      previousBtn.removeAttribute('disabled');
-      nextPageBtn.removeAttribute('disabled');
-      pageControlsWrapper.classList.remove('disabled');
-    } else {
-      pageControlsWrapper.classList.add('disabled');
-      previousBtn.setAttribute('disabled', '');
-      nextPageBtn.setAttribute('disabled', '');
-    }
   },
 
   toggleGameControls(enable) {
@@ -62,9 +47,17 @@ const textbookState: ITextbookState = {
     }
   },
 
-  setLearnedWords(card) {
-    if (card.classList.contains('learned')) this.addLearnedWord();
-    else this.deleteLearnedWord();
+  countLastPage() {
+    textbookState.lastPage = Math.floor(textbookState.hardWordsCount / textbookState.wordsPerPage);
+    if (textbookState.hardWordsCount % textbookState.wordsPerPage === 0) {
+      textbookState.lastPage -= 1;
+    }
+    if (this.hardWordsCount === 0) this.toggleGameControls(false);
+  },
+
+  deleteHardWord() {
+    this.hardWordsCount -= 1;
+    this.countLastPage();
   },
 };
 
