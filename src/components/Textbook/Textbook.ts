@@ -98,10 +98,11 @@ const Textbook: ITextbook = {
     levelsListBtn.addEventListener('click', () => levelsList.classList.toggle('hidden'));
     levelBtns.forEach((btn) => {
       const levelElement = btn.textContent as string;
-      const level = parseInt(levelElement, 10) - 1;
+      let level = parseInt(levelElement, 10) - 1;
 
       btn.addEventListener('click', () => {
         levelsList.classList.toggle('hidden');
+        if (Number.isNaN(level)) level = 6;
         this.setPage(level, 0);
       });
     });
@@ -174,7 +175,7 @@ const Textbook: ITextbook = {
     textbookState.learnedWordsNumber = 0;
     textbookState.toggleGameControls(true);
 
-    if (Number.isNaN(level)) {
+    if (level === 6) {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
       textbookState.togglePageControls(false);
       this.getWords(true);
