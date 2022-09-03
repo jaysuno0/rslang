@@ -30,8 +30,36 @@ const handleBtnsEvent = (event: MouseEvent) => {
   }
 };
 
+const gameFrameKeyHandler = (event: KeyboardEvent) => {
+  const nextBtn = document.querySelector('.game-frame__btn') as HTMLButtonElement;
+  if (!nextBtn) {
+    document.removeEventListener('keydown', gameFrameKeyHandler);
+    return;
+  }
+
+  if (event.code === 'Enter') {
+    nextBtn.click();
+    return;
+  }
+
+  if (event.code === 'Space') {
+    const audioBtn = document.querySelector('.game-frame__audio-btn') as HTMLButtonElement;
+    audioBtn?.click();
+    return;
+  }
+
+  if (event.code.startsWith('Digit')) {
+    const digit = +event.code.slice(5);
+    if ((digit > 0) && (digit <= store.answers.length)) {
+      const answerBtn = document.querySelector(`#answer-${digit}`) as HTMLElement;
+      answerBtn?.click();
+    }
+  }
+};
+
 export const setGameFrameHandlers = () => {
   store.appOutput.addEventListener('click', (event) => handleBtnsEvent(event));
+  document.addEventListener('keydown', gameFrameKeyHandler);
 };
 
 export default setGameFrameHandlers;
