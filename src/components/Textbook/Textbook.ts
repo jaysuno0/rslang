@@ -8,7 +8,8 @@ import { gameFromBook } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
 import state from '../../state';
 import textbookState from './textbookState';
 import { getWords, IWord } from '../Api/wordsApi';
-import { getUserAggregatedWords, IWordsParams } from '../Api/userAggregatedWords';
+import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../Api/userAggregatedWords';
+import { getUserWords } from '../Api/userWordsApi';
 
 interface ITextbook {
   templateControls: string;
@@ -17,6 +18,7 @@ interface ITextbook {
   createControls: () => HTMLDivElement;
   addCardsToPage: (words: IWord[]) => void;
   setPage: (level: number, pageNumber: number) => void;
+  getHardWordsIds: () => void;
   nextPage: () => void;
   previousPage: () => void;
   setCardState: (wordData: Word, card: HTMLDivElement) => void;
@@ -140,21 +142,34 @@ const Textbook: ITextbook = {
     });
   },
 
+  async getHardWordsIds() {
+    const allUserWords = (await getUserWords(state.userId, state.accessToken)).userWords;
+    const wordIds = allUserWords.filter((word) => word.difficulty === 'hard').map((word) => word.id);
+    return wordIds;
+  },
+
   setPage(level, pageNumber) {
     const pageCounter = document.querySelector('.textbook__page') as HTMLParagraphElement;
     const levelCounter = document.querySelector('.textbook__level') as HTMLSpanElement;
     textbookState.learnedWordsNumber = 0;
     textbookState.toggleGameControls(true);
 
-    const createPage = async () => {
+    const createPage = async (isHard: boolean) => {
       if (state.isUserLogged) {
+        let words: IWord[];
         const params: IWordsParams = {
-          group: level,
-          page: pageNumber,
           wordsPerPage: textbookState.wordsPerPage,
         };
-        const words = await getUserAggregatedWords(state.userId, state.accessToken, params);
-        this.addCardsToPage(words.words);
+
+        if (isHard) {
+          params.filter = GET_HARD;
+          words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
+        } else {
+          params.group = level;
+          params.page = pageNumber;
+          words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
+        }
+        this.addCardsToPage(words);
       } else {
         const words = await getWords(level, pageNumber);
         this.addCardsToPage(words.words);
@@ -164,16 +179,16 @@ const Textbook: ITextbook = {
     if (Number.isNaN(level)) {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
       textbookState.togglePageControls(false);
+      createPage(true);
     } else {
       textbookState.togglePageControls(true);
       textbookState.currentGroup = level;
       textbookState.currentPage = pageNumber;
       pageCounter.textContent = `${textbookState.currentPage + 1}`;
       levelCounter.textContent = `${textbookState.currentGroup + 1}`;
-
-      localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
-      createPage();
+      createPage(false);
     }
+    localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
   },
 
   nextPage() {
