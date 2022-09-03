@@ -198,7 +198,8 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
   let countAnswer = answerCount;
   const yesAnswerButton = document.getElementById('yes');
   const noAnswerButton = document.getElementById('no');
-  yesAnswerButton?.addEventListener('click', () => {
+
+  function answerYes() {
     if (countAnswer > 0) {
       checkRightAnswer(words);
       fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
@@ -207,18 +208,41 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
       checkRightAnswer(words);
       endGame();
     }
+  }
+
+  function answerNo() {
+    if (countAnswer > 0) {
+      checkWrongAnswer(words);
+      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
+      countAnswer -= 1;
+    } else {
+      checkWrongAnswer(words);
+      endGame();
+    }
+  }
+
+  const answerKeyHandler = (e: KeyboardEvent) => {
+    const yesAnswerButton = document.getElementById('yes');
+    const noAnswerButton = document.getElementById('no');
+    if(!yesAnswerButton || !noAnswerButton) {
+      document.removeEventListener('keyup',answerKeyHandler)
+    }
+    if (e.code === 'ArrowRight') {
+      answerYes();
+    }
+    if (e.code === 'ArrowLeft') {
+      answerNo();
+    }
+  }
+  yesAnswerButton?.addEventListener('click', () => {
+    answerYes();
   });
 
   noAnswerButton?.addEventListener('click', () => {
-    if (countAnswer > 0) {
-      checkWrongAnswer(words);
-      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
-      countAnswer -= 1;
-    } else {
-      checkWrongAnswer(words);
-      endGame();
-    }
+    answerNo();
   });
+
+  document.addEventListener('keyup', answerKeyHandler)
 }
 
 function startGame() {
@@ -240,14 +264,13 @@ function startGame() {
       const isCorrect = Math.round(Math.random());
       const translateToCompare = isCorrect
         ? word.wordTranslate
-        : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
+        : gameWords[Math.floor(Math.random() * (gameWords.length - 1)) + 1].wordTranslate;
       return { ...word, isCorrect, translateToCompare };
     });
-
     gameScreen.create();
-    fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
+    fillGameCard(gameWordsState[gameWordsState.length - 1].word, gameWordsState[gameWordsState.length - 1].translateToCompare);
     timer();
-    cardButtonListeners(gameWordsState, MAX_ANSWER);
+    cardButtonListeners(gameWordsState, gameWordsState.length - 1);
   });
 }
 export default startGame;
@@ -263,11 +286,11 @@ export async function gameFromBook(level: number, page: number) {
     const isCorrect = Math.round(Math.random());
     const translateToCompare = isCorrect
       ? word.wordTranslate
-      : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
+      : gameWords[Math.floor(Math.random() * (gameWords.length - 1)) + 1].wordTranslate;
     return { ...word, isCorrect, translateToCompare };
   });
   gameScreen.create();
-  fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
+  fillGameCard(gameWordsState[gameWordsState.length - 1].word, gameWordsState[gameWordsState.length - 1].translateToCompare);
   timer();
-  cardButtonListeners(gameWordsState, MAX_ANSWER);
+  cardButtonListeners(gameWordsState, gameWordsState.length - 1);
 }
