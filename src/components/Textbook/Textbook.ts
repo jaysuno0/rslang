@@ -55,6 +55,9 @@ const Textbook: ITextbook = {
         <li class="textbook__levels-list-item">4</li>
         <li class="textbook__levels-list-item">5</li>
         <li class="textbook__levels-list-item">6</li>
+        <li class="textbook__levels-list-item hard-words">
+          <img src="./img/hard.svg" alt="hard icon">
+        </li>
     </ul>`,
 
   create() {

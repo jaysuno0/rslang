@@ -133,10 +133,14 @@
   background-color: #ff6549;
 }
 .textbook__levels-list-item:nth-child(7) {
-  background-color: #ff3a16;
+  padding: 4px 7px 2px 7px;
+  background-color: #000;
 }
 .textbook__levels-list-item:hover {
   background-color: #60c7b6;
+}
+.textbook__levels-list-item img {
+  width: 27px;
 }
 
 /* game controls */
