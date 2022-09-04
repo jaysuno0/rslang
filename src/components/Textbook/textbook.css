@@ -135,6 +135,9 @@
   border-radius: 20px;
   transition: 200ms;
 }
+.textbook__levels-list-item.hidden {
+  display: none;
+}
 .textbook__levels-list-item:nth-child(1) {
   background-color: #ffeacb;
 }
