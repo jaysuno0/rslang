@@ -59,16 +59,16 @@ export default class AboutTeamRender {
               <div class="card__list">
                 <ul>
                   <li class="card__list-item">
-                    <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <img src="./img/tick.svg" alt="tick">
+                    <p>Полностью организовал всю работу с бэкэндом.</p>
                   </li>
                   <li class="card__list-item">
-                    <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <img src="./img/tick.svg" alt="tick">
+                    <p>Создатель игры Аудиовызов</p>
                   </li>
                   <li class="card__list-item">
-                    <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <img src="./img/tick.svg" alt="tick">
+                    <p>Построил API для общения с данными.</p>
                   </li>
                 </ul>
               </div>
