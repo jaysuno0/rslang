@@ -1,30 +1,35 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { IWord } from '../../Api/wordsApi';
 
 interface IStore {
   words: Array<IWord>;
   order: Array<number>;
-  result: Array<boolean>;
   answers: Array<string>;
   currentWord: number;
   isAnswered: boolean;
   isEventsDisabled: boolean;
   appOutput: HTMLDivElement;
-  audio: HTMLAudioElement;
+  audio: Array<HTMLAudioElement>;
+  rightAnswerIdxs: Array<number>;
+  wrongAnswerIdxs: Array<number>;
+  startGame: (isStartedFromTextbook: boolean, group: number, page: number) => void;
 }
 
 const store: IStore = {
   words: [],
   order: [],
-  result: [],
   answers: [],
   currentWord: 0,
   isAnswered: false,
   isEventsDisabled: false,
-  audio: new Audio(),
+  audio: [],
   appOutput: document.createElement('div'),
+  rightAnswerIdxs: [],
+  wrongAnswerIdxs: [],
+  startGame: (isStartedFromTextbook = false, group = 1, page = 1) => {},
 };
 
 store.appOutput.classList.add('acg__output');
-store.audio.addEventListener('canplaythrough', () => { store.audio.play(); });
 
 export default store;
+/* eslint-enable @typescript-eslint/no-unused-vars */

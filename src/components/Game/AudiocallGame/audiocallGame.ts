@@ -18,7 +18,8 @@ const audiocallStart = (isStartedFromTextbook = false, group = 1, page = 1) => {
   footerHidden();
   screen.innerHTML = '';
   screen.append(store.appOutput);
-  showIntro(isStartedFromTextbook, group, page);
+  store.startGame = showIntro;
+  store.startGame(isStartedFromTextbook, group, page);
 };
 
 export default audiocallStart;

@@ -1,3 +1,5 @@
+import { IWord } from '../../Api/wordsApi';
+
 const icon = `<svg class="audio-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
   <path class="audio-btn" d="M5 17h-5v-10h5v10zm2-10v10l9 5v-20l-9 5zm11.008 2.093c.742.743 1.2 1.77 1.198 2.903-.002
   1.133-.462 2.158-1.205 2.9l1.219 1.223c1.057-1.053 1.712-2.511
@@ -84,4 +86,50 @@ export const renderGameFrame = (
   const output = appOutput;
   output.innerHTML = '';
   output.append(gameFrame);
+};
+
+const renderWord = (id: number, word: string, translate: string) => `
+  <div class="words-list__word-wrapper">
+    <button id="${id}" class="words-list__audio-btn audio-btn">${icon}</button>
+    <span class="words-list__word">${word}</span>
+    <span class="words-list__translate">  -  ${translate}</span>
+  </div>
+`;
+
+export const renderGameResult = (
+  appOutput: HTMLDivElement,
+  resultMsg: string,
+  rightAnswerIdxs: number[],
+  wrongAnswerIdxs: number[],
+  words: IWord[],
+) => {
+  const gameResult = document.createElement('div');
+  const renderedRightWords = rightAnswerIdxs.map((idx) => renderWord(
+    idx,
+    words[idx].word,
+    words[idx].wordTranslate,
+  )).join('');
+  const renderedWrongWords = wrongAnswerIdxs.map((idx) => renderWord(
+    idx,
+    words[idx].word,
+    words[idx].wordTranslate,
+  )).join('');
+
+  gameResult.classList.add('output__game-result');
+  gameResult.innerHTML = `
+    <div class="game-result__board">
+      <h1 class="game-result__result-message">${resultMsg}</h1>
+      <h1 class="game-result__i-know">Я ЗНАЮ: ${rightAnswerIdxs.length}</h1>
+      ${renderedRightWords}
+      <h1 class="game-result__errors">ОШИБКИ: ${wrongAnswerIdxs.length}</h1>
+      ${renderedWrongWords}
+    </div>
+    <div class="game-result__btn-wrapper">
+    <button class="game-result__btn try-again-btn">Играть ещё</button>
+    <button class="game-result__btn select-game-btn">Выбор игр</button>
+    </div>
+  `;
+  const output = appOutput;
+  output.innerHTML = '';
+  output.append(gameResult);
 };

@@ -24,7 +24,12 @@ const generateAnswers = (answersNumber: number) => {
 export const showGameFrame = () => {
   store.isEventsDisabled = true;
   generateAnswers(Math.min(MAX_ANSWERS_NUM, store.words.length));
-  store.audio.src = `${BASE_URL}/${store.words[store.order[store.currentWord]].audio}`;
+  store.audio[store.order[store.currentWord]] = new Audio();
+  store.audio[store.order[store.currentWord]].src = `${BASE_URL}/${store.words[store.order[store.currentWord]].audio}`;
+  store.audio[store.order[store.currentWord]].addEventListener(
+    'canplaythrough',
+    (event) => { (event.target as HTMLAudioElement)?.play(); },
+  );
   renderGameFrame(
     store.appOutput,
     store.words[store.order[store.currentWord]].word,
@@ -59,12 +64,15 @@ export const setAnswer = (answer = 0) => {
   store.isAnswered = true;
   if (answer === 0) {
     markAnswer([rightAnswer], [GREEN]);
+    store.wrongAnswerIdxs.push(store.order[store.currentWord]);
   } else {
     const userAnswer = answer - 1;
     if (userAnswer !== rightAnswer) {
       markAnswer([userAnswer, rightAnswer], [RED, GREEN]);
+      store.wrongAnswerIdxs.push(store.order[store.currentWord]);
     } else {
       markAnswer([rightAnswer], [GREEN]);
+      store.rightAnswerIdxs.push(store.order[store.currentWord]);
     }
   }
   nextBtn.innerHTML = 'Дальше &#9658;';
