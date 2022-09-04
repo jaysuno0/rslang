@@ -85,7 +85,7 @@ const Authorization: IAuthorization = {
     `<div class="authorization__wrapper">
       <form class="authorization__form">
         <p class="authorization__title"></p>
-        <p class="authorization__msg"></p> 
+        <p class="authorization__msg"></p>
         <div class="authorization__input-wrapper authorization__input-wrapper_nick">
           <label for="name" class="authorization__label">Никнейм</label>
           <input id="name" class="authorization__input" autocomplete="on" type="text" required>
