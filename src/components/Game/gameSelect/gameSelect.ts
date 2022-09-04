@@ -20,7 +20,7 @@ export default class GameSelect {
     <div class="game__wrapper" id="gameSprint">
       <div class="gameAfter game ">
         <div class="game__image">
-          <img src="../img/gameSelectSprint2.png" alt="">
+          <img src="./img/gameSelectSprint2.png" alt="">
         </div>
         <div class="game__name">
           <span>«Спринт» - это тренировка для повторения заученных слов из вашего словаря</span>
@@ -28,7 +28,7 @@ export default class GameSelect {
       </div>
       <div class="gameBefore game">
         <div class="game__image">
-          <img src="../img/gameSelectSprint1.png" alt="">
+          <img src="./img/gameSelectSprint1.png" alt="">
         </div>
         <div class="game__name">
           <span>- СПРИНТ -</span>
@@ -38,7 +38,7 @@ export default class GameSelect {
     <div class="game__wrapper" id="gameAudio">
       <div class="gameAfter game ">
         <div class="game__image">
-          <img src="../img/gameSelectAudio2.svg" alt="">
+          <img src="./img/gameSelectAudio2.svg" alt="">
         </div>
         <div class="game__name">
           <span>Тренировка Аудиовызов улучшает восприятие речи на слух</span>
@@ -46,7 +46,7 @@ export default class GameSelect {
       </div>
       <div class="gameBefore game">
         <div class="game__image">
-          <img src="../img/gameSelectAudio1.svg" alt="">
+          <img src="./img/gameSelectAudio1.svg" alt="">
         </div>
         <div class="game__name">
           <span>- АУДИОВЫЗОВ -</span>

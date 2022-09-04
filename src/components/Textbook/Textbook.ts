@@ -103,8 +103,10 @@ const Textbook: ITextbook = {
 
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
-
+    
     sprintGameBtn.addEventListener('click', () => {
+      console.log(textbookState.currentGroup, textbookState.currentPage , 'HIII');
+      
       gameFromBook(textbookState.currentGroup, textbookState.currentPage);
     });
     audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
