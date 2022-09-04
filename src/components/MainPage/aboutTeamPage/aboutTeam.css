@@ -1,7 +1,13 @@
+.aboutTeam {
+   padding: 1rem;
+   padding-bottom: 2rem;
+}
+
 .aboutTeam__title {
    font-size: 2rem;
    font-weight: 800;
-   margin-bottom: 2rem;
+   padding: 1rem 0px;
+   margin-bottom: 1rem;
 }
 
 .cards {
@@ -12,36 +18,38 @@
 }
 
 .team__card {
-   padding: 0.5rem;
-   width: 15rem;
-   height: 20rem;
+   display: flex;
+   flex-flow: column wrap;
+   justify-content: space-between;
+   width: 370px;
+   max-width: 100%;
+   padding: 20px;
+
    background-color: #f9e084;
    border: 5px solid #885024;
-   border-radius: 10px;
-   transition: 0.3s;
+   border-radius: 20px;
+   transition: 250ms;
 }
 
 .card__header {
    display: flex;
-   justify-content: space-between;
+   gap: 1rem;
    align-items: center;
-   margin-bottom: 1rem;
 }
 .card__image {
-   width: 80px;
-   height: 80px;
-   border: 5px solid #885024;
+   width: 100px;
+   height: 100px;
    border-radius: 50%;
    overflow: hidden;
    display: flex;
    justify-content: center;
-   transition: 0.3s;
+   transition: 250ms;
 }
 
 .card__image img {
    height: 100%;
    width: auto;
-   transition: 0.3s;
+   transition: 250ms;
 }
 
 .card__title {
@@ -56,24 +64,35 @@
 }
 
 .card__list {
-   padding: 1rem;
-   border: 5px solid #885024;
-   border-radius: 10px;
-   margin-bottom: 0.7rem;
+   margin-bottom: auto;
+}
+.card__list {
+   margin-top: 10px;
+}
+.card__list-item {
+   padding: 12px 0px;
+   display: flex;
+   align-items: center;
+   gap: 5px;
+}
+.card__list-item img {
+   width: 20px;
 }
 
 .button__wrapper{
    display: flex;
    justify-content: flex-end;
+   padding: 1rem;
 }
 
 .card__button {
-   width: 5rem;
-   height: 2rem;
+   padding: 10px 30px;
    border-radius: 10px;
    background-color: #885024;
+   color: #f9e084;
    display: flex;
    align-items: center;
    justify-content: center;
-   transition: 0.3s;
+   transition: 250ms;
+   font-size: 18px;
 }
