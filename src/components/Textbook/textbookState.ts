@@ -58,7 +58,6 @@ const textbookState: ITextbookState = {
   deleteHardWord() {
     this.hardWordsCount -= 1;
     this.countLastPage();
-    if (this.hardWordsCount > this.wordsPerPage) console.log('need add word from last page');
   },
 };
 

@@ -117,7 +117,10 @@ const Textbook: ITextbook = {
   addCardsToPage(words) {
     const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
     cardsWrapper.innerHTML = '';
-    words.forEach((wordData) => new Word(wordData));
+    words.forEach((wordData) => {
+      const word = new Word(wordData);
+      word.addCardToPage();
+    });
   },
 
   async getWords(isHard: boolean) {
@@ -140,6 +143,7 @@ const Textbook: ITextbook = {
         params.group = textbookState.currentGroup;
         words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
       }
+      textbookState.countLastPage();
       this.addCardsToPage(words);
 
       if (isHard && words.length === 0) {

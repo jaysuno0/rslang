@@ -11,6 +11,7 @@ import {
   updateUserWord,
 } from '../../Api/userWordsApi';
 import textbookState from '../textbookState';
+import { getUserAggregatedWords, GET_HARD, IWordsParams } from '../../Api/userAggregatedWords';
 
 class Word {
   word: IWord;
@@ -20,6 +21,8 @@ class Word {
   base: string;
 
   template: string;
+
+  card: HTMLDivElement;
 
   constructor(word: IWord) {
     this.isUserWord = false;
@@ -51,6 +54,7 @@ class Word {
           <p class="card__example-translation"></p></p>
         </div>
       </div>`;
+    this.card = this.createCard();
     this.render();
   }
 
@@ -63,7 +67,7 @@ class Word {
   }
 
   render() {
-    const card = this.createCard();
+    const { card } = this;
     const img = card.querySelector('.card__img') as HTMLImageElement;
     const word = card.querySelector('.card__word') as HTMLParagraphElement;
     const transcription = card.querySelector('.card__transcription') as HTMLParagraphElement;
@@ -83,7 +87,6 @@ class Word {
     exampleTranslation.textContent = this.word.textExampleTranslate;
 
     this.activateButtons(card);
-    this.addCardToPage(card);
   }
 
   activateSound() {
@@ -120,10 +123,24 @@ class Word {
     }
   }
 
-  addCardToPage(card: HTMLDivElement) {
+  addCardToPage() {
     const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
-    if (state.isUserLogged) this.setCardState(card);
-    cardsWrapper.append(card);
+    if (state.isUserLogged) this.setCardState(this.card);
+    cardsWrapper.append(this.card);
+  }
+
+  async replaceHardWord() {
+    const params: IWordsParams = {
+      wordsPerPage: 1,
+      page: textbookState.currentPage + 1,
+      filter: GET_HARD,
+    };
+
+    const response = await getUserAggregatedWords(state.userId, state.accessToken, params);
+    if (response.isSuccess && this.isUserWord) {
+      const word = new Word(response.words[0]);
+      word.addCardToPage();
+    }
   }
 
   toggleHard(card: HTMLDivElement) {
@@ -164,10 +181,12 @@ class Word {
     }
 
     this.setWord(wordProps);
+
     if (textbookState.currentGroup === 6) {
       card.remove();
+      if (textbookState.hardWordsCount >= textbookState.wordsPerPage
+      && textbookState.currentPage !== textbookState.lastPage) this.replaceHardWord();
       textbookState.deleteHardWord();
-      // if (textbookState.hardWordsCount > textbookState.wordsPerPage) this.replaceHardWord();
     }
   }
 
