@@ -48,10 +48,10 @@ export const renderIntro = (
   levelSelector.disabled = isDisabledLevelSelection;
 };
 
-export const renderWordsLoading = (appOutput: HTMLDivElement) => {
+export const renderMsg = (appOutput: HTMLDivElement, msg: string) => {
   const output = appOutput;
 
-  output.innerHTML = '<p>Загрузка слов...</p>';
+  output.innerHTML = `<p>${msg}</p>`;
 };
 
 export const renderErrMsg = (appOutput: HTMLDivElement, errMsg: string) => {

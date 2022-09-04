@@ -2,6 +2,7 @@ import store from './gameStore';
 import { getRandomNumber, shuffle } from './utils';
 import { renderGameFrame } from './render';
 import { BASE_URL } from '../../Api/urlApi';
+import { updateGameWord } from './gameWords';
 
 const MAX_ANSWERS_NUM = 5;
 const GREEN = 'green-answer';
@@ -66,16 +67,19 @@ export const setAnswer = (answer = 0) => {
     markAnswer([rightAnswer], [GREEN]);
     store.wrongAnswerIdxs.push(store.order[store.currentWord]);
     store.soundWrong.play();
+    updateGameWord();
   } else {
     const userAnswer = answer - 1;
     if (userAnswer !== rightAnswer) {
       markAnswer([userAnswer, rightAnswer], [RED, GREEN]);
       store.wrongAnswerIdxs.push(store.order[store.currentWord]);
       store.soundWrong.play();
+      updateGameWord();
     } else {
       markAnswer([rightAnswer], [GREEN]);
       store.rightAnswerIdxs.push(store.order[store.currentWord]);
       store.soundRight.play();
+      updateGameWord(true);
     }
   }
   nextBtn.innerHTML = 'Дальше &#9658;';
