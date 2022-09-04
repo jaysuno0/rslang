@@ -13,6 +13,8 @@ interface IStore {
   rightAnswerIdxs: Array<number>;
   wrongAnswerIdxs: Array<number>;
   startGame: (isStartedFromTextbook: boolean, group: number, page: number) => void;
+  soundRight: HTMLAudioElement;
+  soundWrong: HTMLAudioElement;
 }
 
 const store: IStore = {
@@ -27,8 +29,12 @@ const store: IStore = {
   rightAnswerIdxs: [],
   wrongAnswerIdxs: [],
   startGame: (isStartedFromTextbook = false, group = 1, page = 1) => {},
+  soundRight: new Audio(),
+  soundWrong: new Audio(),
 };
 
+store.soundRight.src = 'https://song.nazvonok.ru/song/e9dc/gomer-simpson-woohoo.mp3?id=21179';
+store.soundWrong.src = 'https://song.nazvonok.ru/song/9ff2/ugu-filina-korotkoe-uhane-filina.mp3?id=26318';
 store.appOutput.classList.add('acg__output');
 
 export default store;

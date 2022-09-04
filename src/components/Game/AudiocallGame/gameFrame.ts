@@ -65,14 +65,17 @@ export const setAnswer = (answer = 0) => {
   if (answer === 0) {
     markAnswer([rightAnswer], [GREEN]);
     store.wrongAnswerIdxs.push(store.order[store.currentWord]);
+    store.soundWrong.play();
   } else {
     const userAnswer = answer - 1;
     if (userAnswer !== rightAnswer) {
       markAnswer([userAnswer, rightAnswer], [RED, GREEN]);
       store.wrongAnswerIdxs.push(store.order[store.currentWord]);
+      store.soundWrong.play();
     } else {
       markAnswer([rightAnswer], [GREEN]);
       store.rightAnswerIdxs.push(store.order[store.currentWord]);
+      store.soundRight.play();
     }
   }
   nextBtn.innerHTML = 'Дальше &#9658;';
