@@ -142,7 +142,6 @@ const Textbook: ITextbook = {
         params.group = textbookState.currentGroup;
         words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
       }
-      textbookState.countLastPage();
       this.addCardsToPage(words);
 
       if (isHard && words.length === 0) {
@@ -153,6 +152,7 @@ const Textbook: ITextbook = {
       const words = await getWords(textbookState.currentGroup, textbookState.currentPage);
       this.addCardsToPage(words.words);
     }
+    textbookState.countLastPage();
   },
 
   setPage(level, pageNumber) {
@@ -169,6 +169,8 @@ const Textbook: ITextbook = {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
       this.getWords(true);
     } else this.getWords(false);
+
+    textbookState.toggleGameControls(true);
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
   },
 

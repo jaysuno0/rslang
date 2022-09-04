@@ -48,11 +48,16 @@ const textbookState: ITextbookState = {
   },
 
   countLastPage() {
-    textbookState.lastPage = Math.floor(textbookState.hardWordsCount / textbookState.wordsPerPage);
-    if (textbookState.hardWordsCount % textbookState.wordsPerPage === 0) {
-      textbookState.lastPage -= 1;
+    if (this.currentGroup !== 6) this.lastPage = 29;
+    else {
+      textbookState.lastPage = Math
+        .floor(textbookState.hardWordsCount / textbookState.wordsPerPage);
+      if (textbookState.hardWordsCount
+        && textbookState.hardWordsCount % textbookState.wordsPerPage === 0) {
+        textbookState.lastPage -= 1;
+      }
+      if (this.hardWordsCount === 0) this.toggleGameControls(false);
     }
-    if (this.hardWordsCount === 0) this.toggleGameControls(false);
   },
 
   deleteHardWord() {
