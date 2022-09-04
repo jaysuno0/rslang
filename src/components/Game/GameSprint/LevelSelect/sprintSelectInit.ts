@@ -1,15 +1,19 @@
 import { getWords, IWord } from '../../../Api/wordsApi';
+import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../../../Api/userAggregatedWords';
 import GameScreen from '../GameScreen/GameScreen';
 import ResultScreen from '../GameScreen/ResultScreen';
 import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
+import { renderWordsLoading } from '../../AudiocallGame/render';
+import state from '../../../../state';
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
-const MAX_ANSWER = 19;
 const RIGHT_ANSWER_SCORE = 10;
+const WORDS_PER_PAGE = 20;
+const HARD_GROUP = 7;
 const RIGHT_ANSWER_CLASS_NAME = 'rightAnswer';
 const WRONG_ANSWER_CLASS_NAME = 'wrongAnswer';
 const RIGHT_ANSWER_BONUS_SCORE_0 = '10';
@@ -107,6 +111,7 @@ function rightAnswer(card: HTMLElement) {
   if (!bonusScore) { return; }
   if (!bonusIconContainer) { return; }
 
+  RIGHT_ANSWER_AUDIO.volume = 0.3;
   RIGHT_ANSWER_AUDIO.play();
 
   card.classList.add(RIGHT_ANSWER_CLASS_NAME);
@@ -139,6 +144,7 @@ function wrongAnswer(card: HTMLElement) {
   if (!bonusScore) { return; }
   if (!bonusIconContainer) { return; }
 
+  WRONG_ANSWER_AUDIO.volume = 0.3;
   WRONG_ANSWER_AUDIO.play();
 
   card.classList.add(WRONG_ANSWER_CLASS_NAME);
@@ -198,7 +204,8 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
   let countAnswer = answerCount;
   const yesAnswerButton = document.getElementById('yes');
   const noAnswerButton = document.getElementById('no');
-  yesAnswerButton?.addEventListener('click', () => {
+
+  function answerYes() {
     if (countAnswer > 0) {
       checkRightAnswer(words);
       fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
@@ -207,18 +214,62 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
       checkRightAnswer(words);
       endGame();
     }
+  }
+
+  function answerNo() {
+    if (countAnswer > 0) {
+      checkWrongAnswer(words);
+      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
+      countAnswer -= 1;
+    } else {
+      checkWrongAnswer(words);
+      endGame();
+    }
+  }
+
+  const answerKeyHandler = (e: KeyboardEvent) => {
+    const yesButton = document.getElementById('yes');
+    const noButton = document.getElementById('no');
+    if (!yesButton || !noButton) {
+      document.removeEventListener('keyup', answerKeyHandler);
+    }
+    if (e.code === 'ArrowRight') {
+      answerYes();
+    }
+    if (e.code === 'ArrowLeft') {
+      answerNo();
+    }
+  };
+  yesAnswerButton?.addEventListener('click', () => {
+    answerYes();
   });
 
   noAnswerButton?.addEventListener('click', () => {
-    if (countAnswer > 0) {
-      checkWrongAnswer(words);
-      fillGameCard(words[countAnswer - 1].word, words[countAnswer - 1].translateToCompare);
-      countAnswer -= 1;
-    } else {
-      checkWrongAnswer(words);
-      endGame();
-    }
+    answerNo();
   });
+
+  document.addEventListener('keyup', answerKeyHandler);
+}
+
+const gameWordsState = (words:IWord[]) => {
+  const wordsWithCompare = words.map((word) => {
+    const isCorrect = Math.round(Math.random());
+    const translateToCompare = isCorrect
+      ? word.wordTranslate
+      : words[Math.floor(Math.random() * (words.length - 1)) + 1].wordTranslate;
+    return { ...word, isCorrect, translateToCompare };
+  });
+  return wordsWithCompare;
+};
+
+function initGame(gameWords:IWord[]) {
+  gameScreen.create();
+  fillGameCard(
+    gameWords[gameWords.length - 1].word,
+    gameWords[gameWords.length - 1].translateToCompare,
+  );
+  timer();
+  cardButtonListeners(gameWords, gameWords.length - 1);
 }
 
 function startGame() {
@@ -227,6 +278,7 @@ function startGame() {
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
+  const screen = document.querySelector<HTMLDivElement>('.screen');
   const form = document.querySelector<HTMLSelectElement>('.select__item');
   const startButton = document.querySelector('.start-button');
   const randomPage = Math.floor(Math.random() * (30 - 1)) + 1;
@@ -234,40 +286,101 @@ function startGame() {
   startButton.addEventListener('click', async (e) => {
     e.preventDefault();
     footerHidden();
+    const params: IWordsParams = {
+      group: +form.value - 1,
+      page: randomPage,
+      wordsPerPage: 20,
+    };
+    if (screen) {
+      renderWordsLoading(screen);
+    }
 
-    const gameWords = await (await getWords(+form.value - 1, randomPage)).words;
-    const gameWordsState = gameWords.map((word) => {
-      const isCorrect = Math.round(Math.random());
-      const translateToCompare = isCorrect
-        ? word.wordTranslate
-        : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
-      return { ...word, isCorrect, translateToCompare };
-    });
-
-    gameScreen.create();
-    fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
-    timer();
-    cardButtonListeners(gameWordsState, MAX_ANSWER);
+    if (state.isUserLogged) {
+      const WordsUser = (await getUserAggregatedWords(
+        state.userId,
+        state.accessToken,
+        params,
+      )).words;
+      const gameWordsUser = gameWordsState(WordsUser);
+      initGame(gameWordsUser);
+    } else {
+      const wordsGuest = await (await getWords(+form.value - 1, randomPage)).words;
+      const gameWordsUser = gameWordsState(wordsGuest);
+      initGame(gameWordsUser);
+    }
   });
 }
 export default startGame;
 
+interface IStore {
+  words: Array<IWord>;
+  order: Array<number>;
+  answers: Array<string>;
+  currentWord: number;
+  isAnswered: boolean;
+  isEventsDisabled: boolean;
+
+}
+
+const store: IStore = {
+  words: [],
+  order: [],
+  answers: [],
+  currentWord: 0,
+  isAnswered: false,
+  isEventsDisabled: false,
+};
+
 export async function gameFromBook(level: number, page: number) {
+  let settedPage = page + 1;
   totalScore = 0;
   rightAnswerBonus = 1;
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
-  const gameWords = await (await getWords(level, page)).words;
-  const gameWordsState = gameWords.map((word) => {
-    const isCorrect = Math.round(Math.random());
-    const translateToCompare = isCorrect
-      ? word.wordTranslate
-      : gameWords[Math.floor(Math.random() * (19 - 1)) + 1].wordTranslate;
-    return { ...word, isCorrect, translateToCompare };
-  });
-  gameScreen.create();
-  fillGameCard(gameWordsState[MAX_ANSWER].word, gameWordsState[MAX_ANSWER].translateToCompare);
-  timer();
-  cardButtonListeners(gameWordsState, MAX_ANSWER);
+
+  if (state.isUserLogged) {
+    const params: IWordsParams = {
+      group: level,
+      page: settedPage,
+      wordsPerPage: WORDS_PER_PAGE,
+    };
+
+    if (level === HARD_GROUP) {
+      params.filter = GET_HARD;
+    } else {
+      params.group = level;
+    }
+
+    do {
+      settedPage -= 1;
+      params.page = settedPage;
+      const wordsResp = await getUserAggregatedWords(
+        state.userId,
+        state.accessToken,
+        params,
+      );
+      if (!wordsResp.isSuccess) {
+        return;
+      }
+
+      if (page) {
+        wordsResp.words = wordsResp.words.filter((word) => (!word.userWord)
+        || (!word.userWord.optional)
+        || (!word.userWord.optional.isLearned));
+      }
+      store.words = store.words.concat(wordsResp.words);
+    }
+    while ((settedPage > 0) && (store.words.length < WORDS_PER_PAGE));
+
+    if (store.words.length > WORDS_PER_PAGE) {
+      store.words = store.words.slice(0, WORDS_PER_PAGE);
+    }
+    const gameWordsUser = gameWordsState(store.words);
+    initGame(gameWordsUser);
+  } else {
+    const WordsUser = await (await getWords(level, page)).words;
+    const gameWordsUser = gameWordsState(WordsUser);
+    initGame(gameWordsUser);
+  }
 }

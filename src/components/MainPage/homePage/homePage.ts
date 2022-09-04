@@ -3,6 +3,7 @@ import '../img/homePageBack.png';
 import '../img/homePageBack2.png';
 import '../img/homePageBack3.svg';
 import '../img/homePageStats.png';
+import '../img/favicon.ico';
 
 export default class HomeScreenRender {
   template: string;
@@ -13,19 +14,19 @@ export default class HomeScreenRender {
      <div class="homePage__subtitle">
      <div class="subtitle__content">
        <p class="subtitle__text">Образовательная платформа для изучения и практики аглийского языка, построенная на игровой механике</p>
-       <img src="../img/homePageBack.png" class="subtitle__image" alt="">
+       <img src="./img/homePageBack.png" class="subtitle__image" alt="">
      </div>
      <div class="subtitle__content">
        <p class="subtitle__text">Нескучное онлайн-обучение на компьютере с помощью игр и интересных заданий в любое удобное для вас время</p>
-       <img src="../img/homePageBack3.svg" class="subtitle__image" alt="">
+       <img src="./img/homePageBack3.svg" class="subtitle__image" alt="">
      </div>
      <div class="subtitle__content">
      <p class="subtitle__text">Отказавшись от фразы «У меня нет времени», вы поймете, что у вас есть время фактически для всего, что вы хотите сделать в жизни</p>
-     <img src="../img/homePageBack2.png" class="subtitle__image" alt="">
+     <img src="./img/homePageBack2.png" class="subtitle__image" alt="">
     </div>
     <div class="subtitle__content">
      <p class="subtitle__text">Контролируйте свой прогресс и анализируйте свои успехи при помощи статистики </p>
-     <img src="../img/homePageStats.png" class="subtitle__image" alt="">
+     <img src="./img/homePageStats.png" class="subtitle__image" alt="">
     </div>
    </div>
    <div class="registration">
