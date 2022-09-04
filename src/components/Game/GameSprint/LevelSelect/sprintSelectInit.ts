@@ -260,7 +260,7 @@ const gameWordsState = (words:IWord[]) => {
     return { ...word, isCorrect, translateToCompare };
   });
   return wordsWithCompare;
-}
+};
 
 function initGame(gameWords:IWord[]) {
   gameScreen.create();
@@ -291,18 +291,22 @@ function startGame() {
       page: randomPage,
       wordsPerPage: 20,
     };
-    if (screen) { 
+    if (screen) {
       renderWordsLoading(screen);
     }
 
-    if(state.isUserLogged) {
-      const WordsUser = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
-      const gameWordsUser = gameWordsState(WordsUser)
-      initGame(gameWordsUser)
+    if (state.isUserLogged) {
+      const WordsUser = (await getUserAggregatedWords(
+        state.userId,
+        state.accessToken,
+        params,
+      )).words;
+      const gameWordsUser = gameWordsState(WordsUser);
+      initGame(gameWordsUser);
     } else {
       const wordsGuest = await (await getWords(+form.value - 1, randomPage)).words;
-      const gameWordsUser = gameWordsState(wordsGuest)
-      initGame(gameWordsUser)
+      const gameWordsUser = gameWordsState(wordsGuest);
+      initGame(gameWordsUser);
     }
   });
 }
@@ -327,7 +331,6 @@ const store: IStore = {
   isEventsDisabled: false,
 };
 
-
 export async function gameFromBook(level: number, page: number) {
   let settedPage = page + 1;
   totalScore = 0;
@@ -335,15 +338,14 @@ export async function gameFromBook(level: number, page: number) {
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
-  
-  if(state.isUserLogged) {
 
+  if (state.isUserLogged) {
     const params: IWordsParams = {
       group: level,
       page: settedPage,
       wordsPerPage: WORDS_PER_PAGE,
     };
-  
+
     if (level === HARD_GROUP) {
       params.filter = GET_HARD;
     } else {
@@ -359,18 +361,18 @@ export async function gameFromBook(level: number, page: number) {
         params,
       );
       if (!wordsResp.isSuccess) {
-        return
+        return;
       }
 
-      if(page) {
-        wordsResp.words = wordsResp.words.filter((word) => 
-        (!word.userWord) || (!word.userWord.optional) || (!word.userWord.optional.isLearned)
-        );
+      if (page) {
+        wordsResp.words = wordsResp.words.filter((word) => (!word.userWord)
+        || (!word.userWord.optional)
+        || (!word.userWord.optional.isLearned));
       }
-      store.words = store.words.concat(wordsResp.words)
+      store.words = store.words.concat(wordsResp.words);
     }
     while ((settedPage > 0) && (store.words.length < WORDS_PER_PAGE));
-    
+
     if (store.words.length > WORDS_PER_PAGE) {
       store.words = store.words.slice(0, WORDS_PER_PAGE);
     }
@@ -381,5 +383,4 @@ export async function gameFromBook(level: number, page: number) {
     const gameWordsUser = gameWordsState(WordsUser);
     initGame(gameWordsUser);
   }
-  
 }
