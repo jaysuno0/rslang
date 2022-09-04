@@ -10,6 +10,7 @@ export default class AboutTeamRender {
     this.template = `
           <div class="aboutTeam__title">
           <span>- Our team -</span>
+
           </div>
           <div class="cards">
             <div class="team__card">
