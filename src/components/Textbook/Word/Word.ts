@@ -6,7 +6,7 @@ import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
 import {
   createUserWord,
-  deleteUserWord,
+  getUserWord,
   IWordProps,
   updateUserWord,
 } from '../../Api/userWordsApi';
@@ -99,13 +99,17 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
-  setWord(props: IWordProps) {
+  async setWord(props: IWordProps) {
     const { word } = this;
     if (this.isUserWord) {
-      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
-        deleteUserWord(state.userId, state.accessToken, word.id);
-        this.isUserWord = false;
-      } else updateUserWord(state.userId, state.accessToken, word.id, props);
+      const response = await getUserWord(state.userId, state.accessToken, this.word.id);
+      if (response.isSuccess) {
+        const newProps = props;
+        newProps.difficulty = props.difficulty;
+        newProps.optional = props.optional;
+        updateUserWord(state.userId, state.accessToken, word.id, props);
+      }
+      // deleteUserWord(state.userId, state.accessToken, word.id); => in what cases???
     } else {
       createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;

@@ -8,6 +8,7 @@ import {
   getNewToken,
   IUserResp,
 } from '../Api/userApi';
+import textbookState from '../Textbook/textbookState';
 
 enum AuthorizationTypes {
   loginType = 'Вход',
@@ -292,6 +293,7 @@ const Authorization: IAuthorization = {
     localStorage.clear();
     state.isUserLogged = false;
     this.setScreenMessage('Вы вышли из своего аккаунта :)');
+    if (textbookState.currentGroup === 6) textbookState.currentGroup = 0;
   },
 };
 
