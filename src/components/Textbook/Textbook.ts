@@ -16,7 +16,6 @@ interface ITextbook {
   create: () => void;
   createControls: () => HTMLDivElement;
   getWords: (isHard: boolean) => void;
-  setCardState: (wordData: Word, card: HTMLDivElement) => void;
   addCardsToPage: (words: IWord[]) => void;
   setPage: (level: number, page: number) => void;
   nextPage: () => void;
@@ -115,31 +114,10 @@ const Textbook: ITextbook = {
     return controls;
   },
 
-  setCardState(wordData, card) {
-    const word = wordData;
-    if (word.word.userWord?.difficulty === 'hard') {
-      card.classList.add('hard');
-      word.isUserWord = true;
-    } else if (word.word.userWord?.optional.isLearned) {
-      card.classList.add('learned');
-      textbookState.addLearnedWord();
-      word.isUserWord = true;
-    }
-  },
-
-  addCardsToPage(cards) {
+  addCardsToPage(words) {
     const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
     cardsWrapper.innerHTML = '';
-
-    cards.forEach((wordData) => {
-      const word = new Word(wordData);
-      const card = word.render();
-      cardsWrapper.append(card);
-
-      if (state.isUserLogged) {
-        this.setCardState(word, card);
-      }
-    });
+    words.forEach((wordData) => new Word(wordData));
   },
 
   async getWords(isHard: boolean) {

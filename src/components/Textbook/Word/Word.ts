@@ -4,7 +4,6 @@ import '../img/hard.svg';
 import '../img/learned.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
-// import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../../Api/userAggregatedWords';
 import {
   createUserWord,
   deleteUserWord,
@@ -52,6 +51,7 @@ class Word {
           <p class="card__example-translation"></p></p>
         </div>
       </div>`;
+    this.render();
   }
 
   createCard() {
@@ -83,8 +83,7 @@ class Word {
     exampleTranslation.textContent = this.word.textExampleTranslate;
 
     this.activateButtons(card);
-
-    return card;
+    this.addCardToPage(card);
   }
 
   activateSound() {
@@ -108,6 +107,23 @@ class Word {
       createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;
     }
+  }
+
+  setCardState(card: HTMLDivElement) {
+    if (this.word.userWord?.difficulty === 'hard') {
+      card.classList.add('hard');
+      this.isUserWord = true;
+    } else if (this.word.userWord?.optional.isLearned) {
+      card.classList.add('learned');
+      textbookState.addLearnedWord();
+      this.isUserWord = true;
+    }
+  }
+
+  addCardToPage(card: HTMLDivElement) {
+    const cardsWrapper = document.querySelector('.textbook__cards-wrapper') as HTMLDivElement;
+    if (state.isUserLogged) this.setCardState(card);
+    cardsWrapper.append(card);
   }
 
   toggleHard(card: HTMLDivElement) {
@@ -175,15 +191,6 @@ class Word {
       }
     });
   }
-
-  // async replaceHardWord() {
-  //   const params: IWordsParams = {
-  //     wordsPerPage: 1,
-  //     page: textbookState.currentPage + 1,
-  //     filter: GET_HARD,
-  //   };
-  //   const word = await getUserAggregatedWords(state.userId, state.accessToken, params);
-  // }
 }
 
 export default Word;
