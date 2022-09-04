@@ -26,19 +26,15 @@ export default class AboutTeamRender {
                 <ul>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <p>Создатель учебника.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <p>Прикрутил к проекту авторизацию.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
-                  </li>
-                  <li class="card__list-item">
-                    <img src="./img/tick.svg" alt="tick  ">
-                    <p>lorem ipsum</p>
+                    <p>Занимался организационными вопросами.</p>
                   </li>
                 </ul>
               </div>
@@ -60,7 +56,7 @@ export default class AboutTeamRender {
                 <ul>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick">
-                    <p>Полностью организовал всю работу с бэкэндом.</p>
+                    <p>Полностью организовал работу с бэкэндом.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick">
@@ -90,15 +86,11 @@ export default class AboutTeamRender {
                 <ul>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>Создал нашу уютную главную страницу.</p>
+                    <p>Создал нашу уютную главную страницу и навигацию.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
                     <p>Игра спринт - его рук дело.</p>
-                  </li>
-                  <li class="card__list-item">
-                    <img src="./img/tick.svg" alt="tick  ">
-                    <p>Также является создателем нашей дружелюбной навигации.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
