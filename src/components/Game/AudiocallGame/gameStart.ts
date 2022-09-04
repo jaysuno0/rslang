@@ -10,6 +10,11 @@ export const startGame = async (
   group: number,
   page: number,
 ) => {
+  store.words = [];
+  store.audio = [];
+  store.rightAnswerIdxs = [];
+  store.wrongAnswerIdxs = [];
+  store.currentWord = 0;
   renderMsg(store.appOutput, 'Загрузка слов...');
   await getGameWords(isPageSetted, group, page);
   if (!store.words.length) {
