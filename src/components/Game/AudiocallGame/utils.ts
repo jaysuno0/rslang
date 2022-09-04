@@ -1,4 +1,6 @@
 export const shuffle = <T>(arr: Array<T>) => {
+  if (arr.length < 2) return;
+
   const array = arr;
   let currentIndex = array.length;
   let randomIndex: number;
