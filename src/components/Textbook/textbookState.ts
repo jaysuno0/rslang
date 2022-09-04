@@ -6,6 +6,7 @@ interface ITextbookState {
 
   addLearnedWord: () => void;
   deleteLearnedWord: () => void;
+  setLearnedWords: (card: HTMLDivElement) => void;
 }
 
 const textbookState: ITextbookState = {
@@ -30,6 +31,11 @@ const textbookState: ITextbookState = {
       gameControls.querySelectorAll('button').forEach((btn) => btn.removeAttribute('disabled'));
       gameControls.classList.remove('disabled');
     }
+  },
+
+  setLearnedWords(card) {
+    if (card.classList.contains('learned')) this.addLearnedWord();
+    else this.deleteLearnedWord();
   },
 };
 
