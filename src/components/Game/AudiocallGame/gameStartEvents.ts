@@ -23,7 +23,7 @@ export const setStartButtonHandler = (
 
   startBtn.addEventListener('click', () => {
     document.removeEventListener('keydown', startKeyHandler);
-    const level = isDisabledLevelSelection ? page : parseInt(levelSelector.value, 10);
+    const level = isDisabledLevelSelection ? group : parseInt(levelSelector.value, 10);
     if (Number.isNaN(level)) throw new Error('Error in HTML');
     startGame(isDisabledLevelSelection, level, page);
   });
