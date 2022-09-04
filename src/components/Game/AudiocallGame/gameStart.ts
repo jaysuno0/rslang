@@ -1,29 +1,16 @@
-import { getWords } from '../../Api/wordsApi';
-import { getRandomNumber, getRandomOrder } from './utils';
-import { renderWordsLoading, renderErrMsg } from './render';
+import { getRandomOrder } from './utils';
 import store from './gameStore';
 import { showGameFrame } from './gameFrame';
 import { setGameFrameHandlers } from './gameFrameEvents';
-
-const PAGES = 29;
+import { getGameWords } from './gameWords';
 
 export const startGame = async (
   isPageSetted: boolean,
   group: number,
   page: number,
 ) => {
-  renderWordsLoading(store.appOutput);
-
-  const settedPage = isPageSetted ? page - 1 : getRandomNumber(PAGES);
-  const wordsResp = await getWords(group - 1, settedPage);
-
-  if (!wordsResp.isSuccess) {
-    renderErrMsg(store.appOutput, wordsResp.errMsg);
-    return;
-  }
-
-  store.words = wordsResp.words;
-  store.order = getRandomOrder(wordsResp.words.length);
+  await getGameWords(isPageSetted, group, page);
+  store.order = getRandomOrder(store.words.length);
   showGameFrame();
   setGameFrameHandlers();
 };
