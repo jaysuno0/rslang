@@ -18,6 +18,6 @@ const store: IStore = {
   audio: new Audio(),
 };
 
-store.audio.addEventListener("canplaythrough", (event) => { store.audio.play(); });
+store.audio.addEventListener('canplaythrough', (event) => { store.audio.play(); });
 
 export default store;

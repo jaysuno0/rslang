@@ -6,7 +6,7 @@ import { BASE_URL } from '../../Api/urlApi';
 
 const MAX_ANSWERS_NUM = 5;
 
-const generateAnswers = (answersNumber:  number) => {
+const generateAnswers = (answersNumber: number) => {
   const result: number[] = [store.order[store.currentWord]];
   let answerIdx = store.currentWord;
   let answers: number[] = store.order.slice();
@@ -18,7 +18,7 @@ const generateAnswers = (answersNumber:  number) => {
   }
   shuffle(result);
   result.forEach((x, i) => store.answers[i] = store.words[x].wordTranslate);
-}
+};
 
 const showGameFrame = () => {
   generateAnswers(Math.min(MAX_ANSWERS_NUM, store.words.length));

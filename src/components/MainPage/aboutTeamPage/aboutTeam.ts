@@ -14,7 +14,7 @@ export default class AboutTeamRender {
         <div class="team__card">
           <div class="card__header">
             <div class="card__image">
-              <img src="../img/team2.png" alt="team1" />
+              <img src="./img/team2.png" alt="team1" />
             </div>
             <div class="card__title">
               <div class="card__name">Daniil Kochkin</div>
@@ -43,7 +43,7 @@ export default class AboutTeamRender {
         <div class="team__card">
           <div class="card__header">
             <div class="card__image">
-              <img src="../img/team3.jpg" alt="team1" />
+              <img src="./img/team3.jpg" alt="team1" />
             </div>
             <div class="card__title">
               <div class="card__name">Oleksandr M</div>
@@ -72,7 +72,7 @@ export default class AboutTeamRender {
         <div class="team__card">
           <div class="card__header">
             <div class="card__image">
-              <img src="../img/team1.png" alt="team1" />
+              <img src="./img/team1.png" alt="team1" />
             </div>
             <div class="card__title">
               <div class="card__name">Roman Daniliuk</div>
