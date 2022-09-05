@@ -3,11 +3,12 @@ import '../img/sound.svg';
 import '../img/hard-gold.svg';
 import '../img/hard.svg';
 import '../img/learned.svg';
+import '../img/stats.svg';
+import '../img/close.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
 import {
   createUserWord,
-  getUserWord,
   IWordProps,
   updateUserWord,
 } from '../../Api/userWordsApi';
@@ -30,6 +31,9 @@ class Word {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
+    <button class="card__btn card__btn_stats btn-stats hidden" title="посмотреть статистику">
+        <img class="card__sound-btn-image btn-stats" src="./img/stats.svg" alt="stats icon">
+      </button>
       <button class="card__btn card__btn_sound btn-sound" title="воспроизвести аудио">
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
@@ -54,10 +58,31 @@ class Word {
           <p class="card__example"></p>
           <p class="card__example-translation"></p></p>
         </div>
-      </div>`;
+      </div>
+      <div class="card__stats hidden">
+        <button class="card__btn card__btn_close btn-close">
+          <img class="card__btn-image btn-close" src="./img/close.svg" alt="close icon">
+        </button>
+        <div class="card__stats-wrapper">
+          <p class="card__stats-title">Спринт</p>
+          <div class="card__stats-game card__stats-game_sprint">
+            <p class="card__stats-answer card__stats-answer_right sprint-right">20</p>
+            <p class="card__stats-answer card__stats-answer_wrong sprint-wrong">30</p>
+          </div>
+        </div>
+        <div class="card__stats-wrapper">
+          <p class="card__stats-title">Аудиовызов</p>
+          <div class="card__stats-game card__stats-game_audiocall">
+            <p class="card__stats-answer card__stats-answer_right audiocall-right">5</p>
+            <p class="card__stats-answer card__stats-answer_wrong audiocall-wrong">16</p>
+          </div>
+        </div>
+      </div>
+      `;
     this.setIsUserWord();
     this.card = this.createCard();
     this.render();
+    this.createStats();
   }
 
   createCard() {
@@ -108,13 +133,11 @@ class Word {
   async setWord(props: IWordProps) {
     const { word } = this;
     if (this.isUserWord) {
-      const response = await getUserWord(state.userId, state.accessToken, this.word.id);
-      if (response.isSuccess) {
-        const newProps = props;
-        newProps.difficulty = props.difficulty;
-        newProps.optional = props.optional;
-        updateUserWord(state.userId, state.accessToken, word.id, newProps);
-      }
+      const newProps = { ...props };
+      newProps.difficulty = props.difficulty;
+      newProps.optional = (this.word.userWord as IWordProps).optional;
+      newProps.optional.isLearned = props.optional.isLearned;
+      updateUserWord(state.userId, state.accessToken, word.id, newProps);
     } else {
       createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;
@@ -188,7 +211,6 @@ class Word {
       wordProps.optional.isLearned = false;
       textbookState.deleteLearnedWord();
     }
-
     this.setWord(wordProps);
 
     if (textbookState.currentGroup === textbookState.hardLevelNumber) {
@@ -199,13 +221,37 @@ class Word {
     }
   }
 
+  createStats() {
+    const sprintRight = this.card.querySelector('.sprint-right') as HTMLParagraphElement;
+    const sprintWrong = this.card.querySelector('.sprint-wrong') as HTMLParagraphElement;
+    const audiocallRight = this.card.querySelector('.audiocall-right') as HTMLParagraphElement;
+    const audiocallWrong = this.card.querySelector('.audiocall-wrong') as HTMLParagraphElement;
+
+    function setStat(element: HTMLParagraphElement, content = 0) {
+      const gameStatDigits = element;
+      gameStatDigits.textContent = `${content}`;
+    }
+
+    setStat(sprintRight, this.word.userWord?.optional.sprintAnswers?.right as number);
+    setStat(sprintWrong, this.word.userWord?.optional.sprintAnswers?.wrong as number);
+    setStat(audiocallRight, this.word.userWord?.optional.audiocallAnswers?.right as number);
+    setStat(audiocallWrong, this.word.userWord?.optional.audiocallAnswers?.wrong as number);
+  }
+
+  toggleStats() {
+    const statsHolder = this.card.querySelector('.card__stats') as HTMLDivElement;
+    statsHolder.classList.toggle('hidden');
+  }
+
   activateButtons(card: HTMLDivElement) {
     const hardBtn = card.querySelector('.btn-hard') as HTMLButtonElement;
     const learnedBtn = card.querySelector('.btn-learned') as HTMLButtonElement;
+    const statsBtn = card.querySelector('.btn-stats') as HTMLButtonElement;
 
     if (state.isUserLogged) {
       hardBtn.classList.remove('hidden');
       learnedBtn.classList.remove('hidden');
+      statsBtn.classList.remove('hidden');
     }
 
     card.addEventListener('click', (event) => {
@@ -216,6 +262,10 @@ class Word {
         this.toggleHard(card);
       } else if (btn.classList.contains('btn-learned')) {
         this.toggleLearned(card);
+      } else if (btn.classList.contains('btn-stats')) {
+        this.toggleStats();
+      } else if (btn.classList.contains('btn-close')) {
+        this.toggleStats();
       }
     });
   }

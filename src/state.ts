@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { ButtonActionTypes } from './components/MainPage/setupButtonListeners';
 
 interface IState {

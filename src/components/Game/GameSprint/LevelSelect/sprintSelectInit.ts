@@ -7,6 +7,7 @@ import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
 import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
+/* eslint-disable import/no-cycle */
 import state from '../../../../state';
 
 const gameScreen = new GameScreen();
@@ -98,6 +99,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
     if (word.userWord === undefined) {
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
+      if (word.userWord.optional.audiocallAnswers === undefined) { return; }
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
@@ -115,6 +117,10 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
           sprintAnswers: {
             right: word.userWord.optional.sprintAnswers.right + 1,
             wrong: word.userWord.optional.sprintAnswers.wrong,
+          },
+          audiocallAnswers: {
+            right: word.userWord.optional.audiocallAnswers.right,
+            wrong: word.userWord.optional.audiocallAnswers.wrong,
           },
           rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
         },
@@ -145,6 +151,7 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
     if (word.userWord === undefined) {
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
+      if (word.userWord.optional.audiocallAnswers === undefined) { return; }
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
@@ -155,6 +162,10 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
           sprintAnswers: {
             right: word.userWord.optional.sprintAnswers.right,
             wrong: word.userWord.optional.sprintAnswers.wrong + 1,
+          },
+          audiocallAnswers: {
+            right: word.userWord.optional.audiocallAnswers.right,
+            wrong: word.userWord.optional.audiocallAnswers.wrong,
           },
           rightAnswersInRow: 0,
         },
@@ -452,10 +463,10 @@ export async function gameFromBook(level: number, page: number) {
     } else {
       params.group = level;
     }
-
     do {
       settedPage -= 1;
       params.page = settedPage;
+      /* eslint-disable no-await-in-loop */
       const wordsResp = await getUserAggregatedWords(
         state.userId,
         state.accessToken,
@@ -465,7 +476,7 @@ export async function gameFromBook(level: number, page: number) {
         return;
       }
 
-      if (page) {
+      if (page !== undefined) {
         wordsResp.words = wordsResp.words.filter((word) => (!word.userWord)
         || (!word.userWord.optional)
         || (!word.userWord.optional.isLearned));
