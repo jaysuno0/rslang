@@ -9,6 +9,7 @@ import {
   IUserResp,
 } from '../Api/userApi';
 import textbookState from '../Textbook/textbookState';
+import { ButtonActionTypes } from '../MainPage/setupButtonListeners';
 
 enum AuthorizationTypes {
   loginType = 'Вход',
@@ -158,7 +159,7 @@ const Authorization: IAuthorization = {
     enterBtn.textContent = btnText;
     enterBtn.addEventListener('click', () => this.sendForm());
     document.addEventListener('keypress', (event) => {
-      if (event.code === 'Enter') {
+      if (state.screen === ButtonActionTypes.Login && event.code === 'Enter') {
         event.preventDefault();
         this.sendForm();
       }
@@ -292,7 +293,9 @@ const Authorization: IAuthorization = {
     localStorage.clear();
     state.isUserLogged = false;
     this.setScreenMessage('Вы вышли из своего аккаунта :)');
-    if (textbookState.currentGroup === 6) textbookState.currentGroup = 0;
+    if (textbookState.currentGroup === textbookState.hardLevelNumber) {
+      textbookState.currentGroup = 0;
+    }
   },
 };
 
