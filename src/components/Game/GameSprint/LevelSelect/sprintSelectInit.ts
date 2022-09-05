@@ -122,7 +122,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
           rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
         },
       };
-      await updateUserWord(userId, token, word.id, updateWordProps); 
+      await updateUserWord(userId, token, word.id, updateWordProps);
     }
   });
 }
@@ -445,7 +445,6 @@ export async function gameFromBook(level: number, page: number) {
   totalWrongAnswer = [];
   totalRightAnswer = [];
   store.words = [];
-
 
   if (state.isUserLogged) {
     const params: IWordsParams = {
