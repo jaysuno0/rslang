@@ -22,3 +22,10 @@
    display: flex;
    gap: 50px;
 }
+
+.footer__team-link {
+   transition: 200ms;
+}
+.footer__team-link:hover {
+   color: #60c7b6
+}

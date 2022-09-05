@@ -1,12 +1,12 @@
 import './word.css';
 import '../img/sound.svg';
-import '../img/hard.svg';
+import '../img/hard-gold.svg';
 import '../img/learned.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
 import {
   createUserWord,
-  deleteUserWord,
+  getUserWord,
   IWordProps,
   updateUserWord,
 } from '../../Api/userWordsApi';
@@ -33,7 +33,7 @@ class Word {
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
       <button class="card__btn card__btn_hard btn-hard hidden" title="добавить в список сложных">
-        <img class="card__btn-image btn-hard" src="./img/hard.svg" alt="sound icon">
+        <img class="card__btn-image btn-hard" src="./img/hard-gold.svg" alt="sound icon">
       </button>
       <button class="card__btn card__btn_learned btn-learned hidden" title="добавить в список изученных">
         <img class="card__sound-btn-image btn-learned" src="./img/learned.svg" alt="learned icon">
@@ -99,13 +99,17 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
-  setWord(props: IWordProps) {
+  async setWord(props: IWordProps) {
     const { word } = this;
     if (this.isUserWord) {
-      if (props.difficulty === 'easy' && props.optional.isLearned === false) {
-        deleteUserWord(state.userId, state.accessToken, word.id);
-        this.isUserWord = false;
-      } else updateUserWord(state.userId, state.accessToken, word.id, props);
+      const response = await getUserWord(state.userId, state.accessToken, this.word.id);
+      if (response.isSuccess) {
+        const newProps = props;
+        newProps.difficulty = props.difficulty;
+        newProps.optional = props.optional;
+        updateUserWord(state.userId, state.accessToken, word.id, newProps);
+      }
+      // deleteUserWord(state.userId, state.accessToken, word.id); => in what cases???
     } else {
       createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;
@@ -182,7 +186,7 @@ class Word {
 
     this.setWord(wordProps);
 
-    if (textbookState.currentGroup === 6) {
+    if (textbookState.currentGroup === textbookState.hardLevelNumber) {
       card.remove();
       if (textbookState.hardWordsCount >= textbookState.wordsPerPage
       && textbookState.currentPage !== textbookState.lastPage) this.replaceHardWord();

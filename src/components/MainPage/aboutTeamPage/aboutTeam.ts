@@ -27,7 +27,7 @@ export default class AboutTeamRender {
                 <ul>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>Создатель учебника.</p>
+                    <p>Создатель нашего учебничка.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
@@ -61,7 +61,7 @@ export default class AboutTeamRender {
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick">
-                    <p>Создатель игры Аудиовызов</p>
+                    <p>Создатель игры "Аудиовызов".</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick">
@@ -91,7 +91,7 @@ export default class AboutTeamRender {
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>Игра спринт - его рук дело.</p>
+                    <p>Игра "Cпринт" - его рук дело.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">

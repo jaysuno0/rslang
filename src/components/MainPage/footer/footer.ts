@@ -12,9 +12,9 @@ export default class FooterRender {
             </a>
          </div>
          <div class="teamLink">
-            <a href="https://github.com/jaysuno0" target="_blank">Daniil Kochkin</a>
-            <a href="https://github.com/Alexander-M-rss" target="_blank">Oleksandr M</a>
-            <a href="https://github.com/rdaniliuk" target="_blank">Roman Daniliuk</a>
+            <a class="footer__team-link" href="https://github.com/jaysuno0" target="_blank">Daniil Kochkin</a>
+            <a class="footer__team-link" href="https://github.com/Alexander-M-rss" target="_blank">Oleksandr M</a>
+            <a class="footer__team-link" href="https://github.com/rdaniliuk" target="_blank">Roman Daniliuk</a>
          </div>
          <div class="year">
             <span>2022</span>
