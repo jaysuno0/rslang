@@ -1,20 +1,13 @@
-enum ScreenStates {
-  Home = 'home',
-  Textbook = 'book',
-  Game = 'game',
-  Stats = 'stats',
-  Team = 'team',
-  Login = 'login',
-}
+import { ButtonActionTypes } from "./components/MainPage/setupButtonListeners";
 
 interface IState {
   userId: string;
   refreshTime: number;
   accessToken: string;
   isUserLogged: boolean;
-  screen: ScreenStates;
+  screen: ButtonActionTypes;
 
-  setScreen: (screen: ScreenStates) => void;
+  setScreen: (screen: ButtonActionTypes) => void;
 }
 
 const state: IState = {
@@ -22,7 +15,7 @@ const state: IState = {
   accessToken: '',
   isUserLogged: false,
   refreshTime: 1.26e+7, // 3.5 hours
-  screen: ScreenStates.Home,
+  screen: ButtonActionTypes.Home,
 
   setScreen(screen) {
     this.screen = screen;

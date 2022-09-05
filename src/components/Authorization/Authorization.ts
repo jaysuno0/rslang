@@ -164,6 +164,11 @@ const Authorization: IAuthorization = {
         this.sendForm();
       }
     });
+
+    const form = document.querySelector('.authorization__form') as HTMLFormElement;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
   },
 
   validateAll() {
