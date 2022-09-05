@@ -55,6 +55,7 @@ class Word {
           <p class="card__example-translation"></p></p>
         </div>
       </div>`;
+    this.setIsUserWord();
     this.card = this.createCard();
     this.render();
   }
@@ -100,6 +101,10 @@ class Word {
     audioMeaning.onended = () => audioExample.play();
   }
 
+  setIsUserWord() {
+    if (this.word.userWord) this.isUserWord = true;
+  }
+
   async setWord(props: IWordProps) {
     const { word } = this;
     if (this.isUserWord) {
@@ -110,7 +115,6 @@ class Word {
         newProps.optional = props.optional;
         updateUserWord(state.userId, state.accessToken, word.id, newProps);
       }
-      // deleteUserWord(state.userId, state.accessToken, word.id); => in what cases???
     } else {
       createUserWord(state.userId, state.accessToken, word.id, props);
       this.isUserWord = true;
