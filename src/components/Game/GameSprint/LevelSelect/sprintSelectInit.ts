@@ -89,17 +89,23 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
           right: 1,
           wrong: 0,
         },
+        audiocallAnswers: {
+          right: 0,
+          wrong: 0,
+        },
         rightAnswersInRow: 1,
       },
     };
-
-    if (!word.userWord) {
+    console.log(word.userWord, word.word, 'before');
+    if (word.userWord === undefined) {
+      console.log('hi');
+      
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
-      if ((word.userWord.optional.rightAnswersInRow + 1) > 3) {
+      if ((word.userWord.optional.rightAnswersInRow + 1) >= 3) {
         learned = true;
         difficulty = 'easy';
       } else {
@@ -118,6 +124,8 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
         },
       };
       await updateUserWord(userId, token, word.id, updateWordProps);
+      console.log(word.userWord.optional, word.word, 'right');
+      
     }
   });
 }
@@ -132,11 +140,15 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
           right: 0,
           wrong: 1,
         },
+        audiocallAnswers: {
+          right: 0,
+          wrong: 0,
+        },
         rightAnswersInRow: 0,
       },
     };
 
-    if (!word.userWord) {
+    if (word.userWord === undefined) {
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
@@ -154,6 +166,7 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
         },
       };
       await updateUserWord(userId, token, word.id, updateWordProps);
+      console.log(word.userWord.optional, word.word, 'wrong');
     }
   });
 }
@@ -321,9 +334,11 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
       document.removeEventListener('keyup', answerKeyHandler);
     }
     if (e.code === 'ArrowRight') {
+      e.preventDefault();
       answerYes();
     }
     if (e.code === 'ArrowLeft') {
+      e.preventDefault();
       answerNo();
     }
   };
