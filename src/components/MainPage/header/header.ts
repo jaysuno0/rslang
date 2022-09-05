@@ -8,7 +8,7 @@ export default class HeaderRender {
     this.template = `
          <div class="header" id="header">
           <div class="header__logo logo header__button" id="home">
-            <a href="##"><img src='./img/headerLogo.svg' alt="logo"></a>
+            <a href="#" onclick="location.reload()"><img src='./img/headerLogo.svg' alt="logo"></a>
           </div>
           <div class="header__name">
             <span>- RS Lang -</span>

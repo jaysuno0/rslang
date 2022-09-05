@@ -6,10 +6,7 @@ import './components/Game/GameSprint/initGameSprint';
 
 (async function setState() {
   state.isUserLogged = await isUserLogged();
-  setInterval(() => {
-    isUserLogged(); // will refresh token
-  }, state.refreshTime);
-
+  setInterval(() => isUserLogged(), state.refreshTime);
   const screen = localStorage.getItem('screen') as ButtonActionTypes;
   setScreen(screen);
 }());
