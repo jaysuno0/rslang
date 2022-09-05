@@ -6,7 +6,7 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { IWordProps, createUserWord, updateUserWord, getUserWords } from '../../../Api/userWordsApi';
+import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
 import state from '../../../../state';
 
 const gameScreen = new GameScreen();
