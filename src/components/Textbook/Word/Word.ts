@@ -107,7 +107,7 @@ class Word {
         const newProps = props;
         newProps.difficulty = props.difficulty;
         newProps.optional = props.optional;
-        updateUserWord(state.userId, state.accessToken, word.id, props);
+        updateUserWord(state.userId, state.accessToken, word.id, newProps);
       }
       // deleteUserWord(state.userId, state.accessToken, word.id); => in what cases???
     } else {
