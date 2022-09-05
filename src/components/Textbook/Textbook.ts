@@ -1,7 +1,6 @@
 import './textbook.css';
 import './img/next-page.svg';
 import './img/previous-page.svg';
-import './img/hard-black.svg';
 
 import Word from './Word/Word';
 import { gameFromBook } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
@@ -174,7 +173,7 @@ const Textbook: ITextbook = {
     levelCounter.textContent = `${textbookState.currentGroup + 1}`;
 
     if (level === textbookState.hardLevelNumber) {
-      levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
+      levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard.svg" alt="hard icon">';
       this.getWords(true);
     } else this.getWords(false);
 
