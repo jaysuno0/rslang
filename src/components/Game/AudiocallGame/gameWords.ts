@@ -73,7 +73,7 @@ export const getGameWords = async (
 export const updateGameWord = (isRightAnswer = false) => {
   if (!state.isUserLogged) return;
 
-  const idx = store.currentWord;
+  const idx = store.order[store.currentWord];
 
   if (!store.words[idx].userWord) {
     const userWord: IWordProps = {
