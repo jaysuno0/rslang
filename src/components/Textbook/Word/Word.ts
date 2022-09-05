@@ -186,7 +186,7 @@ class Word {
 
     this.setWord(wordProps);
 
-    if (textbookState.currentGroup === 6) {
+    if (textbookState.currentGroup === textbookState.hardLevelNumber) {
       card.remove();
       if (textbookState.hardWordsCount >= textbookState.wordsPerPage
       && textbookState.currentPage !== textbookState.lastPage) this.replaceHardWord();

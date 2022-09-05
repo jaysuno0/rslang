@@ -67,7 +67,6 @@ async function isUserLogged() {
     const tokenResponse = await newToken(id, refreshToken);
     return tokenResponse;
   }
-
   return false;
 }
 

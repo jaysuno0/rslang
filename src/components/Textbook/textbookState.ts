@@ -5,6 +5,8 @@ interface ITextbookState {
   learnedWordsNumber: number;
   lastPage: number;
   hardWordsCount: number;
+  hardLevelNumber: number;
+  levelPagesNumber: number;
 
   addLearnedWord: () => void;
   deleteLearnedWord: () => void;
@@ -21,6 +23,8 @@ const textbookState: ITextbookState = {
   learnedWordsNumber: 0,
   lastPage: 29,
   hardWordsCount: 0,
+  hardLevelNumber: 6,
+  levelPagesNumber: 29,
 
   addLearnedWord() {
     this.learnedWordsNumber += 1;
@@ -64,7 +68,7 @@ const textbookState: ITextbookState = {
   },
 
   countLastPage() {
-    if (this.currentGroup !== 6) this.lastPage = 29;
+    if (this.currentGroup !== this.hardLevelNumber) this.lastPage = this.levelPagesNumber;
     else {
       textbookState.lastPage = Math
         .floor(textbookState.hardWordsCount / textbookState.wordsPerPage);

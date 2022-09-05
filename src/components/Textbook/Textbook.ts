@@ -102,7 +102,7 @@ const Textbook: ITextbook = {
 
       btn.addEventListener('click', () => {
         levelsList.classList.toggle('hidden');
-        if (Number.isNaN(level)) level = 6;
+        if (Number.isNaN(level)) level = textbookState.hardLevelNumber;
         this.setPage(level, 0);
       });
     });
@@ -146,7 +146,7 @@ const Textbook: ITextbook = {
           textbookState.hardWordsCount = response.totalCount;
         } else textbookState.lastPage = 0;
       } else {
-        textbookState.lastPage = 29;
+        textbookState.lastPage = textbookState.levelPagesNumber;
         params.group = textbookState.currentGroup;
         words = (await getUserAggregatedWords(state.userId, state.accessToken, params)).words;
       }
@@ -173,7 +173,7 @@ const Textbook: ITextbook = {
     pageCounter.textContent = `${textbookState.currentPage + 1}`;
     levelCounter.textContent = `${textbookState.currentGroup + 1}`;
 
-    if (level === 6) {
+    if (level === textbookState.hardLevelNumber) {
       levelCounter.innerHTML = '<img class="textbook__hard-level-img" src="./img/hard-black.svg" alt="hard icon">';
       this.getWords(true);
     } else this.getWords(false);
