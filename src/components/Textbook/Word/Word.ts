@@ -3,6 +3,7 @@ import '../img/sound.svg';
 import '../img/hard-gold.svg';
 import '../img/hard.svg';
 import '../img/learned.svg';
+import '../img/stats.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
 import {
@@ -30,6 +31,9 @@ class Word {
     this.word = word;
     this.base = 'https://rslang142-learnwords.herokuapp.com/';
     this.template = `
+    <button class="card__btn card__btn_stats btn-stats hidden" title="добавить в список изученных">
+        <img class="card__sound-btn-image btn-stats" src="./img/stats.svg" alt="stats icon">
+      </button>
       <button class="card__btn card__btn_sound btn-sound" title="воспроизвести аудио">
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
@@ -202,10 +206,12 @@ class Word {
   activateButtons(card: HTMLDivElement) {
     const hardBtn = card.querySelector('.btn-hard') as HTMLButtonElement;
     const learnedBtn = card.querySelector('.btn-learned') as HTMLButtonElement;
+    const statsBtn = card.querySelector('.btn-stats') as HTMLButtonElement;
 
     if (state.isUserLogged) {
       hardBtn.classList.remove('hidden');
       learnedBtn.classList.remove('hidden');
+      statsBtn.classList.remove('hidden');
     }
 
     card.addEventListener('click', (event) => {

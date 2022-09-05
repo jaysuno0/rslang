@@ -51,7 +51,7 @@
   transition: 100ms;
 }
 .card__btn:hover {
-  padding-left: 15px;
+  padding-left: 18px;
 }
 .card__btn img{
   width: 30px;
@@ -72,6 +72,20 @@
 
 .card__btn_learned {
   top: 152px;
+}
+
+.card__btn_stats {
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  border-radius: 50px;
+  border: 2px solid #f9e084;
+}
+.card__btn_stats img {
+  width: 18px;
+}
+.card__btn_stats:hover {
+  padding: 13px;
 }
 
 /**** image ****/
