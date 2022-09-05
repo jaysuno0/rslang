@@ -1,7 +1,10 @@
 .logo{
    height: 3rem;
    width: 3rem;
-   transition: 0.3s;
+   transition: 250ms;
+}
+.logo:hover{
+   transform: rotateZ(15deg);
 }
 
 .header{
@@ -19,4 +22,11 @@
 .header__name{
    font-size: 2rem;
    font-weight: 800;
+}
+
+.header__login {
+   transition: 250ms;
+}
+.header__login:hover {
+   transform: rotateZ(-15deg);
 }

@@ -50,7 +50,3 @@
 .login__text{
    display: none;
 }
-
-.header__login {
-   transition: 0.5s;
-}
