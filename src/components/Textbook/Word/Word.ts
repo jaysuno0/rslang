@@ -1,6 +1,7 @@
 import './word.css';
 import '../img/sound.svg';
 import '../img/hard-gold.svg';
+import '../img/hard.svg';
 import '../img/learned.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
