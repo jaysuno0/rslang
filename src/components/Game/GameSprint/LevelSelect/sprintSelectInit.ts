@@ -6,7 +6,7 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { renderWordsLoading } from '../../AudiocallGame/render';
+import { renderMsg } from '../../AudiocallGame/render';
 import state from '../../../../state';
 
 const gameScreen = new GameScreen();
@@ -292,7 +292,7 @@ function startGame() {
       wordsPerPage: 20,
     };
     if (screen) {
-      renderWordsLoading(screen);
+      renderMsg(screen, 'Загрузка слов...');
     }
 
     if (state.isUserLogged) {
