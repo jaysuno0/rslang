@@ -99,6 +99,7 @@ export const updateGameWord = (isRightAnswer = false) => {
   const userWord = store.words[idx].userWord as IWordProps;
 
   if (!userWord.optional) userWord.optional = {};
+
   if (!userWord.optional.audiocallAnswers) {
     userWord.optional.audiocallAnswers = {
       right: isRightAnswer ? 1 : 0,

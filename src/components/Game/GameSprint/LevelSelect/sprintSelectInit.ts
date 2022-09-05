@@ -6,7 +6,7 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { renderMsg } from '../../AudiocallGame/render';
+import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
 import state from '../../../../state';
 
 const gameScreen = new GameScreen();
@@ -75,9 +75,95 @@ function fillResultTable(wrong: IWord[], right: IWord[]) {
   }
 }
 
+async function resultLearningRight(right: IWord[], userId:string, token: string) {
+  let learned: boolean;
+  let difficulty: string;
+
+  right.forEach(async (word) => {
+    const newWordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: false,
+        sprintAnswers: {
+          right: 1,
+          wrong: 0,
+        },
+        rightAnswersInRow: 1,
+      },
+    };
+
+    if (!word.userWord) {
+      await createUserWord(userId, token, word.id, newWordProps);
+    } else {
+      if (word.userWord.optional.sprintAnswers === undefined) { return; }
+      if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
+
+      if ((word.userWord.optional.rightAnswersInRow + 1) > 3) {
+        learned = true;
+        difficulty = 'easy';
+      } else {
+        learned = false;
+        difficulty = word.userWord.difficulty;
+      }
+      const updateWordProps: IWordProps = {
+        difficulty,
+        optional: {
+          isLearned: learned,
+          sprintAnswers: {
+            right: word.userWord.optional.sprintAnswers.right + 1,
+            wrong: word.userWord.optional.sprintAnswers.wrong,
+          },
+          rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
+        },
+      };
+      await updateUserWord(userId, token, word.id, updateWordProps);
+    }
+  });
+}
+
+async function resultLearningWrong(wrong: IWord[], userId:string, token: string) {
+  wrong.forEach(async (word) => {
+    const newWordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: false,
+        sprintAnswers: {
+          right: 0,
+          wrong: 1,
+        },
+        rightAnswersInRow: 0,
+      },
+    };
+
+    if (!word.userWord) {
+      await createUserWord(userId, token, word.id, newWordProps);
+    } else {
+      if (word.userWord.optional.sprintAnswers === undefined) { return; }
+      if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
+
+      const updateWordProps: IWordProps = {
+        difficulty: word.userWord.difficulty,
+        optional: {
+          isLearned: false,
+          sprintAnswers: {
+            right: word.userWord.optional.sprintAnswers.right,
+            wrong: word.userWord.optional.sprintAnswers.wrong + 1,
+          },
+          rightAnswersInRow: 0,
+        },
+      };
+      await updateUserWord(userId, token, word.id, updateWordProps);
+    }
+  });
+}
+
 function endGame() {
   resultScreen.create();
   fillResultTable(totalWrongAnswer, totalRightAnswer);
+  if (state.isUserLogged) {
+    resultLearningRight(totalRightAnswer, state.userId, state.accessToken);
+    resultLearningWrong(totalWrongAnswer, state.userId, state.accessToken);
+  }
 }
 
 function timer() {
@@ -272,6 +358,12 @@ function initGame(gameWords:IWord[]) {
   cardButtonListeners(gameWords, gameWords.length - 1);
 }
 
+function renderWordMessage(appOutput: HTMLDivElement) {
+  const output = appOutput;
+
+  output.innerHTML = '<p>Еще секунду, слова загружаются...</p>';
+}
+
 function startGame() {
   totalScore = 0;
   rightAnswerBonus = 1;
@@ -286,9 +378,10 @@ function startGame() {
   startButton.addEventListener('click', async (e) => {
     e.preventDefault();
     footerHidden();
+    console.log('поменять страницу');
     const params: IWordsParams = {
       group: +form.value - 1,
-      page: randomPage,
+      page: 1,
       wordsPerPage: 20,
     };
     if (screen) {
