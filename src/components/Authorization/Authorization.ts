@@ -8,6 +8,8 @@ import {
   getNewToken,
   IUserResp,
 } from '../Api/userApi';
+import textbookState from '../Textbook/textbookState';
+import { ButtonActionTypes } from '../MainPage/setupButtonListeners';
 
 enum AuthorizationTypes {
   loginType = 'Вход',
@@ -66,7 +68,6 @@ async function isUserLogged() {
     const tokenResponse = await newToken(id, refreshToken);
     return tokenResponse;
   }
-
   return false;
 }
 
@@ -158,10 +159,15 @@ const Authorization: IAuthorization = {
     enterBtn.textContent = btnText;
     enterBtn.addEventListener('click', () => this.sendForm());
     document.addEventListener('keypress', (event) => {
-      if (event.code === 'Enter') {
+      if (state.screen === ButtonActionTypes.Login && event.code === 'Enter') {
         event.preventDefault();
         this.sendForm();
       }
+    });
+
+    const form = document.querySelector('.authorization__form') as HTMLFormElement;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
     });
   },
 
@@ -292,6 +298,9 @@ const Authorization: IAuthorization = {
     localStorage.clear();
     state.isUserLogged = false;
     this.setScreenMessage('Вы вышли из своего аккаунта :)');
+    if (textbookState.currentGroup === textbookState.hardLevelNumber) {
+      textbookState.currentGroup = 0;
+    }
   },
 };
 

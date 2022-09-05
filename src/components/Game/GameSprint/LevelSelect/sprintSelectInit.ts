@@ -385,7 +385,7 @@ function startGame() {
       wordsPerPage: 20,
     };
     if (screen) {
-      renderWordMessage(screen);
+      renderMsg(screen, 'Загрузка слов...');
     }
 
     if (state.isUserLogged) {
