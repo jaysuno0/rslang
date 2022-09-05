@@ -378,14 +378,13 @@ function startGame() {
   startButton.addEventListener('click', async (e) => {
     e.preventDefault();
     footerHidden();
-    console.log('поменять страницу');
     const params: IWordsParams = {
       group: +form.value - 1,
-      page: 1,
+      page: randomPage,
       wordsPerPage: 20,
     };
     if (screen) {
-      renderMsg(screen, 'Загрузка слов...');
+      renderWordMessage(screen);
     }
 
     if (state.isUserLogged) {

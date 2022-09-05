@@ -1,4 +1,4 @@
-import { ButtonActionTypes } from "./components/MainPage/setupButtonListeners";
+import { ButtonActionTypes } from './components/MainPage/setupButtonListeners';
 
 interface IState {
   userId: string;
