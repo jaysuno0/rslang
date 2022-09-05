@@ -118,10 +118,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
             right: word.userWord.optional.sprintAnswers.right + 1,
             wrong: word.userWord.optional.sprintAnswers.wrong,
           },
-          audiocallAnswers: {
-            right: word.userWord.optional.audiocallAnswers.right,
-            wrong: word.userWord.optional.audiocallAnswers.wrong,
-          },
+          audiocallAnswers: word.userWord.optional.audiocallAnswers,
           rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
         },
       };
@@ -163,10 +160,7 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
             right: word.userWord.optional.sprintAnswers.right,
             wrong: word.userWord.optional.sprintAnswers.wrong + 1,
           },
-          audiocallAnswers: {
-            right: word.userWord.optional.audiocallAnswers.right,
-            wrong: word.userWord.optional.audiocallAnswers.wrong,
-          },
+          audiocallAnswers: word.userWord.optional.audiocallAnswers,
           rightAnswersInRow: 0,
         },
       };
@@ -450,6 +444,8 @@ export async function gameFromBook(level: number, page: number) {
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
+  store.words = [];
+
 
   if (state.isUserLogged) {
     const params: IWordsParams = {
