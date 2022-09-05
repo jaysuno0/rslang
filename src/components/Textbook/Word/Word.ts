@@ -110,9 +110,10 @@ class Word {
     if (this.isUserWord) {
       const response = await getUserWord(state.userId, state.accessToken, this.word.id);
       if (response.isSuccess) {
-        const newProps = props;
-        newProps.difficulty = response.userWord.difficulty;
+        const newProps = { ...props };
+        newProps.difficulty = props.difficulty;
         newProps.optional = response.userWord.optional;
+        newProps.optional.isLearned = props.optional.isLearned;
         updateUserWord(state.userId, state.accessToken, word.id, newProps);
       }
     } else {
@@ -188,7 +189,6 @@ class Word {
       wordProps.optional.isLearned = false;
       textbookState.deleteLearnedWord();
     }
-
     this.setWord(wordProps);
 
     if (textbookState.currentGroup === textbookState.hardLevelNumber) {
