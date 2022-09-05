@@ -179,7 +179,7 @@ export const getUserWord = async (
     userWordResp.isSuccess = true;
     Object.assign(userWordResp.userWord, data);
   } else {
-    userWordResp.errMsg = await resp.text();
+    userWordResp.errMsg = await resp.text();    
   }
 
   return userWordResp;

@@ -6,8 +6,9 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { renderWordsLoading } from '../../AudiocallGame/render';
+import { IWordProps, getUserWord, createUserWord, updateUserWord, getUserWords} from '../../../Api/userWordsApi';
 import state from '../../../../state';
+
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
@@ -75,9 +76,99 @@ function fillResultTable(wrong: IWord[], right: IWord[]) {
   }
 }
 
+async function resultLearningRight(right: IWord[], userId:string, token: string) {
+  console.log(right);
+  
+  const newWordProps: IWordProps = {
+    difficulty: 'easy',
+    optional: {
+      isLearned: false,
+      sprintAnswers: {
+        right: 1,
+        wrong: 0,
+      },
+      rightAnswersInRow: 1,
+    },
+  };
+
+  right.map(async (word) => {
+      let learned: boolean;
+      const resp = await getUserWord(userId, token, word.id);
+      if (resp.isSuccess === false) {
+        await createUserWord(userId, token, word.id, newWordProps);
+      } else {
+        if (!resp.userWord.optional.sprintAnswers) {return}
+        if (!resp.userWord.optional.rightAnswersInRow) {return}
+        if ((resp.userWord.optional.rightAnswersInRow + 1) > 3) {
+          learned = true;
+        } else {
+          learned = false;
+        }
+        const updateWordProps: IWordProps = {
+          difficulty: 'easy',
+          optional: {
+            isLearned: learned,
+            sprintAnswers: {
+              right: resp.userWord.optional.sprintAnswers.right + 1,
+              wrong: resp.userWord.optional.sprintAnswers.wrong,
+            },
+            rightAnswersInRow: resp.userWord.optional.rightAnswersInRow + 1,
+          },
+        };
+        await updateUserWord(userId, token, word.id, updateWordProps)
+      }
+  })
+  const respNew = await getUserWords(userId, token);
+      console.log(respNew.userWords, 'right');
+}
+
+async function resultLearningWrong(wrong: IWord[], userId:string, token: string) {
+  console.log(wrong);
+  const newWordProps: IWordProps = {
+    difficulty: 'easy',
+    optional: {
+      isLearned: false,
+      sprintAnswers: {
+        right: 0,
+        wrong: 1,
+      },
+      rightAnswersInRow: 0,
+    },
+  };
+
+  wrong.map(async (word) => {
+      const resp = await getUserWord(userId, token, word.id);
+      if (resp.isSuccess === false) {
+        await createUserWord(userId, token, word.id, newWordProps);
+      } else {
+        if (!resp.userWord.optional.sprintAnswers) {return}
+        if (!resp.userWord.optional.rightAnswersInRow) {return}
+
+        const updateWordProps: IWordProps = {
+          difficulty: 'easy',
+          optional: {
+            isLearned: false,
+            sprintAnswers: {
+              right: resp.userWord.optional.sprintAnswers.right,
+              wrong: resp.userWord.optional.sprintAnswers.wrong + 1,
+            },
+            rightAnswersInRow: 0,
+          },
+        };
+        await updateUserWord(userId, token, word.id, updateWordProps)
+      }
+  })
+  const respNew = await getUserWords(userId, token);
+      console.log(respNew.userWords, 'wrong');
+}
+
 function endGame() {
   resultScreen.create();
   fillResultTable(totalWrongAnswer, totalRightAnswer);
+  if (state.isUserLogged) {
+    resultLearningRight(totalRightAnswer, state.userId, state.accessToken);
+    resultLearningWrong(totalWrongAnswer, state.userId, state.accessToken);
+  }
 }
 
 function timer() {
@@ -272,6 +363,12 @@ function initGame(gameWords:IWord[]) {
   cardButtonListeners(gameWords, gameWords.length - 1);
 }
 
+function renderWordMessage(appOutput: HTMLDivElement) {
+  const output = appOutput;
+
+  output.innerHTML = `<p>Еще секунду, слова загружаются...</p>`;
+}
+
 function startGame() {
   totalScore = 0;
   rightAnswerBonus = 1;
@@ -286,13 +383,14 @@ function startGame() {
   startButton.addEventListener('click', async (e) => {
     e.preventDefault();
     footerHidden();
+    console.log('поменять страницу');
     const params: IWordsParams = {
       group: +form.value - 1,
-      page: randomPage,
+      page: 1,
       wordsPerPage: 20,
     };
     if (screen) {
-      renderWordsLoading(screen);
+      renderWordMessage(screen)
     }
 
     if (state.isUserLogged) {
