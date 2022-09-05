@@ -95,10 +95,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
         rightAnswersInRow: 1,
       },
     };
-    console.log(word.userWord, word.word, 'before');
     if (word.userWord === undefined) {
-      console.log('hi');
-      
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
@@ -122,9 +119,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
           rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
         },
       };
-      await updateUserWord(userId, token, word.id, updateWordProps);
-      console.log(word.userWord.optional, word.word, 'right');
-      
+      await updateUserWord(userId, token, word.id, updateWordProps); 
     }
   });
 }
@@ -165,7 +160,6 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
         },
       };
       await updateUserWord(userId, token, word.id, updateWordProps);
-      console.log(word.userWord.optional, word.word, 'wrong');
     }
   });
 }
