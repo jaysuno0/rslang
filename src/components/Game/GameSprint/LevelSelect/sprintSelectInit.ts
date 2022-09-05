@@ -6,9 +6,8 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { IWordProps, getUserWord, createUserWord, updateUserWord, getUserWords} from '../../../Api/userWordsApi';
+import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
 import state from '../../../../state';
-
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
@@ -77,89 +76,85 @@ function fillResultTable(wrong: IWord[], right: IWord[]) {
 }
 
 async function resultLearningRight(right: IWord[], userId:string, token: string) {
-  console.log(right);
-  
-  const newWordProps: IWordProps = {
-    difficulty: 'easy',
-    optional: {
-      isLearned: false,
-      sprintAnswers: {
-        right: 1,
-        wrong: 0,
-      },
-      rightAnswersInRow: 1,
-    },
-  };
+  let learned: boolean;
+  let difficulty: string;
 
-  right.map(async (word) => {
-      let learned: boolean;
-      const resp = await getUserWord(userId, token, word.id);
-      if (resp.isSuccess === false) {
-        await createUserWord(userId, token, word.id, newWordProps);
+  right.forEach(async (word) => {
+    const newWordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: false,
+        sprintAnswers: {
+          right: 1,
+          wrong: 0,
+        },
+        rightAnswersInRow: 1,
+      },
+    };
+
+    if (!word.userWord) {
+      await createUserWord(userId, token, word.id, newWordProps);
+    } else {
+      if (word.userWord.optional.sprintAnswers === undefined) { return; }
+      if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
+
+      if ((word.userWord.optional.rightAnswersInRow + 1) > 3) {
+        learned = true;
+        difficulty = 'easy';
       } else {
-        if (!resp.userWord.optional.sprintAnswers) {return}
-        if (!resp.userWord.optional.rightAnswersInRow) {return}
-        if ((resp.userWord.optional.rightAnswersInRow + 1) > 3) {
-          learned = true;
-        } else {
-          learned = false;
-        }
-        const updateWordProps: IWordProps = {
-          difficulty: 'easy',
-          optional: {
-            isLearned: learned,
-            sprintAnswers: {
-              right: resp.userWord.optional.sprintAnswers.right + 1,
-              wrong: resp.userWord.optional.sprintAnswers.wrong,
-            },
-            rightAnswersInRow: resp.userWord.optional.rightAnswersInRow + 1,
-          },
-        };
-        await updateUserWord(userId, token, word.id, updateWordProps)
+        learned = false;
+        difficulty = word.userWord.difficulty;
       }
-  })
-  const respNew = await getUserWords(userId, token);
-      console.log(respNew.userWords, 'right');
+      const updateWordProps: IWordProps = {
+        difficulty,
+        optional: {
+          isLearned: learned,
+          sprintAnswers: {
+            right: word.userWord.optional.sprintAnswers.right + 1,
+            wrong: word.userWord.optional.sprintAnswers.wrong,
+          },
+          rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
+        },
+      };
+      await updateUserWord(userId, token, word.id, updateWordProps);
+    }
+  });
 }
 
 async function resultLearningWrong(wrong: IWord[], userId:string, token: string) {
-  console.log(wrong);
-  const newWordProps: IWordProps = {
-    difficulty: 'easy',
-    optional: {
-      isLearned: false,
-      sprintAnswers: {
-        right: 0,
-        wrong: 1,
+  wrong.forEach(async (word) => {
+    const newWordProps: IWordProps = {
+      difficulty: 'easy',
+      optional: {
+        isLearned: false,
+        sprintAnswers: {
+          right: 0,
+          wrong: 1,
+        },
+        rightAnswersInRow: 0,
       },
-      rightAnswersInRow: 0,
-    },
-  };
+    };
 
-  wrong.map(async (word) => {
-      const resp = await getUserWord(userId, token, word.id);
-      if (resp.isSuccess === false) {
-        await createUserWord(userId, token, word.id, newWordProps);
-      } else {
-        if (!resp.userWord.optional.sprintAnswers) {return}
-        if (!resp.userWord.optional.rightAnswersInRow) {return}
+    if (!word.userWord) {
+      await createUserWord(userId, token, word.id, newWordProps);
+    } else {
+      if (word.userWord.optional.sprintAnswers === undefined) { return; }
+      if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
-        const updateWordProps: IWordProps = {
-          difficulty: 'easy',
-          optional: {
-            isLearned: false,
-            sprintAnswers: {
-              right: resp.userWord.optional.sprintAnswers.right,
-              wrong: resp.userWord.optional.sprintAnswers.wrong + 1,
-            },
-            rightAnswersInRow: 0,
+      const updateWordProps: IWordProps = {
+        difficulty: word.userWord.difficulty,
+        optional: {
+          isLearned: false,
+          sprintAnswers: {
+            right: word.userWord.optional.sprintAnswers.right,
+            wrong: word.userWord.optional.sprintAnswers.wrong + 1,
           },
-        };
-        await updateUserWord(userId, token, word.id, updateWordProps)
-      }
-  })
-  const respNew = await getUserWords(userId, token);
-      console.log(respNew.userWords, 'wrong');
+          rightAnswersInRow: 0,
+        },
+      };
+      await updateUserWord(userId, token, word.id, updateWordProps);
+    }
+  });
 }
 
 function endGame() {
@@ -366,7 +361,7 @@ function initGame(gameWords:IWord[]) {
 function renderWordMessage(appOutput: HTMLDivElement) {
   const output = appOutput;
 
-  output.innerHTML = `<p>Еще секунду, слова загружаются...</p>`;
+  output.innerHTML = '<p>Еще секунду, слова загружаются...</p>';
 }
 
 function startGame() {
@@ -390,7 +385,7 @@ function startGame() {
       wordsPerPage: 20,
     };
     if (screen) {
-      renderWordMessage(screen)
+      renderWordMessage(screen);
     }
 
     if (state.isUserLogged) {
