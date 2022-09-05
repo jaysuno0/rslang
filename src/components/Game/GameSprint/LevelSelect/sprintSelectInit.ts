@@ -6,7 +6,8 @@ import renderRightTable from '../GameScreen/rightTable';
 import renderWrongTable from '../GameScreen/wrongTable';
 import renderScoreBonusIcon from '../GameScreen/scoreBonusIcon';
 import { footerHidden } from '../../footerHidden';
-import { IWordProps, createUserWord, updateUserWord, getUserWords } from '../../../Api/userWordsApi';
+import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
+/* eslint-disable import/no-cycle */
 import state from '../../../../state';
 
 const gameScreen = new GameScreen();
@@ -458,10 +459,10 @@ export async function gameFromBook(level: number, page: number) {
     } else {
       params.group = level;
     }
-
     do {
       settedPage -= 1;
       params.page = settedPage;
+      /* eslint-disable no-await-in-loop */
       const wordsResp = await getUserAggregatedWords(
         state.userId,
         state.accessToken,
@@ -471,7 +472,7 @@ export async function gameFromBook(level: number, page: number) {
         return;
       }
 
-      if (page) {
+      if (page !== undefined) {
         wordsResp.words = wordsResp.words.filter((word) => (!word.userWord)
         || (!word.userWord.optional)
         || (!word.userWord.optional.isLearned));
