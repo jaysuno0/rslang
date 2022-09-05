@@ -9,6 +9,7 @@ import state from '../../state';
 import textbookState from './textbookState';
 import { getWords, IWord } from '../Api/wordsApi';
 import { getUserAggregatedWords, IWordsParams, GET_HARD } from '../Api/userAggregatedWords';
+import audiocallStart from '../Game/AudiocallGame/audiocallGame';
 
 interface ITextbook {
   templateControls: string;
@@ -114,7 +115,9 @@ const Textbook: ITextbook = {
     const sprintGameBtn = controls.querySelector('.textbook__btn_sprint') as HTMLButtonElement;
     const audiocallGameBtn = controls.querySelector('.textbook__btn_audiocall') as HTMLButtonElement;
     sprintGameBtn.addEventListener('click', () => gameFromBook(textbookState.currentGroup, textbookState.currentPage));
-    audiocallGameBtn.addEventListener('click', () => console.log(`audiocall game launched from textbook: level ${textbookState.currentGroup}, page: ${textbookState.currentPage}`));
+    audiocallGameBtn.addEventListener('click', () => {
+      audiocallStart(true, textbookState.currentGroup + 1, textbookState.currentPage + 1);
+    });
     return controls;
   },
 
