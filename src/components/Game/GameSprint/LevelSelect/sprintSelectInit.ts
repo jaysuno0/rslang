@@ -96,12 +96,10 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
         rightAnswersInRow: 1,
       },
     };
-    console.log(word.userWord, word.word, 'before');
     if (word.userWord === undefined) {
-      console.log('hi');
-      
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
+      if (word.userWord.optional.audiocallAnswers === undefined) { return; }
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
@@ -120,12 +118,11 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
             right: word.userWord.optional.sprintAnswers.right + 1,
             wrong: word.userWord.optional.sprintAnswers.wrong,
           },
+          audiocallAnswers: word.userWord.optional.audiocallAnswers,
           rightAnswersInRow: word.userWord.optional.rightAnswersInRow + 1,
         },
       };
       await updateUserWord(userId, token, word.id, updateWordProps);
-      console.log(word.userWord.optional, word.word, 'right');
-      
     }
   });
 }
@@ -151,6 +148,7 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
     if (word.userWord === undefined) {
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
+      if (word.userWord.optional.audiocallAnswers === undefined) { return; }
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
@@ -162,11 +160,11 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
             right: word.userWord.optional.sprintAnswers.right,
             wrong: word.userWord.optional.sprintAnswers.wrong + 1,
           },
+          audiocallAnswers: word.userWord.optional.audiocallAnswers,
           rightAnswersInRow: 0,
         },
       };
       await updateUserWord(userId, token, word.id, updateWordProps);
-      console.log(word.userWord.optional, word.word, 'wrong');
     }
   });
 }
@@ -446,6 +444,7 @@ export async function gameFromBook(level: number, page: number) {
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
+  store.words = [];
 
   if (state.isUserLogged) {
     const params: IWordsParams = {
