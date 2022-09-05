@@ -40,7 +40,7 @@
 
   width: 100%;
   padding: 3px 20px;
-  padding-top: 6px;
+  padding: 8px 0px;
 
   display: flex;
   flex-wrap: wrap;
@@ -49,10 +49,9 @@
   gap: 50px;
   
   background: #f9e084;
-  box-shadow: 0px 0px 5px 5px #f9e084;
 }
 .textbook__controls {
-  background: #30303015;
+  background: #30303019;
   border-radius: 10px;
   padding: 5px;
   font-size: 25px;
@@ -82,6 +81,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0px 5px;
 }
 .textbook__page {
   padding: 0px 10px;
@@ -122,7 +122,6 @@
   font-size: 20px;
   transition: 400ms;
   background: #f9e084;
-  box-shadow: 0px 0px 5px 5px #f9e084;
 }
 .textbook__levels-list.hidden {
   transform: translateY(-110%);
@@ -170,6 +169,8 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
+
+  padding: 0px 5px;
 }
 .textbook__controls.disabled {
   background: transparent;

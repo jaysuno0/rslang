@@ -1,6 +1,6 @@
 import './word.css';
 import '../img/sound.svg';
-import '../img/hard.svg';
+import '../img/hard-gold.svg';
 import '../img/learned.svg';
 import state from '../../../state';
 import { IWord } from '../../Api/wordsApi';
@@ -33,7 +33,7 @@ class Word {
         <img class="card__sound-btn-image btn-sound" src="./img/sound.svg" alt="sound icon">
       </button>
       <button class="card__btn card__btn_hard btn-hard hidden" title="добавить в список сложных">
-        <img class="card__btn-image btn-hard" src="./img/hard.svg" alt="sound icon">
+        <img class="card__btn-image btn-hard" src="./img/hard-gold.svg" alt="sound icon">
       </button>
       <button class="card__btn card__btn_learned btn-learned hidden" title="добавить в список изученных">
         <img class="card__sound-btn-image btn-learned" src="./img/learned.svg" alt="learned icon">
