@@ -111,8 +111,8 @@ class Word {
       const response = await getUserWord(state.userId, state.accessToken, this.word.id);
       if (response.isSuccess) {
         const newProps = props;
-        newProps.difficulty = props.difficulty;
-        newProps.optional = props.optional;
+        newProps.difficulty = response.userWord.difficulty;
+        newProps.optional = response.userWord.optional;
         updateUserWord(state.userId, state.accessToken, word.id, newProps);
       }
     } else {
