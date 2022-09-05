@@ -98,11 +98,16 @@ export const updateGameWord = (isRightAnswer = false) => {
 
   const userWord = store.words[idx].userWord as IWordProps;
 
+  if (!userWord.optional) userWord.optional = {};
   if (!userWord.optional.audiocallAnswers) {
     userWord.optional.audiocallAnswers = {
       right: isRightAnswer ? 1 : 0,
       wrong: isRightAnswer ? 0 : 1,
     };
+  } else if (isRightAnswer) {
+    userWord.optional.audiocallAnswers.right += 1;
+  } else {
+    userWord.optional.audiocallAnswers.wrong += 1;
   }
 
   if (userWord.optional.rightAnswersInRow) {
