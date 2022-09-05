@@ -1,0 +1,57 @@
+.homePage{
+   display: flex;
+   flex-direction: column;
+   text-align: center;
+   padding: 2rem 1rem;
+}
+
+.title{
+   color: #885024;
+}
+
+.homePage__title{
+   font-size: 5rem;
+   text-decoration: underline;
+}
+.homePage__subtitle{
+   padding: 2rem;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   justify-items: center;
+   gap: 2rem;
+}
+
+.subtitle__content{
+   width: 35rem;
+   padding: 1rem;
+   display: flex;
+   align-items: center;
+   background-color: #f9e084;
+   border-radius: 10px;
+   font-size: 1.5rem;
+   text-align: left;
+}
+
+.subtitle__image{
+   width: 100px;
+   height: 100px;
+}
+.registration{
+   display: flex;
+   flex-direction: column;
+   text-align: center;
+   align-items: center;
+   gap: 1rem;
+}
+
+.registration__button{
+   width: 20rem;
+   height: 3rem;
+   background-color: #f9e084;
+   border-radius: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: 0.3s;
+}

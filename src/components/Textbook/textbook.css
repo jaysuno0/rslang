@@ -1,0 +1,179 @@
+.textbook {
+  align-self: flex-start;
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 30px;
+}
+
+.textbook__cards-wrapper {
+  transform: translateY(-50px);
+  padding: 10px;
+  padding-top: 30px;
+  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 35px;
+}
+.textbook__hard-level-img {
+  width: 27px;
+}
+.textbook__message {
+  padding: 3rem 0px;
+  font-size: 25px;
+}
+
+
+/*** textbook controls ***/
+.textbook__controls-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+}
+.textbook__controls-wrapper{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 2;
+
+  width: 100%;
+  padding: 3px 20px;
+  padding-top: 6px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  
+  background: #f9e084;
+  box-shadow: 0px 0px 5px 5px #f9e084;
+}
+.textbook__controls {
+  background: #30303015;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 25px;
+}
+
+.textbook__btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 200ms;
+}
+.textbook__btn-img {
+  width: 40px;
+  padding: 5px;
+  border-radius: 10px;
+  transition: 200ms;
+}
+.textbook__btn-img:hover {
+  background-color: #60c7b6;
+}
+
+
+/* page controls */
+.textbook__controls_page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.textbook__page {
+  padding: 0px 10px;
+}
+
+/* level controls */
+.textbook__btn_level {
+  padding: 0px 20px;
+  border-left: 10px solid #000;
+  border-right: 10px solid #000;
+  border-radius: 100px;
+}
+.textbook__btn_level:hover {
+  background: #60c7b6;
+}
+.textbook__btn_level p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.textbook__btn_level span{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textbook__levels-list {
+  width: 100%;
+  padding: 10px 20px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+
+  font-weight: bold;
+  transition: 400ms;
+  background: #f9e084;
+  box-shadow: 0px 0px 5px 5px #f9e084;
+}
+.textbook__levels-list.hidden {
+  transform: translateY(-110%);
+}
+.textbook__levels-list-item {
+  cursor: pointer;
+  padding: 10px 15px;
+
+  border-left: 5px solid #000;
+  border-right: 5px solid #000;
+  border-radius: 20px;
+  transition: 200ms;
+}
+.textbook__levels-list-item:nth-child(1) {
+  background-color: #ffeacb;
+}
+.textbook__levels-list-item:nth-child(2) {
+  background-color: #ffd8d1;
+}
+.textbook__levels-list-item:nth-child(3) {
+  background-color: #f9ca9a;
+}
+.textbook__levels-list-item:nth-child(4) {
+  background-color: #f4a04a;
+}
+.textbook__levels-list-item:nth-child(5) {
+  background-color: #ff826b;
+}
+.textbook__levels-list-item:nth-child(6) {
+  background-color: #ff6549;
+}
+.textbook__levels-list-item:nth-child(7) {
+  padding: 4px 7px 2px 7px;
+  background-color: #000;
+}
+.textbook__levels-list-item:hover {
+  background-color: #60c7b6;
+}
+
+/* game controls */
+.textbook__controls_games {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.textbook__controls.disabled {
+  background: transparent;
+}
+.textbook__controls.disabled button {
+  cursor: default;
+}
+.textbook__controls.disabled button img:hover {
+  background-color: transparent;
+}

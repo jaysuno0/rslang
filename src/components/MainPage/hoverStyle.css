@@ -1,0 +1,46 @@
+.nav__item:hover {
+   background-color: #60c7b6;
+   border-radius: 10px;
+}
+
+.registration__button:hover {
+   background-color: #60c7b6;
+   width: 18rem;
+   box-shadow: 0px 0px 15px #885024;
+}
+
+
+.team__card:hover {
+   box-shadow: 5px 5px 10px #333;
+   transform: scale(1.01);
+}
+
+.team__card:hover .card__image {
+   border-color: #60c7b6;
+}
+
+.team__card:hover .card__image img {
+   height: 110%;
+}
+
+.card__button:hover {
+   background-color: #60c7b6;
+   padding: 10px 24px;
+   color: #000;
+}
+
+.card__button:hover .card__image{
+   border-color: #60c7b6;
+   width: 4rem;
+}
+
+.game__wrapper:hover {
+   cursor: pointer;
+}
+.game__wrapper:hover .gameBefore {
+   display: none;
+}
+.game__wrapper:hover .gameAfter {
+   display: flex;
+   box-shadow: 0px 0px 15px #885024;
+}
