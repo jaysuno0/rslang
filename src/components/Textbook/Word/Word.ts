@@ -135,7 +135,7 @@ class Word {
     if (this.isUserWord) {
       const newProps = { ...props };
       newProps.difficulty = props.difficulty;
-      newProps.optional = (this.word.userWord as IWordProps).optional;
+      if (this.word.userWord) newProps.optional = this.word.userWord.optional;
       newProps.optional.isLearned = props.optional.isLearned;
       updateUserWord(state.userId, state.accessToken, word.id, newProps);
     } else {
