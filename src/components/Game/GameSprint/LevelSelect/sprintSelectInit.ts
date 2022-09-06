@@ -80,23 +80,24 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
   let learned: boolean;
   let difficulty: string;
 
-  right.forEach(async (word) => {
-    const newWordProps: IWordProps = {
-      difficulty: 'easy',
-      optional: {
-        isLearned: false,
-        sprintAnswers: {
-          right: 1,
-          wrong: 0,
-        },
-        audiocallAnswers: {
-          right: 0,
-          wrong: 0,
-        },
-        rightAnswersInRow: 1,
+  const newWordProps: IWordProps = {
+    difficulty: 'easy',
+    optional: {
+      isLearned: false,
+      sprintAnswers: {
+        right: 1,
+        wrong: 0,
       },
-    };
-    if (word.userWord === undefined) {
+      audiocallAnswers: {
+        right: 0,
+        wrong: 0,
+      },
+      rightAnswersInRow: 1,
+    },
+  };
+
+  right.map(async (word) => {
+    if ((word.userWord === undefined) || (word.userWord.optional.audiocallAnswers === undefined)) {
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.audiocallAnswers === undefined) { return; }
@@ -356,7 +357,7 @@ const gameWordsState = (words:IWord[]) => {
     const isCorrect = Math.round(Math.random());
     const translateToCompare = isCorrect
       ? word.wordTranslate
-      : words[Math.floor(Math.random() * (words.length - 1)) + 1].wordTranslate;
+      : words[Math.floor(Math.random() * (words.length - 1))].wordTranslate;
     return { ...word, isCorrect, translateToCompare };
   });
   return wordsWithCompare;
