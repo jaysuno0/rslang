@@ -54,3 +54,10 @@
    justify-content: center;
    transition: 0.3s;
 }
+
+/***** adaptive ******/
+@media screen and (max-width: 900px) {
+   .subtitle__content {
+      width: 100%;
+   }
+}
