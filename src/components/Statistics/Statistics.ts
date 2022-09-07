@@ -7,7 +7,7 @@ import {
   upsertUserStat,
 } from '../Api/userStatApi';
 
-interface IGameData {
+export interface IGameData {
   right: number,
   wrong: number,
   newWords: number,
@@ -82,7 +82,7 @@ const stats: IStats = {
         </div>
         </div>
       </div>
-      пока работает неправильно, в данный момент допиливается...
+      пока не работает спринт <br> допиливается...
       `,
 
   create() {
@@ -119,13 +119,13 @@ const stats: IStats = {
       const { audiocall } = today;
 
       sprintNewWords.textContent = `${sprint.newWords}`;
-      sprintPercentage.textContent = `${((sprint.right + sprint.wrong) / 100) * sprint.right}`;
+      sprintPercentage.textContent = `${Math.round(((sprint.right + sprint.wrong) / 100) * sprint.right)}`;
       sprintRange.textContent = `${sprint.rightAnswersRange}`;
       audiocallNewWords.textContent = `${audiocall.newWords}`;
-      audiocallPercentage.textContent = `${((audiocall.right + audiocall.wrong) / 100) * audiocall.right}`;
+      audiocallPercentage.textContent = `${Math.round(((audiocall.right + audiocall.wrong) / 100) * audiocall.right)}`;
       audiocallRange.textContent = `${sprint.rightAnswersRange}`;
       wordsNewWords.textContent = `${sprint.newWords + audiocall.newWords}`;
-      wordsPercentage.textContent = `${(statsResp.stat.learnedWords / 100) * sprint.right + audiocall.right}`;
+      wordsPercentage.textContent = `${Math.round((statsResp.stat.learnedWords / 100) * (sprint.right + audiocall.right))}`;
       wordsLearned.textContent = `${statsResp.stat.learnedWords}`;
     }
   },
