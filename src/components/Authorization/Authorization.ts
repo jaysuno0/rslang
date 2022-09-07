@@ -265,6 +265,7 @@ const Authorization: IAuthorization = {
       gamesCount: 0,
       newWords: 0,
       learnedWords: 0,
+      rightAnswersRange: 0,
     };
 
     const dayStats: IDayStat = {
