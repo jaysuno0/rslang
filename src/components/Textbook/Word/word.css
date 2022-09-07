@@ -62,6 +62,16 @@
   text-align: center;
 }
 
+.card__new-word-text {
+  font-size: 20px;
+  padding: 1rem;
+  text-align: center;
+  transition: 200ms;
+}
+.card__new-word-text.hidden {
+  display: none;
+}
+
 .card__stats-game {
   display: flex;
   justify-content: center;
@@ -75,6 +85,7 @@
 .card__stats-wrapper {
   transition: 400ms;
 }
+.card__stats.hidden .card__new-word-text,
 .card__stats.hidden .card__stats-wrapper{
   opacity: 0;
 }

@@ -77,6 +77,7 @@ class Word {
             <p class="card__stats-answer card__stats-answer_wrong audiocall-wrong">16</p>
           </div>
         </div>
+        <p class="card__new-word-text hidden">Это ваше новое слово :)</p>
       </div>
       `;
     this.setIsUserWord();
@@ -222,20 +223,29 @@ class Word {
   }
 
   createStats() {
-    const sprintRight = this.card.querySelector('.sprint-right') as HTMLParagraphElement;
-    const sprintWrong = this.card.querySelector('.sprint-wrong') as HTMLParagraphElement;
-    const audiocallRight = this.card.querySelector('.audiocall-right') as HTMLParagraphElement;
-    const audiocallWrong = this.card.querySelector('.audiocall-wrong') as HTMLParagraphElement;
+    const sprintRightElement = this.card.querySelector('.sprint-right') as HTMLParagraphElement;
+    const sprintWrongElement = this.card.querySelector('.sprint-wrong') as HTMLParagraphElement;
+    const audiocallRightElement = this.card.querySelector('.audiocall-right') as HTMLParagraphElement;
+    const audiocallWrongElement = this.card.querySelector('.audiocall-wrong') as HTMLParagraphElement;
+    const newWordElement = this.card.querySelector('.card__new-word-text') as HTMLParagraphElement;
+    const sprintRightAnswer = this.word.userWord?.optional.sprintAnswers?.right;
+    const sprintWrongAnswer = this.word.userWord?.optional.sprintAnswers?.wrong;
+    const audiocallRightAnswer = this.word.userWord?.optional.audiocallAnswers?.right;
+    const audiocallWrongAnswer = this.word.userWord?.optional.audiocallAnswers?.wrong;
+    let gamesCount = 0;
 
     function setStat(element: HTMLParagraphElement, content = 0) {
       const gameStatDigits = element;
       gameStatDigits.textContent = `${content}`;
+      gamesCount += content;
     }
 
-    setStat(sprintRight, this.word.userWord?.optional.sprintAnswers?.right as number);
-    setStat(sprintWrong, this.word.userWord?.optional.sprintAnswers?.wrong as number);
-    setStat(audiocallRight, this.word.userWord?.optional.audiocallAnswers?.right as number);
-    setStat(audiocallWrong, this.word.userWord?.optional.audiocallAnswers?.wrong as number);
+    setStat(sprintRightElement, sprintRightAnswer);
+    setStat(sprintWrongElement, sprintWrongAnswer);
+    setStat(audiocallRightElement, audiocallRightAnswer);
+    setStat(audiocallWrongElement, audiocallWrongAnswer);
+
+    if (gamesCount === 1) newWordElement.classList.remove('hidden');
   }
 
   toggleStats() {

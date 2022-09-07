@@ -265,6 +265,7 @@ const Authorization: IAuthorization = {
       gamesCount: 0,
       newWords: 0,
       learnedWords: 0,
+      rightAnswersRange: 0,
     };
 
     const dayStats: IDayStat = {
@@ -288,7 +289,7 @@ const Authorization: IAuthorization = {
     const loginResponse = await loginUser(user);
     if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
     else {
-      newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
+      await newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
       state.isUserLogged = true;
       this.setScreenMessage('Вы успешно вошли, приятного обучения :)');
       if (isNew) this.createUserStats();

@@ -7,7 +7,13 @@ export interface IGameStat {
   wrong: number,
   gamesCount: number,
   newWords: number,
+<<<<<<< HEAD
   learnedWords: number,
+||||||| merged common ancestors
+=======
+  learnedWords: number,
+  rightAnswersRange: number,
+>>>>>>> 58e9a3203300539f1b29228a13b59ca95a9e3be0
 }
 
 export interface IDayStat {
