@@ -86,7 +86,8 @@ export const getUserStat = async (userId: string, token: string): Promise<IUserS
     const data = (await resp.json()) as IUserStat;
 
     userStatResp.isSuccess = true;
-    Object.assign(userStatResp.stat, data);
+    userStatResp.stat.learnedWords = data.learnedWords;
+    userStatResp.stat.optional = data.optional;
   } else {
     userStatResp.errMsg = await resp.text();
   }
