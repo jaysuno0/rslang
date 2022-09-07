@@ -7,13 +7,8 @@ export interface IGameStat {
   wrong: number,
   gamesCount: number,
   newWords: number,
-<<<<<<< HEAD
-  learnedWords: number,
-||||||| merged common ancestors
-=======
   learnedWords: number,
   rightAnswersRange: number,
->>>>>>> 58e9a3203300539f1b29228a13b59ca95a9e3be0
 }
 
 export interface IDayStat {
@@ -91,7 +86,8 @@ export const getUserStat = async (userId: string, token: string): Promise<IUserS
     const data = (await resp.json()) as IUserStat;
 
     userStatResp.isSuccess = true;
-    Object.assign(userStatResp.stat, data);
+    userStatResp.stat.learnedWords = data.learnedWords;
+    userStatResp.stat.optional = data.optional;
   } else {
     userStatResp.errMsg = await resp.text();
   }

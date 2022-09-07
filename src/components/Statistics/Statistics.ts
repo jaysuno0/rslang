@@ -7,7 +7,7 @@ import {
   upsertUserStat,
 } from '../Api/userStatApi';
 
-interface IGameData {
+export interface IGameData {
   right: number,
   wrong: number,
   newWords: number,

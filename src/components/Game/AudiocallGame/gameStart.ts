@@ -15,6 +15,12 @@ export const startGame = async (
   store.rightAnswerIdxs = [];
   store.wrongAnswerIdxs = [];
   store.currentWord = 0;
+  store.stat.right = 0;
+  store.stat.wrong = 0;
+  store.stat.newWords = 0;
+  store.stat.learnedWords = 0;
+  store.rightAnswersRange = 0;
+
   renderMsg(store.appOutput, 'Загрузка слов...');
   await getGameWords(isPageSetted, group, page);
   if (!store.words.length) {
