@@ -1,11 +1,25 @@
 import state from '../../state';
-import { getUserStat, IUserStatResp } from '../Api/userStatApi';
 import './statistics.css';
+import {
+  getUserStat,
+  IGameStat,
+  IUserStatResp,
+  upsertUserStat,
+} from '../Api/userStatApi';
+
+interface IGameData {
+  right: number,
+  wrong: number,
+  newWords: number,
+  learnedWords: number,
+  rightAnswersRange: number,
+}
 
 interface IStats {
   template: string;
   create: () => void;
   setStats: (statsElement: HTMLDivElement) => void;
+  update: (isSprint: boolean, data: IGameData) => void;
 }
 
 const stats: IStats = {
@@ -101,21 +115,46 @@ const stats: IStats = {
     if (statsResp.isSuccess) {
       const daysArr = statsResp.stat.optional.daily.day;
       const today = daysArr[daysArr.length - 1];
-
       const { sprint } = today;
       const { audiocall } = today;
 
       sprintNewWords.textContent = `${sprint.newWords}`;
       sprintPercentage.textContent = `${((sprint.right + sprint.wrong) / 100) * sprint.right}`;
       sprintRange.textContent = `${sprint.rightAnswersRange}`;
-
       audiocallNewWords.textContent = `${audiocall.newWords}`;
       audiocallPercentage.textContent = `${((audiocall.right + audiocall.wrong) / 100) * audiocall.right}`;
       audiocallRange.textContent = `${sprint.rightAnswersRange}`;
-
       wordsNewWords.textContent = `${sprint.newWords + audiocall.newWords}`;
       wordsPercentage.textContent = `${(statsResp.stat.learnedWords / 100) * sprint.right + audiocall.right}`;
       wordsLearned.textContent = `${statsResp.stat.learnedWords}`;
+    }
+  },
+
+  async update(isSprint, data) {
+    const statsResp = await getUserStat(state.userId, state.accessToken);
+
+    if (statsResp.isSuccess) {
+      const days = statsResp.stat.optional.daily.day;
+      const newUserStat = { ...statsResp.stat };
+      const today = days[days.length - 1];
+      let newGameData: IGameStat;
+
+      if (isSprint) {
+        newGameData = { ...today.sprint };
+        newUserStat.optional.daily.day[days.length - 1].sprint = newGameData;
+      } else {
+        newGameData = { ...today.audiocall };
+        newUserStat.optional.daily.day[days.length - 1].audiocall = newGameData;
+      }
+
+      newGameData.rightAnswersRange += data.rightAnswersRange;
+      newGameData.learnedWords += data.learnedWords;
+      newGameData.newWords += data.newWords;
+      newGameData.right += data.right;
+      newGameData.wrong += data.wrong;
+
+      newUserStat.learnedWords += data.learnedWords;
+      upsertUserStat(state.userId, state.accessToken, newUserStat);
     }
   },
 };
