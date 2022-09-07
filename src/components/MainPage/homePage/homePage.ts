@@ -31,15 +31,14 @@ export default class HomeScreenRender {
    </div>
    <div class="registration">
     <div class="registration__title">
-      <p class="title">Еще сомневаешься? Ригистрируйся и давай начинать!</p>
+      <p class="title">Еще сомневаешься? Регистрируйся и давай начинать!</p>
     </div>
       <a href="##" id="login" class="homePage__button">
       <div class="registration__button">
       <span>Регистрация</span>
       </div>
       </a>  
-  </div>
-         `;
+  </div>`;
   }
 
   render() {

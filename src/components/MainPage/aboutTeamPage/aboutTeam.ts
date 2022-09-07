@@ -27,7 +27,7 @@ export default class AboutTeamRender {
                 <ul>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
-                    <p>Создатель нашего учебничка.</p>
+                    <p>Создатель нашего учебника.</p>
                   </li>
                   <li class="card__list-item">
                     <img src="./img/tick.svg" alt="tick  ">
