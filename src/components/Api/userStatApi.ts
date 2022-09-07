@@ -7,6 +7,7 @@ export interface IGameStat {
   wrong: number,
   gamesCount: number,
   newWords: number,
+  learnedWords: number,
 }
 
 export interface IDayStat {
