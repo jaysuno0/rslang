@@ -481,6 +481,10 @@ export async function gameFromBook(level: number, page: number) {
   totalWrongAnswer = [];
   totalRightAnswer = [];
   store.words = [];
+  rightAnswersRange = 0;
+  stat.newWords = 0;
+  stat.learnedWords = 0;
+  isStatUpdated = false;
 
   if (state.isUserLogged) {
     const params: IWordsParams = {
