@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import state from '../../state';
 import './statistics.css';
 import {
