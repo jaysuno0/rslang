@@ -22,6 +22,8 @@ interface IStats {
   changeNumber: (n: number) => void;
   setStats: (statsElement: HTMLDivElement) => void;
   update: (isSprint: boolean, data: IGameData) => void;
+  addLearnedWord: () => void;
+  deleteLearnedWord: () => void;
 }
 
 const stats: IStats = {
@@ -167,6 +169,24 @@ const stats: IStats = {
 
       newUserStat.learnedWords += data.learnedWords;
       upsertUserStat(state.userId, state.accessToken, newUserStat);
+    }
+  },
+
+  async addLearnedWord() {
+    const statsResp = await getUserStat(state.userId, state.accessToken);
+    if (statsResp.isSuccess) {
+      const newStat = { ...statsResp.stat };
+      newStat.learnedWords += 1;
+      upsertUserStat(state.userId, state.accessToken, newStat);
+    }
+  },
+
+  async deleteLearnedWord() {
+    const statsResp = await getUserStat(state.userId, state.accessToken);
+    if (statsResp.isSuccess) {
+      const newStat = { ...statsResp.stat };
+      newStat.learnedWords -= 1;
+      upsertUserStat(state.userId, state.accessToken, newStat);
     }
   },
 };
