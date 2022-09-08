@@ -19,6 +19,7 @@ export interface IGameData {
 interface IStats {
   template: string;
   create: () => void;
+  changeNumber: (n: number) => void;
   setStats: (statsElement: HTMLDivElement) => void;
   update: (isSprint: boolean, data: IGameData) => void;
 }
@@ -82,9 +83,7 @@ const stats: IStats = {
           <p class="stats__right-answers-number stats__number words__learned-words"></p>
         </div>
         </div>
-      </div>
-      пока не работает спринт <br> допиливается...
-      `,
+      </div>`,
 
   create() {
     const statsElement = document.createElement('div');
@@ -99,6 +98,12 @@ const stats: IStats = {
 
     screen.append(statsElement);
     this.setStats(statsElement);
+  },
+
+  changeNumber(n) {
+    let num = n;
+    if (Number.isNaN(num) || num === Infinity || !n) num = 0;
+    return num;
   },
 
   async setStats(element) {
@@ -120,13 +125,19 @@ const stats: IStats = {
       const { audiocall } = today;
 
       sprintNewWords.textContent = `${sprint.newWords}`;
-      sprintPercentage.textContent = `${Math.round(((sprint.right + sprint.wrong) / 100) * sprint.right)}`;
+      sprintPercentage.textContent = `${this.changeNumber(Math.round((100 / (sprint.right + sprint.wrong)) * sprint.right))}`;
       sprintRange.textContent = `${sprint.rightAnswersRange}`;
       audiocallNewWords.textContent = `${audiocall.newWords}`;
-      audiocallPercentage.textContent = `${Math.round(((audiocall.right + audiocall.wrong) / 100) * audiocall.right)}`;
+      audiocallPercentage.textContent = `${this.changeNumber(Math.round((100 / (audiocall.right + audiocall.wrong)) * audiocall.right))}`;
       audiocallRange.textContent = `${sprint.rightAnswersRange}`;
       wordsNewWords.textContent = `${sprint.newWords + audiocall.newWords}`;
-      wordsPercentage.textContent = `${Math.round((statsResp.stat.learnedWords / 100) * (sprint.right + audiocall.right))}`;
+      wordsPercentage.textContent = `${
+        this.changeNumber(
+          Math.round(
+            (100 / (sprint.right + audiocall.right + sprint.wrong + audiocall.wrong))
+            * (sprint.right + audiocall.right),
+          ),
+        )}`;
       wordsLearned.textContent = `${statsResp.stat.learnedWords}`;
     }
   },
