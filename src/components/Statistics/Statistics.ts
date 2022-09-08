@@ -92,14 +92,14 @@ const stats: IStats = {
     const screen = document.querySelector('.screen') as HTMLDivElement;
     statsElement.classList.add('stats');
     screen.innerHTML = '';
+    screen.append(statsElement);
 
-    if (state.isUserLogged) statsElement.innerHTML = this.template;
-    else {
+    if (state.isUserLogged) {
+      statsElement.innerHTML = this.template;
+      this.setStats(statsElement);
+    } else {
       statsElement.innerHTML = 'Статистика доступна только для зарегистрированных пользователей :)';
     }
-
-    screen.append(statsElement);
-    this.setStats(statsElement);
   },
 
   changeNumber(n) {
@@ -131,7 +131,7 @@ const stats: IStats = {
       sprintRange.textContent = `${sprint.rightAnswersRange}`;
       audiocallNewWords.textContent = `${audiocall.newWords}`;
       audiocallPercentage.textContent = `${this.changeNumber(Math.round((100 / (audiocall.right + audiocall.wrong)) * audiocall.right))}`;
-      audiocallRange.textContent = `${sprint.rightAnswersRange}`;
+      audiocallRange.textContent = `${audiocall.rightAnswersRange}`;
       wordsNewWords.textContent = `${sprint.newWords + audiocall.newWords}`;
       wordsPercentage.textContent = `${
         this.changeNumber(
@@ -156,12 +156,19 @@ const stats: IStats = {
       if (isSprint) {
         newGameData = { ...today.sprint };
         newUserStat.optional.daily.day[days.length - 1].sprint = newGameData;
+        newGameData.rightAnswersRange = Math.max(
+          today.sprint.rightAnswersRange,
+          data.rightAnswersRange,
+        );
       } else {
         newGameData = { ...today.audiocall };
         newUserStat.optional.daily.day[days.length - 1].audiocall = newGameData;
+        newGameData.rightAnswersRange = Math.max(
+          today.audiocall.rightAnswersRange,
+          data.rightAnswersRange,
+        );
       }
 
-      newGameData.rightAnswersRange += data.rightAnswersRange;
       newGameData.learnedWords += data.learnedWords;
       newGameData.newWords += data.newWords;
       newGameData.right += data.right;

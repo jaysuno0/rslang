@@ -279,7 +279,7 @@ function wrongAnswer(card: HTMLElement) {
   bonusIconContainer.innerHTML = '';
   bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_0;
   if (rightAnswersRange > stat.rightAnswersRange) {
-    stat.rightAnswersRange = rightAnswersRange;
+    stat.rightAnswersRange = rightAnswersRange + 1;
   }
   rightAnswersRange = 0;
 }
