@@ -75,7 +75,7 @@ export const renderGameFrame = (
     <div class="game-frame__word-image" style="display:none; background-image: url('${imageURL}');"></div>
     <div class="game-frame__word-wrapper">
       <button class="game-frame__audio-btn audio-btn big">${icon}</button>
-      <span id="word" style="display:none;">${word}</span>
+      <span id="word">${word}</span>
     </div>
     <div class="game-frame__answers-wrapper">
       ${renderedAnswers}
