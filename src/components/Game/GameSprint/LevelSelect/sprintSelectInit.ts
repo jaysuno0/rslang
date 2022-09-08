@@ -342,6 +342,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     } else {
       checkRightAnswer(words);
       endGame();
+      document.removeEventListener('keyup', answerKeyHandler); // eslint-disable-line
     }
   }
 
@@ -353,6 +354,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     } else {
       checkWrongAnswer(words);
       endGame();
+      document.removeEventListener('keyup', answerKeyHandler); // eslint-disable-line
     }
   }
 
