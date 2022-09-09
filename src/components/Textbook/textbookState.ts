@@ -14,6 +14,7 @@ interface ITextbookState {
   toggleGameControls: (enable: boolean) => void;
   countLastPage: () => void;
   deleteHardWord: () => void;
+  togglePageLearned: (isLearned: boolean) => void;
 }
 
 const textbookState: ITextbookState = {
@@ -28,12 +29,12 @@ const textbookState: ITextbookState = {
 
   addLearnedWord() {
     this.learnedWordsNumber += 1;
-    if (this.learnedWordsNumber === this.wordsPerPage) this.toggleGameControls(false);
+    if (this.learnedWordsNumber === this.wordsPerPage) this.togglePageLearned(true);
   },
 
   deleteLearnedWord() {
     if (this.learnedWordsNumber > 0) this.learnedWordsNumber -= 1;
-    if (this.learnedWordsNumber < this.wordsPerPage) this.toggleGameControls(true);
+    if (this.learnedWordsNumber < this.wordsPerPage) this.togglePageLearned(false);
   },
 
   togglePageControls(enable) {
@@ -85,6 +86,18 @@ const textbookState: ITextbookState = {
   deleteHardWord() {
     this.hardWordsCount -= 1;
     this.countLastPage();
+  },
+
+  togglePageLearned(isLearned) {
+    const textbook = document.querySelector('.textbook') as HTMLDivElement;
+
+    if (isLearned) {
+      textbook.classList.add('learned-page');
+      this.toggleGameControls(false);
+    } else {
+      textbook.classList.remove('learned-page');
+      this.toggleGameControls(true);
+    }
   },
 };
 

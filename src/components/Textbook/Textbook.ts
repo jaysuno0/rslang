@@ -177,7 +177,7 @@ const Textbook: ITextbook = {
       this.getWords(true);
     } else this.getWords(false);
 
-    textbookState.toggleGameControls(true);
+    textbookState.togglePageLearned(false);
     localStorage.setItem('textbookPageParams', `${level},${pageNumber}`);
   },
 

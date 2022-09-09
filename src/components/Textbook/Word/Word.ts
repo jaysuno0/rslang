@@ -6,6 +6,7 @@ import '../img/learned.svg';
 import '../img/stats.svg';
 import '../img/close.svg';
 import state from '../../../state';
+import statistics from '../../Statistics/Statistics';
 import { IWord } from '../../Api/wordsApi';
 import {
   createUserWord,
@@ -205,12 +206,14 @@ class Word {
 
     card.classList.toggle('learned');
     if (card.classList.contains('learned')) {
+      statistics.addLearnedWord();
       card.classList.remove('hard');
       wordProps.optional.isLearned = true;
       textbookState.addLearnedWord();
     } else {
       wordProps.optional.isLearned = false;
       textbookState.deleteLearnedWord();
+      statistics.deleteLearnedWord();
     }
     this.setWord(wordProps);
 

@@ -1,6 +1,14 @@
 import './authorization.css';
 import state from '../../state';
 import { loginUser } from '../Api/loginApi';
+import textbookState from '../Textbook/textbookState';
+import { ButtonActionTypes } from '../MainPage/setupButtonListeners';
+import {
+  IGameStat,
+  IDayStat,
+  IUserStat,
+  upsertUserStat,
+} from '../Api/userStatApi';
 import {
   IUserLogin,
   ILoginResp,
@@ -8,8 +16,6 @@ import {
   getNewToken,
   IUserResp,
 } from '../Api/userApi';
-import textbookState from '../Textbook/textbookState';
-import { ButtonActionTypes } from '../MainPage/setupButtonListeners';
 
 enum AuthorizationTypes {
   loginType = 'Вход',
@@ -34,6 +40,9 @@ interface IAuthorization {
   create: () => void;
   createForm: (type: AuthorizationTypes, btnText: AuthorizationTypes) => void;
   sendForm: () => void;
+  loginUser: (user: IUserLogin, isNew?: boolean) => void;
+  addNewUser: (user: IUserLogin) => void;
+  createUserStats: () => void;
   enter: () => void;
   validateName: () => boolean;
   validateEmail: () => boolean;
@@ -42,6 +51,7 @@ interface IAuthorization {
   setFormMessage: (text: string) => void;
   setScreenMessage: (text: string) => void;
   logOut: () => void;
+  getDate: () => string;
 }
 
 async function newToken(id: string, refreshToken: string) {
@@ -248,6 +258,50 @@ const Authorization: IAuthorization = {
     return result;
   },
 
+  createUserStats() {
+    const gameStats: IGameStat = {
+      right: 0,
+      wrong: 0,
+      gamesCount: 0,
+      newWords: 0,
+      learnedWords: 0,
+      rightAnswersRange: 0,
+    };
+
+    const dayStats: IDayStat = {
+      date: this.getDate(),
+      sprint: gameStats,
+      audiocall: gameStats,
+    };
+
+    const userStats: IUserStat = {
+      learnedWords: 0,
+      optional: {
+        daily: {
+          day: [dayStats],
+        },
+      },
+    };
+    upsertUserStat(state.userId, state.accessToken, userStats);
+  },
+
+  async loginUser(user, isNew) {
+    const loginResponse = await loginUser(user);
+    if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
+    else {
+      await newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
+      state.isUserLogged = true;
+      this.setScreenMessage('Вы успешно вошли, приятного обучения :)');
+      if (isNew) this.createUserStats();
+    }
+  },
+
+  async addNewUser(user) {
+    const userResponse: IUserResp = await createUser(user);
+    if (userResponse.isSuccess) this.loginUser(user, true);
+    else this.setFormMessage(userResponse.errMsg);
+  },
+
   enter() {
     const email = (document.querySelector('#email') as HTMLInputElement).value;
     const password = (document.querySelector('#password') as HTMLInputElement).value;
@@ -256,27 +310,12 @@ const Authorization: IAuthorization = {
       password,
     };
 
-    const login = async () => {
-      const loginResponse = await loginUser(user);
-      if (!loginResponse.isSuccess) this.setFormMessage(loginResponse.errMsg);
-      else {
-        newToken(loginResponse.tokenResp.userId, loginResponse.tokenResp.refreshToken);
-        state.isUserLogged = true;
-        this.setScreenMessage('Вы успешно вошли, приятного обучения :)');
-      }
-    };
-
-    const newUser = async () => {
-      const userResponse: IUserResp = await createUser(user);
-      if (userResponse.isSuccess) login();
-      else this.setFormMessage(userResponse.errMsg);
-    };
-
     if (this.currentType === AuthorizationTypes.signupType) {
       const nick = document.querySelector('#name') as HTMLInputElement;
       user.name = nick.value;
-      newUser();
-    } else login();
+      this.addNewUser(user);
+    } else this.loginUser(user);
+    this.getDate();
   },
 
   setFormMessage(text) {
@@ -301,6 +340,14 @@ const Authorization: IAuthorization = {
     if (textbookState.currentGroup === textbookState.hardLevelNumber) {
       textbookState.currentGroup = 0;
     }
+  },
+
+  getDate() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    return `${year}-${month}-${day}`;
   },
 };
 

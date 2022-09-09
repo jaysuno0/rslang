@@ -17,6 +17,7 @@ import Textbook from '../Textbook/Textbook';
 import { Authorization } from '../Authorization/Authorization';
 import GameSelect from '../Game/gameSelect/gameSelect';
 import state from '../../state';
+import stats from '../Statistics/Statistics';
 
 const header = new HeaderRender();
 const nav = new NavRender();
@@ -47,7 +48,7 @@ setupButtonListeners({
   },
 
   [ButtonActionTypes.Stats]: () => {
-    console.log('Stats Callback');
+    stats.create();
     state.setScreen(ButtonActionTypes.Stats);
   },
 
@@ -77,7 +78,7 @@ function setScreen(screen?: ButtonActionTypes) {
       aboutTeam.create();
       break;
     case ButtonActionTypes.Stats:
-      alert('load stats page from localStorage');
+      stats.create();
       break;
     default: homePage.create();
   }

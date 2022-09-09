@@ -9,6 +9,7 @@ import { footerHidden } from '../../footerHidden';
 import { IWordProps, createUserWord, updateUserWord } from '../../../Api/userWordsApi';
 /* eslint-disable import/no-cycle */
 import state from '../../../../state';
+import stats, { IGameData } from '../../../Statistics/Statistics';
 
 const gameScreen = new GameScreen();
 const resultScreen = new ResultScreen();
@@ -31,6 +32,15 @@ let scoreBonus = 1;
 let rightAnswerBonus = 1;
 let totalWrongAnswer: IWord[] = [];
 let totalRightAnswer: IWord[] = [];
+let rightAnswersRange: number;
+const stat: IGameData = {
+  right: 0,
+  wrong: 0,
+  newWords: 0,
+  learnedWords: 0,
+  rightAnswersRange: 0,
+};
+let isStatUpdated = false;
 
 function fillResultTable(wrong: IWord[], right: IWord[]) {
   const rightCount = document.getElementById('rightCount');
@@ -98,6 +108,7 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
 
   right.map(async (word) => {
     if ((word.userWord === undefined) || (word.userWord.optional.audiocallAnswers === undefined)) {
+      stat.newWords += 1;
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.audiocallAnswers === undefined) { return; }
@@ -107,9 +118,14 @@ async function resultLearningRight(right: IWord[], userId:string, token: string)
       if ((word.userWord.optional.rightAnswersInRow + 1) >= 3) {
         learned = true;
         difficulty = 'easy';
+        stat.learnedWords += 1;
       } else {
         learned = false;
         difficulty = word.userWord.difficulty;
+      }
+      if (!word.userWord.optional.sprintAnswers.right
+        && !word.userWord.optional.sprintAnswers.right) {
+        stat.newWords += 1;
       }
       const updateWordProps: IWordProps = {
         difficulty,
@@ -147,12 +163,17 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
     };
 
     if (word.userWord === undefined) {
+      stat.newWords += 1;
       await createUserWord(userId, token, word.id, newWordProps);
     } else {
       if (word.userWord.optional.audiocallAnswers === undefined) { return; }
       if (word.userWord.optional.sprintAnswers === undefined) { return; }
       if (word.userWord.optional.rightAnswersInRow === undefined) { return; }
 
+      if (!word.userWord.optional.sprintAnswers.right
+        && !word.userWord.optional.sprintAnswers.right) {
+        stat.newWords += 1;
+      }
       const updateWordProps: IWordProps = {
         difficulty: word.userWord.difficulty,
         optional: {
@@ -170,12 +191,16 @@ async function resultLearningWrong(wrong: IWord[], userId:string, token: string)
   });
 }
 
-function endGame() {
+async function endGame() {
   resultScreen.create();
   fillResultTable(totalWrongAnswer, totalRightAnswer);
-  if (state.isUserLogged) {
-    resultLearningRight(totalRightAnswer, state.userId, state.accessToken);
-    resultLearningWrong(totalWrongAnswer, state.userId, state.accessToken);
+  if (state.isUserLogged && !isStatUpdated) {
+    await resultLearningRight(totalRightAnswer, state.userId, state.accessToken);
+    await resultLearningWrong(totalWrongAnswer, state.userId, state.accessToken);
+    stat.right = totalRightAnswer.length;
+    stat.wrong = totalWrongAnswer.length;
+    stats.update(true, stat);
+    isStatUpdated = true;
   }
 }
 
@@ -235,6 +260,7 @@ function rightAnswer(card: HTMLElement) {
 
   totalScore += (RIGHT_ANSWER_SCORE * scoreBonus);
   score.innerHTML = `${totalScore}`;
+  rightAnswersRange += 1;
 }
 
 function wrongAnswer(card: HTMLElement) {
@@ -252,6 +278,10 @@ function wrongAnswer(card: HTMLElement) {
   rightAnswerBonus = 1;
   bonusIconContainer.innerHTML = '';
   bonusScore.innerHTML = RIGHT_ANSWER_BONUS_SCORE_0;
+  if (rightAnswersRange > stat.rightAnswersRange) {
+    stat.rightAnswersRange = rightAnswersRange + 1;
+  }
+  rightAnswersRange = 0;
 }
 
 function checkRightAnswer(words: IWord[]) {
@@ -312,6 +342,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     } else {
       checkRightAnswer(words);
       endGame();
+      document.removeEventListener('keyup', answerKeyHandler); // eslint-disable-line
     }
   }
 
@@ -323,6 +354,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     } else {
       checkWrongAnswer(words);
       endGame();
+      document.removeEventListener('keyup', answerKeyHandler); // eslint-disable-line
     }
   }
 
@@ -349,6 +381,7 @@ export function cardButtonListeners(words: IWord[], answerCount: number) {
     answerNo();
   });
 
+  document.removeEventListener('keyup', answerKeyHandler);
   document.addEventListener('keyup', answerKeyHandler);
 }
 
@@ -385,6 +418,10 @@ function startGame() {
   scoreBonus = 1;
   totalWrongAnswer = [];
   totalRightAnswer = [];
+  rightAnswersRange = 0;
+  stat.newWords = 0;
+  stat.learnedWords = 0;
+  isStatUpdated = false;
   const screen = document.querySelector<HTMLDivElement>('.screen');
   const form = document.querySelector<HTMLSelectElement>('.select__item');
   const startButton = document.querySelector('.start-button');
@@ -446,6 +483,10 @@ export async function gameFromBook(level: number, page: number) {
   totalWrongAnswer = [];
   totalRightAnswer = [];
   store.words = [];
+  rightAnswersRange = 0;
+  stat.newWords = 0;
+  stat.learnedWords = 0;
+  isStatUpdated = false;
 
   if (state.isUserLogged) {
     const params: IWordsParams = {

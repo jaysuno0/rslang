@@ -75,6 +75,15 @@ export const updateGameWord = (isRightAnswer = false) => {
 
   const idx = store.order[store.currentWord];
 
+  if (isRightAnswer) {
+    store.rightAnswersRange += 1;
+  } else {
+    if (store.rightAnswersRange > store.stat.rightAnswersRange) {
+      store.stat.rightAnswersRange = store.rightAnswersRange;
+    }
+    store.rightAnswersRange = 0;
+  }
+
   if (!store.words[idx].userWord) {
     const userWord: IWordProps = {
       difficulty: 'easy',
@@ -92,6 +101,7 @@ export const updateGameWord = (isRightAnswer = false) => {
       },
     };
     createUserWord(state.userId, state.accessToken, store.words[idx].id, userWord);
+    store.stat.newWords += 1;
 
     return;
   }
@@ -118,6 +128,7 @@ export const updateGameWord = (isRightAnswer = false) => {
     if (userWord.optional.rightAnswersInRow >= ANSWERS_FOR_SET_LEARNED) {
       userWord.optional.isLearned = true;
       userWord.difficulty = 'easy';
+      store.stat.learnedWords += 1;
     } else {
       userWord.optional.isLearned = false;
     }
