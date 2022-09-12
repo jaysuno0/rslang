@@ -67,3 +67,28 @@
    box-shadow: 0 0 0.5rem 0px #60c7b6; 
    cursor: pointer;
 }
+
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .levelSelect {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 50px;
+      padding: 60px;
+   }
+}
+
+@media screen and (max-width: 430px) {
+   .levelSelect {
+      padding: 60px 30px;
+   }
+}
+
+@media screen and (max-width: 350px) {
+   .levelSelect {
+      padding: 60px 15px;
+   }
+}

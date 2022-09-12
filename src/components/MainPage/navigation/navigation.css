@@ -72,9 +72,11 @@
       display: flex;
       justify-content: flex-end;
       transform: translateY(-110%);
+
       transition: 350ms;
       width: 100%;
       border-bottom: 5px solid #885024;
+      box-shadow: 3px 3px 5px #333;
    }
    .nav-wrapper.open {
       transform: translateY(0%);

@@ -61,20 +61,19 @@
       padding-bottom: 50px;
       gap: 50px;
    }
+
+   .game {
+      height: 200px;
+   }
 }
 
 @media screen and (max-width: 700px) {
-   .gameSelect {
-      font-size: 25px;
-   }
-
    .game__wrapper {
       width: 100%;
    }
 
    .game {
       width: 90%;
-      height: 200px;
       margin: auto;
    }
 
