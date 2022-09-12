@@ -31,7 +31,7 @@ export default class HomeScreenRender {
    </div>
    <div class="registration">
     <div class="registration__title">
-      <p class="title">Еще сомневаешься? Регистрируйся и давай начинать!</p>
+      <p class="title">Еще сомневаешься? <br> Регистрируйся и давай начинать!</p>
     </div>
       <a href="##" id="login" class="homePage__button">
       <div class="registration__button">

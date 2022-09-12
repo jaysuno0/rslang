@@ -2,7 +2,7 @@
    display: grid;
    grid-template-columns: 10rem 1fr;
    min-height: calc(100vh - 7rem);
-   background-color: #f9e084;
+   background-color: #f4a04a;
 }
 
 .mainGame {

@@ -36,7 +36,7 @@
    width: 100px;
    height: 100px;
 }
-.registration{
+.registration {
    display: flex;
    flex-direction: column;
    text-align: center;
@@ -56,8 +56,50 @@
 }
 
 /***** adaptive ******/
-@media screen and (max-width: 900px) {
-   .subtitle__content {
+@media screen and (max-width: 670px) {
+   .homePage{
       width: 100%;
+   }
+
+   .homePage__title{
+      font-size: 60px;
+   }
+
+   .header__nav-btn {
+      display: flex;
+   }
+
+   .homePage__subtitle{
+      padding-left: 10px;
+      padding-right: 10px;
+   }
+   .subtitle__text {
+      font-size: 20px;
+   }
+   .subtitle__image{
+      width: 60px;
+      height: 60px;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .homePage__title{
+      font-size: 50px;
+   }
+
+   .homePage__subtitle{
+      padding-left: 0px;
+      padding-right: 0px;
+   }
+   .subtitle__text {
+      font-size: 18px;
+   }
+   .subtitle__image{
+      width: 40px;
+      height: 40px;
+   }
+
+   .registration__button {
+      width: 250px;
    }
 }
