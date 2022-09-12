@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { clearGameInterval } from '../Game/GameSprint/LevelSelect/sprintSelectInit';
 import { footerShow } from '../Game/footerHidden';
 
