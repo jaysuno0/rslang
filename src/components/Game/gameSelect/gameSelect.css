@@ -82,9 +82,9 @@
       font-size: 25px;
       color: #885024;
    }
-
-   .game__name {
-      font-size: 25px;
+   
+   .game__name span {
+      font-size: 23px;
    }
 }
 
@@ -104,5 +104,9 @@
    .game__name {
       width: 100%;
       text-align: center;
+   }
+
+   .game__name span {
+      font-size: 20px;
    }
 }
