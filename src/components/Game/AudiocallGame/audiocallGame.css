@@ -1,6 +1,11 @@
 .acg__output, .output__game-frame, .output__game-result {
   display: flex;
   flex-direction: column;
+  padding: 0px 30px;
+}
+
+.output__game-definition {
+  text-align: center;
 }
 
 .output__game-name, .game-result__result-message {
@@ -10,16 +15,28 @@
   text-align: center;
 }
 
+.game-result__result-message {
+  padding: 10px;
+}
+
 .acg__output p{
   padding: 1.5rem;
   padding-bottom: 0;
   font-size: 1.5rem;
 }
 
+.acg__output .output__instructions-title{
+  padding-top: 40px;
+}
+
 .output__level-list{
   padding: 3rem;
   padding-top: 1.5rem;
   font-size: 1.5rem;
+}
+
+.output__level-list li {
+  padding: 3px 0px;
 }
 
 .output__level-wraper {
@@ -92,7 +109,7 @@
   background-position: center;
   background-size: cover;
   transform: scale(2) translateY(-30px);
-  border: 5px solid #885024;
+  border: 4px solid #885024;
 }
 
 .game-frame__word-wrapper {
@@ -174,13 +191,14 @@
 
 .game-result__board {
   width: 100%;
-  height: calc(100vh - 10.75rem);
+  height: calc(100vh - 12rem);
   padding: 1rem;
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
   background-color: #F9E084;
   overflow-y: auto;
+  border: 4px solid #885024;
 }
 
 .words-list__word-wrapper {
@@ -213,3 +231,115 @@
   display: none;
   font-size: 30px;
 }
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .acg__output {
+      padding: 140px 30px 60px;
+   }
+   
+   .game-frame__answers-wrapper {
+    padding: 40px 0;
+    flex-direction: column;
+    gap: 25px;
+    font-size: 18px;
+  }  
+
+  .output__game-result {
+    margin: 0px;
+    transform: translateY(-80px);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .output__instructions-title{
+    padding-top: 80px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .output__level-list li{
+    padding: 20px;
+  }
+
+  .game-result__result-message {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .acg__output  .output__game-definition {
+    font-size: 20px;
+  }
+  .output__level-list li{
+    font-size: 20px;
+  }
+  .game-result__result-message {
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .output__level-list{
+    padding: 0px;
+    padding-bottom: 30px;
+  }
+
+  .output__level-wraper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .output__level {
+    width: 60px;
+  }
+  
+  .output__game-result {
+    padding: 0px;
+  }
+
+  .game-result__result-message {
+    font-size: 20px;
+  }
+
+  .game-result__btn-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .acg__output {
+    padding-left: 0px;
+    padding-right: 0px;
+ }
+
+  .game-result__board {
+    height: auto;
+    border: none;
+  }
+
+  .words-list__word-wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .words-list__word-wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .words-list__audio-btn {
+    padding: 8px 8px 3px 8px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .acg__output  .output__game-definition {
+    font-size: 18px;
+  }
+  .output__level-list li{
+    font-size: 18px;
+  }
+}
+

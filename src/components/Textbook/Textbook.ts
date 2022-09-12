@@ -36,7 +36,7 @@ const Textbook: ITextbook = {
       </div>
       <div class="textbook__controls textbook__controls_level">
         <button class="textbook__btn textbook__btn_level">
-          <p> уровень <span class="textbook__level">1</span></p>
+          <p> уровень: </p> <span class="textbook__level"> 1</span>
         </button>
       </div>
       <div class="textbook__controls textbook__controls_games">

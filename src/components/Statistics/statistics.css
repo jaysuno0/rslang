@@ -7,11 +7,12 @@
 }
 
 .stats__item {
+  width: 100%;
+  max-width: 300px;
   display: flex;
   flex-flow: wrap column;
   justify-content: space-around;
   gap: 20px;
-  width: 300px;
   padding: 1rem;
 
   background: #f9e084;
@@ -40,4 +41,22 @@
 .stats__number {
   padding: 10px;
   font-size: 30px;
+}
+
+.stats__message {
+  width: 100%;
+  max-width: 400px;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: center;
+}
+
+/***** adaptive ******/
+@media screen and (max-width: 630px) {
+  .textbook__controls-wrapper{
+    width: 100%;
+    padding: 8px 15px;
+
+    gap: 15px;
+  }
 }

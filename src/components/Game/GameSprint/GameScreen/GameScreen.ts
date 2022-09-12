@@ -8,7 +8,7 @@ export default class GameScreen {
      <div class="sprint__timer" id="timer">60</div>
      <div class="timer__animation"></div>
      <div class="sprint__score">
-     <div class="score__tittle">Баллов за раунд:</div>
+     <div class="score__title">Баллов за раунд:</div>
      <div class="score__point" id="score__point">0</div>
    </div>
    <div class="screen__card" id="screen__card">

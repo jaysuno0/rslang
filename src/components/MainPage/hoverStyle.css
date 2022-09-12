@@ -9,7 +9,6 @@
    box-shadow: 0px 0px 15px #885024;
 }
 
-
 .team__card:hover {
    box-shadow: 5px 5px 10px #333;
    transform: scale(1.01);
@@ -43,4 +42,16 @@
 .game__wrapper:hover .gameAfter {
    display: flex;
    box-shadow: 0px 0px 15px #885024;
+}
+
+@media screen and (max-width: 1080px) {
+   .nav__item:hover {
+      border-radius: 0px;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .registration__button:hover{
+      width: 200px;
+   }
 }

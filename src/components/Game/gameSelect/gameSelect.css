@@ -3,7 +3,9 @@
    display: flex;
    flex-direction: column;
    justify-self: center;
+   align-items: center;
    gap: 4rem;
+   padding: 0px 30px;
 }
 
 .gameSelect__title {
@@ -51,4 +53,60 @@
 }
 .gameAfter .game__name {
    font-size: 1.5rem;
+}
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .gameSelect {
+      padding-top: 50px;
+      padding-bottom: 50px;
+      gap: 50px;
+   }
+
+   .game {
+      height: 200px;
+   }
+}
+
+@media screen and (max-width: 700px) {
+   .game__wrapper {
+      width: 100%;
+   }
+
+   .game {
+      width: 90%;
+      margin: auto;
+   }
+
+   .gameSelect__title span {
+      font-size: 25px;
+      color: #885024;
+   }
+   
+   .game__name span {
+      font-size: 23px;
+   }
+}
+
+@media screen and (max-width: 500px) {
+   .game {
+      padding: 15px;
+      gap: 0px;
+      flex-direction: column;
+      align-items: center;
+   }
+
+   .game__image img {
+      width: 80px;
+      height: 80px;
+   }
+
+   .game__name {
+      width: 100%;
+      text-align: center;
+   }
+
+   .game__name span {
+      font-size: 20px;
+   }
 }

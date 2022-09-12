@@ -15,6 +15,9 @@
    top: 63px;
    left: 0px;
 }
+.nav-wrapper.open {
+   display: flex;
+}
 
 .nav{
    z-index: 1;
@@ -38,7 +41,7 @@
    gap: 1rem;
    align-items: center;
    padding: 5px;
-   transition: 0.3s;
+   transition: 250ms;
 }
 
 .item__logo img{
@@ -49,4 +52,52 @@
 
 .login__text{
    display: none;
+}
+
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .main{
+      position: relative;
+      display: block;
+      background-color: #f4a04a;
+   }
+
+   .nav-wrapper {
+      position: absolute;
+      top: 0px;
+      z-index: 5;
+      width: 230px;
+
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(-110%);
+
+      transition: 350ms;
+      width: 100%;
+      border-bottom: 5px solid #885024;
+      box-shadow: 3px 3px 5px #333;
+   }
+   .nav-wrapper.open {
+      transform: translateY(0%);
+   }
+
+   .nav {
+      padding: 20px 0px;
+   }
+
+   .nav,
+   .nav__list,
+   .nav__list a {
+      width: 100%;
+   }
+
+   .nav__list{
+      row-gap: 0px;
+   }
+
+   .nav__item{
+      padding: 15px;
+      justify-content: center;
+   }
 }

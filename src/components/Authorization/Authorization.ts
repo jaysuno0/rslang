@@ -21,7 +21,7 @@ enum AuthorizationTypes {
   loginType = 'Вход',
   loginBtnText = 'войти',
   signupType = 'Регистрация',
-  signupBtnText = 'зарегистрироваться',
+  signupBtnText = 'войти',
 }
 
 enum ValidationLengths {
