@@ -66,3 +66,29 @@
       display: flex;
    }
 }
+
+@media screen and (max-width: 500px) {
+   .header__name {
+      font-size: 27px;
+   }
+
+   .header__nav-btn {
+      display: flex;
+   }
+
+   .header__wrapper {
+      gap: 15px;
+   }
+
+   .logo{
+      height: 40px;
+      width: 40px;
+      transition: 250ms;
+   }
+}
+
+@media screen and (max-width: 360px) {
+   .header__logo {
+      display: none;
+   }
+}
