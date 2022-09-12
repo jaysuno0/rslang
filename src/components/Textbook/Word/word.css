@@ -189,3 +189,18 @@
 .card__transcription {
   margin: 0px 10px;
 }
+
+/***** adaptive ******/
+@media screen and (max-width: 420px) {
+  .card__btn {
+    padding: 9px;
+  }
+
+  .card__btn_hard {
+    top: 55px;
+  }
+  
+  .card__btn_learned {
+    top: 112px;
+  }
+}
