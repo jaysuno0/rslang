@@ -1,0 +1,59 @@
+.footer{
+   padding: 2px 1rem 3px 1rem;
+   position: relative;
+   z-index: 2;
+   background-color: #885024;
+   box-shadow: 0px 0px 5px 5px #885024;
+
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 40px;
+}
+
+.footerHidden {
+   display: none;
+}
+
+.rsSchoolLink{
+   width: 100px;
+}
+
+.teamLink{
+   display: flex;
+   gap: 50px;
+}
+
+.footer__team-link {
+   transition: 200ms;
+}
+.footer__team-link:hover {
+   color: #60c7b6
+}
+
+/***** adaptive ******/
+@media screen and (max-width: 750px) {
+   .footer {
+      flex-direction: column;
+      padding: 1rem;
+      gap: 20px;
+
+      font-size: 18px;
+   }
+
+   .footer .year {
+      font-size: 22px;
+   }
+}
+
+@media screen and (max-width: 530px) {
+   .footer {
+      gap: 30px;
+   }
+
+   .teamLink{
+      flex-direction: column;
+      gap: 15px;
+   }
+}
