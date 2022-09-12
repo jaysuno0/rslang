@@ -2,7 +2,7 @@
    display: grid;
    grid-template-columns: 10rem 1fr;
    min-height: calc(100vh - 7rem);
-   background-color: #f4a04a;
+   background-color: #f9e084;
 }
 
 .mainGame {
@@ -60,6 +60,7 @@
    .main{
       position: relative;
       display: block;
+      background-color: #f4a04a;
    }
 
    .nav-wrapper {
