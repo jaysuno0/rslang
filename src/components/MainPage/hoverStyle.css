@@ -44,6 +44,12 @@
    box-shadow: 0px 0px 15px #885024;
 }
 
+@media screen and (max-width: 1080px) {
+   .nav__item:hover {
+      border-radius: 0px;
+   }
+}
+
 @media screen and (max-width: 450px) {
    .registration__button:hover{
       width: 200px;

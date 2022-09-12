@@ -11,7 +11,7 @@ export default class NavRender {
     this.template = `
       <div class="nav" id="nav">
          <ul class="nav__list">
-            <a href="##">
+            <a href="#">
                <div class="nav__item" id="home">
                   <div class="item__logo">
                      <img src="./img/navHome.svg" alt="homeLogo">
@@ -21,7 +21,7 @@ export default class NavRender {
                   </div>
                </div>
             </a>
-            <a href="##">
+            <a href="#">
                <div class="nav__item" id="book">
                   <div class="item__logo">
                      <img src="./img/navBook.svg" alt="bookLogo">
@@ -31,7 +31,7 @@ export default class NavRender {
                   </div>
                </div>
             </a>
-            <a href="##">
+            <a href="#">
                <div class="nav__item" id="game">
                   <div class="item__logo">
                      <img src="./img/navGame.svg" alt="gameLogo">
@@ -41,7 +41,7 @@ export default class NavRender {
                   </div>
                </div>
             </a>
-            <a href="##">
+            <a href="#">
                <div class="nav__item" id="stats">
                   <div class="item__logo">
                      <img src="./img/navStats.svg" alt="statsLogo">
@@ -51,7 +51,7 @@ export default class NavRender {
                   </div>
                </div>
             </a>
-            <a href="##">
+            <a href="#">
                <div class="nav__item" id="team">
                   <div class="item__logo">
                      <img src="./img/navTeam.svg" alt="teamLogo">
