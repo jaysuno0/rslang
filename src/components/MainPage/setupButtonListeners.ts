@@ -38,5 +38,12 @@ function setupButtonListeners(actions: ButtonActions) {
       actions[headerElem.id as ButtonActionTypes]();
     }
   });
+
+  const navBtn = document.querySelector('.header__nav-btn') as HTMLDivElement;
+  const navigation = document.querySelector('.nav-wrapper') as HTMLDivElement;
+  navBtn.addEventListener('click', () => {
+    navigation.classList.toggle('open');
+    navBtn.classList.toggle('open');
+  });
 }
 export default setupButtonListeners;

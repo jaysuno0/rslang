@@ -98,7 +98,11 @@ const stats: IStats = {
       statsElement.innerHTML = this.template;
       this.setStats(statsElement);
     } else {
-      statsElement.innerHTML = 'Статистика доступна только для зарегистрированных пользователей :)';
+      const message = document.createElement('p');
+      message.classList.add('stats__message');
+      message.textContent = 'Статистика доступна только для зарегистрированных пользователей :)';
+      statsElement.innerHTML = '';
+      statsElement.append(message);
     }
   },
 

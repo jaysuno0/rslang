@@ -15,6 +15,9 @@
    top: 63px;
    left: 0px;
 }
+.nav-wrapper.open {
+   display: flex;
+}
 
 .nav{
    z-index: 1;
@@ -49,4 +52,39 @@
 
 .login__text{
    display: none;
+}
+
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .main{
+      position: relative;
+      display: block;
+   }
+
+   .nav-wrapper {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      margin-left: auto;
+      z-index: 5;
+      width: 250px;
+
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(-110%);
+      transition: 350ms;
+   }
+   .nav-wrapper.open {
+      transform: translateY(0%);
+   }
+
+   .nav{
+      width: 100%;
+      max-width: 240px;
+      padding: 20px;
+      border-bottom-left-radius: 10px;
+      border-left: 5px solid #885024;
+      border-bottom: 5px solid #885024;
+   }
 }
