@@ -14,8 +14,8 @@ export const renderIntro = (
 ) => {
   const introHTML = `
   <h1 class="output__game-name">АУДИОВЫЗОВ</h1>
-  <p>«Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.</p>
-  <p>Управление:</p>
+  <p class="output__game-definition">«Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.</p>
+  <p class="output__instructions-title">Управление:</p>
   <ul class="output__level-list">
     <li>⊛ Используйте мышь, чтобы выбрать</li>
     <li>⊛ Используйте цифровые клавиши от 1 до 5 для выбора ответа</li>

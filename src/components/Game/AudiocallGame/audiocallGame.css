@@ -1,6 +1,11 @@
 .acg__output, .output__game-frame, .output__game-result {
   display: flex;
   flex-direction: column;
+  padding: 0px 30px;
+}
+
+.output__game-definition {
+  text-align: center;
 }
 
 .output__game-name, .game-result__result-message {
@@ -16,10 +21,18 @@
   font-size: 1.5rem;
 }
 
+.acg__output .output__instructions-title{
+  padding-top: 40px;
+}
+
 .output__level-list{
   padding: 3rem;
   padding-top: 1.5rem;
   font-size: 1.5rem;
+}
+
+.output__level-list li {
+  padding: 3px 0px;
 }
 
 .output__level-wraper {
@@ -213,3 +226,57 @@
   display: none;
   font-size: 30px;
 }
+
+/***** adaptive ******/
+@media screen and (max-width: 1080px) {
+   .acg__output {
+      padding: 120px 30px;
+   }
+}
+
+@media screen and (max-width: 900px) {
+  .output__instructions-title{
+    padding-top: 80px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .output__level-list li{
+    padding: 20px 0px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .acg__output  .output__game-definition {
+    font-size: 20px;
+  }
+  .output__level-list li{
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .output__level-list{
+    padding: 0px;
+    padding-bottom: 30px;
+  }
+
+  .output__level-wraper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .output__level {
+    width: 60px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .acg__output  .output__game-definition {
+    font-size: 18px;
+  }
+  .output__level-list li{
+    font-size: 18px;
+  }
+}
+

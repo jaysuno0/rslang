@@ -5,6 +5,7 @@
    justify-self: center;
    align-items: center;
    gap: 4rem;
+   padding: 0px 30px;
 }
 
 .gameSelect__title {
